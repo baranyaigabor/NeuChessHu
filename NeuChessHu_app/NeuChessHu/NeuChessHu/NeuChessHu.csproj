@@ -19,6 +19,105 @@
     <None Remove="Resources\Sounds\Premove.wav" />
     <None Remove="Resources\Sounds\Promotion.wav" />
     <None Remove="Resources\Sounds\TenSeconds.wav" />
+    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\BishopBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\KingBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\KnightBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\PawnBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\QueenBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\RookBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\BishopWhite.png" />
+    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\KingWhite.png" />
+    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\KnightWhite.png" />
+    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\PawnWhite.png" />
+    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\QueenWhite.png" />
+    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\RookWhite.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\BishopBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\KingBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\KnightBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\PawnBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\QueenBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\RookBlack.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\BishopWhite.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\KingWhite.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\KnightWhite.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\PawnWhite.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\QueenWhite.png" />
+    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\RookWhite.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\BishopBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\KingBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\KnightBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\PawnBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\QueenBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\RookBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\BishopWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\KingWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\KnightWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\PawnWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\QueenWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\RookWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\BishopBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\KingBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\KnightBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\PawnBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\QueenBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\RookBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\BishopWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\KingWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\KnightWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\PawnWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\QueenWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\RookWhite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
