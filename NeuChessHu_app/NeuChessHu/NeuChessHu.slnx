@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ChessMechanics/ChessMechanics.csproj" />
+  <Project Path="NeuChessHu/NeuChessHu.csproj" />
+</Solution>
