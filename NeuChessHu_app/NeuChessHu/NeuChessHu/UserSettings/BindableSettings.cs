@@ -1,11 +1,9 @@
-﻿using ChessMechanics.ChessBoard.Definitions;
-using ChessMechanics.Common;
+﻿using ChessMechanics.Common;
+using NeuChessHu.Properties;
 using NeuChessHu.Resources.Types;
 using NeuChessHu.Resources.Types.ThemeTypes;
 using NeuChessHu.Services.SoundServices;
 using NeuChessHu.UserSettings.SettingManagers;
-using Properties;
-using System.Text.RegularExpressions;
 
 namespace NeuChessHu.UserSettings;
 
@@ -159,35 +157,6 @@ public partial class BindableSettings(Settings settings) : ObservableBase
                 settings.LastMatchDuration = value;
                 settings.Save();
 
-                RaisePropertyChanged();
-            }
-        }
-    }
-
-    public string LastCustomDuration
-    {
-        get => settings.LastCustomDuration;
-        set
-        {
-            if (settings.LastCustomDuration != value && Regex.IsMatch(@"^\d{1,2}(\s\|\s\d{1,2})?$", value))
-            {
-                settings.LastCustomDuration = value;
-                settings.Save();
-
-                RaisePropertyChanged();
-            }
-        }
-    }
-
-    public Side LastCustomSide
-    {
-        get => Enum.TryParse(settings.LastCustomSide, out Side side) ? side : Side.None;
-        set
-        {
-            if (Enum.TryParse(settings.LastCustomSide, out Side side) && side != value)
-            {
-                settings.LastCustomSide = value.ToString();
-                settings.Save();
                 RaisePropertyChanged();
             }
         }

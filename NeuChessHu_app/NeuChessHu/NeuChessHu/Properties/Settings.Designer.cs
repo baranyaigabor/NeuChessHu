@@ -86,12 +86,12 @@ namespace NeuChessHu.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ConfirmE {
+        public bool ConfirmEachMove {
             get {
-                return ((bool)(this["ConfirmE"]));
+                return ((bool)(this["ConfirmEachMove"]));
             }
             set {
-                this["ConfirmE"] = value;
+                this["ConfirmEachMove"] = value;
             }
         }
         

@@ -17,7 +17,7 @@
     <Setting Name="DisableSounds" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ConfirmE" Type="System.Boolean" Scope="User">
+    <Setting Name="ConfirmEachMove" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="AutoQueen" Type="System.Boolean" Scope="User">
