@@ -6,9 +6,33 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\Images\Statics\Icons\NeuChess_Hu.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\Dynamics\Chat\ChatPic_dark.png" />
+    <None Remove="Resources\Images\Dynamics\Chat\ChatPic_light.png" />
+    <None Remove="Resources\Images\Dynamics\DefaultProfilePictures\ProfilePic_dark.png" />
+    <None Remove="Resources\Images\Dynamics\DefaultProfilePictures\ProfilePic_light.png" />
+    <None Remove="Resources\Images\Dynamics\Flags\EnglishFlag.svg" />
+    <None Remove="Resources\Images\Dynamics\Flags\HungarianFlag.svg" />
+    <None Remove="Resources\Images\Dynamics\Logos\NeuChess_Hu_wide_dark.svg" />
+    <None Remove="Resources\Images\Dynamics\Logos\NeuChess_Hu_wide_light.svg" />
+    <None Remove="Resources\Images\Dynamics\MoreArrows\MoreDown_dark.png" />
+    <None Remove="Resources\Images\Dynamics\MoreArrows\MoreDown_light.png" />
+    <None Remove="Resources\Images\Dynamics\MoreArrows\MoreUp_dark.png" />
+    <None Remove="Resources\Images\Dynamics\MoreArrows\MoreUp_light.png" />
+    <None Remove="Resources\Images\Dynamics\Options\OptionsPic_dark.png" />
+    <None Remove="Resources\Images\Dynamics\Options\OptionsPic_light.png" />
+    <None Remove="Resources\Images\Dynamics\SendMessage\SendMessage_dark.png" />
+    <None Remove="Resources\Images\Dynamics\SendMessage\SendMessage_light.png" />
+    <None Remove="Resources\Images\Statics\Icons\NeuChess_Hu.ico" />
+    <None Remove="Resources\Images\Statics\MatchDurations\BlitzIcon.png" />
+    <None Remove="Resources\Images\Statics\MatchDurations\BulletIcon.png" />
+    <None Remove="Resources\Images\Statics\MatchDurations\CustomIcon.png" />
+    <None Remove="Resources\Images\Statics\MatchDurations\RapidIcon.png" />
+    <None Remove="Resources\Images\Statics\Misc\GoldenMedal.png" />
+    <None Remove="Resources\Images\Statics\Misc\HandMovesPiece.svg" />
     <None Remove="Resources\Sounds\Capture.wav" />
     <None Remove="Resources\Sounds\Castle.wav" />
     <None Remove="Resources\Sounds\Check.wav" />
@@ -46,6 +70,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Images\Statics\Icons\NeuChess_Hu.ico" />
     <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\BishopBlack.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -143,6 +168,72 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\Dynamics\Chat\ChatPic_dark.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\Chat\ChatPic_light.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\DefaultProfilePictures\ProfilePic_dark.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\DefaultProfilePictures\ProfilePic_light.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\Flags\EnglishFlag.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\Flags\HungarianFlag.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\Logos\NeuChess_Hu_wide_dark.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\Logos\NeuChess_Hu_wide_light.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\MoreArrows\MoreDown_dark.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\MoreArrows\MoreDown_light.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\MoreArrows\MoreUp_dark.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\MoreArrows\MoreUp_light.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\Options\OptionsPic_dark.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\Options\OptionsPic_light.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\SendMessage\SendMessage_dark.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\SendMessage\SendMessage_light.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Statics\MatchDurations\BlitzIcon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Statics\MatchDurations\BulletIcon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Statics\MatchDurations\CustomIcon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Statics\MatchDurations\RapidIcon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Statics\Misc\GoldenMedal.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Statics\Misc\HandMovesPiece.svg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Sounds\Capture.wav">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

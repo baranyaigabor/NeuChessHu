@@ -1,7 +1,6 @@
 ﻿using ChessMechanics.ChessBoard.Definitions;
+using NeuChessHu.Properties;
 using NeuChessHu.Resources.Types.ThemeTypes;
-using Properties;
-using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace NeuChessHu.UserSettings.SettingManagers;
