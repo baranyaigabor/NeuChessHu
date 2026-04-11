@@ -2,8 +2,6 @@
 
 namespace ChessLogic\Moving\Validators\Moves\CheckRules\Extension;
 
-use ChessLogic\ChessBoard\ChessPieces\Definitions\Piece;
-use ChessLogic\ChessBoard\ChessPieces\Definitions\Side;
 use ChessLogic\ChessBoard\ChessPieces\Pieces\ChessPiece;
 
 class MatrixCloner
