@@ -11,6 +11,8 @@ use ChessLogic\Moving\Validators\Moves\CheckRules\Extension\MatrixCloner;
 use ChessLogic\Moving\Validators\Moves\MoveValidator;
 use ChessLogic\Moving\Validators\Draws\DrawValidator;
 use ChessLogic\Moving\Captures\CapturedListsHandler;
+use ChessLogic\Notations\PieceNotations\NotationsExtension;
+use ChessLogic\Notations\PieceNotations\SANNotations;
 
 class Move
 {
@@ -249,6 +251,14 @@ class Move
         {
             CapturedListsHandler::appendList($this->matchDataStore, $currentSide, Piece::Pawn);
         }
+
+
+        $sanNotation = SANNotations::notationDefiner($this->matchDataStore->MatchState->PieceMatrix, 
+            $startingMatrix, [$this->moveValidator, 'canMoveThere'], $from, $to,
+            $promotionChoice, $hasCaptured, $hasCastled, $isCheck, $isCheckMate);
+                
+        NotationsExtension::notationAdder($this->matchDataStore->MatchState->Notations,
+            $this->matchDataStore, $sanNotation);
     }
 
     private function determineSoundName(bool $isCheck, bool $isCheckMate,
