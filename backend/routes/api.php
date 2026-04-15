@@ -10,3 +10,9 @@ Route::get('/user', [UserController::class, 'showCurrent'])
     ->middleware('auth:sanctum');
 
 Route::apiResource("matches", MatchesController::class);
+
+Route::post('/signin', [AuthController::class, 'webLogin']);
+Route::post('/logout', [AuthController::class, 'webLogout']);
+
+Route::post('/desktop/logout', [DesktopAuthController::class, 'desktopLogout'])
+    ->middleware('auth:sanctum');
