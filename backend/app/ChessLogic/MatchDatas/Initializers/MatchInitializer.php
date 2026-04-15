@@ -26,7 +26,6 @@ class MatchInitializer
         $player->ID = $id;
         $player->CapturedPieces = [];
         $player->Points = 0;
-        $player->Time = "";
 
         return $player;
     }

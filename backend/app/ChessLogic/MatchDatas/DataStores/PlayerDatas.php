@@ -16,8 +16,7 @@ class PlayerDatas implements JsonSerializable
         return [
             'id' => $this->ID,
             'capturedPieces' => array_map(fn($piece) => $piece->value, $this->CapturedPieces),
-            'points' => $this->Points,
-            'time' => $this->Time,
+            'points' => $this->Points
         ];
     }
 
@@ -26,7 +25,6 @@ class PlayerDatas implements JsonSerializable
         $player = new PlayerDatas();
         $player->ID = $id;
         $player->Points = $data['points'] ?? 0;
-        $player->Time = $data['time'] ?? '';
         $player->CapturedPieces = $data['capturedPieces'] ?? [];
         return $player;
     }

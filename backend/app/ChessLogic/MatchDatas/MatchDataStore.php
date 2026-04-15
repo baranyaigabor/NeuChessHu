@@ -6,24 +6,28 @@ use Carbon\Carbon;
 use ChessLogic\MatchDatas\DataStores\ChatMessages;
 use DateTime;
 use ChessLogic\ChessBoard\ChessPieces\Definitions\Side;
+use ChessLogic\MatchDatas\DataStores\Clocks;
 use ChessLogic\MatchDatas\DataStores\DrawTrackers;
 use ChessLogic\MatchDatas\DataStores\MatchPoints;
 use ChessLogic\MatchDatas\DataStores\MatchState;
 use ChessLogic\MatchDatas\DataStores\PlayerDatas;
 use ChessLogic\MatchDatas\Initializers\MatchInitializer;
 use InvalidArgumentException;
+use React\Http\Io\Clock;
 
 class MatchDataStore
 {
     public string $MatchID;
     public DateTime $PlayedAt;
 
-    public DrawTrackers $DrawTrackers;
     public MatchPoints $MatchPoints;
     public MatchState $MatchState;
-
+    
     /** @var array<int, PlayerDatas> */
     public array $PlayerDatas;
+
+    public DrawTrackers $DrawTrackers;
+    public Clocks $Clocks;
     public ChatMessages $ChatMessages;
 
     public static function createDataStore(string $ID1, string $ID2, string $matchDuration,
@@ -36,10 +40,11 @@ class MatchDataStore
         $store->MatchID = "{$matchDuration}-{$channel}";
         $store->PlayedAt = Carbon::now();
 
-        $store->DrawTrackers = new DrawTrackers();
         $store->MatchPoints = new MatchPoints();
         $store->MatchState = new MatchState();
         $store->PlayerDatas = MatchInitializer::initializePlayers($ID1, $ID2);
+        $store->DrawTrackers = new DrawTrackers();
+        $store->Clocks = Clocks::fromMatchDuration($matchDuration);
         $store->ChatMessages = new ChatMessages();
 
         $store->MatchState->MatchDuration = $matchDuration;
@@ -80,6 +85,10 @@ class MatchDataStore
             $data['draw_trackers'] ?? []
         );
 
+        $store->Clocks = Clocks::fromArray(
+            $data['clocks'] ?? [])
+        ;
+
         $store->ChatMessages = ChatMessages::fromArray(
             $data['chat_messages'] ?? []
         );
@@ -99,17 +108,19 @@ class MatchDataStore
 
         $reason = $matchPoints->getMatchPointsReason();
 
-        if ($reason === 'Checkmate' || $reason === 'Timeout') 
+        if ($reason === 'Checkmate') 
         {
             $side = $store->MatchState->CurrentSide;
 
             if ($side !== Side::None) 
             {
-                $winnerplayer = $store->PlayerDatas[$side->value];
+                $winnerRemainingMs = $side === Side::White
+                    ? $store->Clocks->WhiteRemainingMs
+                    : $store->Clocks->BlackRemainingMs;
 
                 $matchPoints->setWinner(
-                    $winnerplayer->ID,
-                    $winnerplayer->Time
+                    $store->PlayerDatas[$side->value]->ID,
+                    Clocks::formatTime($winnerRemainingMs)
                 );
             }
         }
@@ -130,29 +141,42 @@ class MatchDataStore
             $store->MatchState->CurrentSide = Side::None;
         }
 
-        else if($reason === 'Resign')
-        {
-            $matchPoints->markMatchEnded();
-            
-            $winnerplayer = $store->PlayerDatas[Side::White->value]->ID === $userID
-                ? $store->PlayerDatas[Side::Black->value]
-                : $store->PlayerDatas[Side::White->value];
-            
-            $matchPoints->setMatchPointsReason($reason, isForcedDraw: false);
-
-            $matchPoints->setWinner(
-                $winnerplayer->ID,
-                $winnerplayer->Time
-            );
-
-            $store->MatchState->CurrentSide = Side::None;
-        }
         else if($reason === 'Draw')
         {
             $store->MatchPoints->ClaimForDraw = true;
             $store->DrawTrackers->DrawAgreements = [];
         }
-        else {
+
+        else if($reason === 'Resign' || $reason === 'Timeout')
+        {
+            if ($reason === 'Timeout' && !Clocks::isTimeoutValid($store))
+                return;
+        
+            $matchPoints->markMatchEnded();
+            $matchPoints->setMatchPointsReason($reason, isForcedDraw: false);
+
+            $winningSide = $reason === 'Resign'
+                ? ($store->PlayerDatas[Side::White->value]->ID == $userID 
+                    ? Side::Black 
+                    : Side::White)
+                : ($store->MatchState->CurrentSide === Side::White 
+                    ? Side::Black 
+                    : Side::White);
+
+            $winnerRemainingMs = $winningSide === Side::White
+                ? $store->Clocks->WhiteRemainingMs
+                : $store->Clocks->BlackRemainingMs;
+
+            $matchPoints->setWinner(
+                $store->PlayerDatas[$winningSide->value]->ID,
+                Clocks::formatTime($winnerRemainingMs)
+            );
+
+            $store->MatchState->CurrentSide = Side::None;
+        }
+
+        else 
+        {
             throw new InvalidArgumentException();
         }
     }
