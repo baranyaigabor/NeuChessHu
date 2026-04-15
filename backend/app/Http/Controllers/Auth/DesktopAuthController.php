@@ -59,6 +59,7 @@ class DesktopAuthController extends Controller
 
         $user->update(['is_active' => true]);
 
+        /** @var \App\Models\User|\Laravel\Sanctum\HasApiTokens $user */
         $token = $user->createToken('desktop-app')->plainTextToken;
 
         $payload = $this->buildPayload($token, $user->id);
