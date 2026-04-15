@@ -169,4 +169,17 @@ class MoveValidator
             $isBlocked = true;
         }
     }
+
+    public function canMoveThere(array $pieceMatrix, array $from, array $to) : bool 
+    {
+        $piece = $pieceMatrix[$from[0]][$from[1]]->Name;
+
+        if (!in_array($piece, [Piece::Rook, Piece::Knight, Piece::Bishop, Piece::Queen], true)) 
+        {
+            return false;
+        }
+
+        $moves = $this->currentLegalMovesWithSelectedPiece($pieceMatrix, $from);
+        return $moves[$to[0]][$to[1]];
+    }
 }
