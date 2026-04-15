@@ -49,6 +49,7 @@ class CheckValidator
      * @param array{0:int,1:int} $from
      * @param array{0:int,1:int} $to
      */
+    
     private static function moveSimulator(array $sourceMatrix, array $from, array $to): array 
     {
         $tempMatrix = MatrixCloner::clone($sourceMatrix);
