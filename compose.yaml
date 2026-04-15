@@ -136,6 +136,20 @@ services:
     networks:
       - fullstack
 
+  soketi:
+    image: quay.io/soketi/soketi:1.0-16-alpine
+    container_name: soketi
+    networks:
+      - fullstack
+    ports:
+      - "6001:6001"
+    environment:
+      SOKETI_DEFAULT_APP_ID: ${SOKETI_APP_ID}
+      SOKETI_DEFAULT_APP_KEY: ${SOKETI_APP_KEY}
+      SOKETI_DEFAULT_APP_SECRET: ${SOKETI_APP_SECRET}
+      SOKETI_DEBUG: "1"
+      SOKETI_METRICS_ENABLED: "false"
+
   clamav:
     container_name: clamav
     image: clamav/clamav:1.4
