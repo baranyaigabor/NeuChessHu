@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Base64Image;
-use App\Rules\ClamAVScan;
+use App\Rules\Base64ImageRule;
+use App\Rules\ClamAVScanRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest
@@ -18,11 +18,11 @@ class UpdateUserRequest extends FormRequest
         return [
             'nickname' => 'sometimes|string|unique:users,nickname,' . $this->route('user')->id,
             'email' => 'sometimes|email|unique:users,email,' . $this->route('user')->id,
-            'first_name' => 'sometimes|string',
-            'last_name' => 'sometimes|string',
-            'region' => 'sometimes|string',
-            'date_of_birth' => 'sometimes|date',
-            'profile_picture' => ['sometimes', 'string', new Base64Image(), new ClamAVScan()],
+            'first_name' => 'sometimes|nullable|string',
+            'last_name' => 'sometimes|nullable|string',
+            'region' => 'sometimes|nullable|string',
+            'date_of_birth' => 'sometimes|nullable|date',
+            'profile_picture' => ['sometimes', 'nullable', 'string', new Base64ImageRule(), new ClamAVScanRule()],
         ];
     }
 }
