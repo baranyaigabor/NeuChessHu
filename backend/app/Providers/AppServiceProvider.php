@@ -2,8 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\MatchService;
-use App\Services\ReadyPlayersRegistry;
+use ChessLogic\Messaging\ChatMessagesHandlerFactory;
 use ChessLogic\Moving\Factories\MoveComponents\MoveComponentsFactory;
 use ChessLogic\Moving\Factories\MoveFactory;
 use ChessLogic\Moving\Factories\MoveValidatorFactory;
@@ -14,11 +13,14 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {        
-        //
+        $this->app->singleton(MoveComponentsFactory::class);
+        $this->app->singleton(MoveValidatorFactory::class);
+        $this->app->singleton(MoveFactory::class);
+        $this->app->singleton(ChatMessagesHandlerFactory::class);
     }
 
     public function boot(): void
     {
-        //
+        Model::shouldBeStrict();
     }
 }
