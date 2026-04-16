@@ -55,4 +55,63 @@ class ChessEngine
         [, $validator] = $this->methodsFactory($payload['channel']);
         return $validator->isLegalMove($payload['from'], $payload['to']);
     }
+
+    private function updateMatchToClients(string $channel, array $data, bool $isChat): void
+    {
+        $cacheKey = str_replace('private-', '', $channel);
+        $existing = MatchService::getMatchFromCache($channel);
+
+        if ($existing) 
+        {
+            $basePath = 'http://webserver/api/match/';
+
+            if ($isChat)
+            {
+                $existingMessages = $existing['chat_messages'] ?? [];
+                
+                MatchService::updateMatchInCache($channel, array_merge($existing, [
+                    'chat_messages' => array_merge($existingMessages, [$data['new_message']]),
+                ]));
+
+                $payload = json_encode([
+                    'channel' => $cacheKey,
+                    'new_message' => $data['new_message'],
+                ]);
+
+                $endpoint = $basePath . 'chat-update';
+            }
+
+            else
+            {
+                MatchService::updateMatchInCache($channel, array_merge($existing, [
+                    'match_state' => $data['match_state'],
+                    'player_datas' => $data['player_datas'],
+                    'match_points' => $data['match_points'],
+                    'clocks' => $data['clocks'],
+                ]));
+
+                $payload = json_encode([
+                    'channel' => $cacheKey,
+                    'match_state' => $data['match_state'],
+                    'player_datas' => $data['player_datas'],
+                    'match_points' => $data['match_points'],
+                    'draw_trackers' => $data['draw_trackers'],
+                    'clocks' => $data['clocks'],
+                ]);
+
+                $endpoint = $basePath . 'state-update';
+            }
+
+            $context = stream_context_create([
+                'http' => [
+                    'method' => 'POST',
+                    'header' => "Content-Type: application/json\r\nHost: backend.vm2.test\r\n",
+                    'content' => $payload,
+                    'timeout' => 5,
+                ]
+            ]);
+
+            @file_get_contents($endpoint, false, $context);
+        }
+    }
 }
