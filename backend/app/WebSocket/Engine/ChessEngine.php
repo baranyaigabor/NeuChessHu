@@ -50,6 +50,61 @@ class ChessEngine
         return [$matchDataStore, $moveValidator, $move, $chatMessage];
     }
 
+    public function onMessage(string $rawMessage): string
+    {
+        $data = json_decode($rawMessage, true);
+        
+        if (!$data)
+        {
+            return json_encode(['error' => 'Invalid JSON']);
+        }        
+        
+        $type = $data['type'] ?? null;
+        $requestID = $data['requestID'] ?? null;
+        $payload = $data['payload'] ?? [];
+        $channel = $payload['channel'];
+        
+        try 
+        {
+            $responsePayload = match ($type) {
+                'request-move-piece' => $this->movePiece($payload),
+                'request-is-legal-move' => $this->isLegalMove($payload),
+                'request-legal-moves' => $this->currentLegalMovesWithSelectedPiece($payload),
+                'request-chat-message' => $this->chatMessage($payload),
+                'request-match-point' => $this->matchPointSetter($payload),
+                'request-draw-response' => $this->drawResponseSetter($payload),
+                default => throw new Exception("Unknown request type: $type")
+            };
+
+            $store = $this->matchDataStores[$channel];
+
+            if ($store->MatchPoints->MatchEnded) 
+            {
+                MatchService::saveMatchToDB($channel);
+                $this->removeMatchFromMemory($channel);
+            }
+
+            return json_encode([
+                'requestID' => $requestID,
+                'payload' => $responsePayload
+            ]);
+        } 
+        catch (Throwable $e) 
+        {
+            return json_encode([
+                'requestID' => $requestID,
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function removeMatchFromMemory(string $channel) : void
+    {
+        unset($this->matchDataStores[$channel]);
+        unset($this->validators[$channel]);
+        MatchService::removeMatchFromCache($channel);
+    }
+
     private function isLegalMove(array $payload) : bool
     {
         [, $validator] = $this->methodsFactory($payload['channel']);
