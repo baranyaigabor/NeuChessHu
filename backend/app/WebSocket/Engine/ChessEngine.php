@@ -49,4 +49,10 @@ class ChessEngine
 
         return [$matchDataStore, $moveValidator, $move, $chatMessage];
     }
+
+    private function isLegalMove(array $payload) : bool
+    {
+        [, $validator] = $this->methodsFactory($payload['channel']);
+        return $validator->isLegalMove($payload['from'], $payload['to']);
+    }
 }
