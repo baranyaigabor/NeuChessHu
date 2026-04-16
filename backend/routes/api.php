@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\DesktopAuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MatchesController;
 use Illuminate\Support\Facades\Route;
