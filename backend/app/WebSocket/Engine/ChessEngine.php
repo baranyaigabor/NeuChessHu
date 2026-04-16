@@ -56,6 +56,25 @@ class ChessEngine
         return $validator->isLegalMove($payload['from'], $payload['to']);
     }
 
+    private function currentLegalMovesWithSelectedPiece(array $payload) : array
+    {
+        [, $validator] = $this->methodsFactory($payload['channel']);
+
+        $pieceMatrix = array_map(
+            fn($row) => array_map(
+                fn($piece) => $piece ? ChessPiece::fromString($piece) : null,
+                $row
+            ),
+            $payload['pieceMatrix']
+        );
+
+        $side = Side::from($payload['playingSide']);
+
+        return $validator->currentLegalMovesWithSelectedPiece($pieceMatrix, $payload['from'], $side);
+    }
+
+
+
     private function updateMatchToClients(string $channel, array $data, bool $isChat): void
     {
         $cacheKey = str_replace('private-', '', $channel);
