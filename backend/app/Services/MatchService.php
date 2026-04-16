@@ -3,12 +3,30 @@
 namespace App\Services;
 
 use App\Events\ChannelAssignment;
+use App\Http\Controllers\QueueController;
 use ChessLogic\ChessBoard\ChessPieces\Definitions\Side;
 use ChessLogic\MatchDatas\MatchDataStore;
 use Illuminate\Support\Facades\Cache;
 
 class MatchService 
 {
+    public function tryStartMatch(string $match_duration) : ?string
+    {
+        $matchedPlayers = app(QueueController::class)->matchPlayersFromDB($match_duration);
+
+        if (!$matchedPlayers)
+        {
+            return null;
+        }
+
+        [$player1, $player2] = $matchedPlayers;
+
+        $channel = $this->createChannel($player1, $player2);
+        $this->createMatch($player1, $player2, $match_duration, $channel);
+
+        return $channel;
+    }
+
     private function createChannel(int $player1, int $player2) : string
     {
         $timestamp = now()->format('YmdHis');
@@ -38,7 +56,7 @@ class MatchService
         $this->broadcastMatch($player1, $player2, $channel);
     }
 
-    
+
     private function broadcastMatch(int $player1, int $player2, string $channel) : void
     {
         broadcast(new ChannelAssignment($channel, $player1));

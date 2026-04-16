@@ -14,6 +14,13 @@ class QueueController
     public function join(QueueRequest $request)
     {
         $this->enqueuePlayer($request->playerID, $request->matchDuration);
+                        
+        $channel = $this->matchMaker->tryStartMatch($request->matchDuration);
+     
+        return response()->json([
+            'status' => $channel ? 'match-found' : 'waiting',
+            'channel' => $channel
+        ]);
     }
 
     public function enqueuePlayer(int $playerID, string $match_duration) : void
@@ -45,7 +52,7 @@ class QueueController
             'message' => 'Player successfully removed from the matchmaking queue.'
         ]);
     }
-    
+
     public function matchPlayersFromDB(string $match_duration) : ?array
     {
         return DB::transaction(function () use ($match_duration): ?array {
