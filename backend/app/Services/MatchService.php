@@ -7,6 +7,7 @@ use App\Events\MatchPointsUpdated;
 use App\Events\MatchStarted;
 use App\Events\PlayerDatasUpdated;
 use App\Http\Controllers\QueueController;
+use App\Models\Matches;
 use ChessLogic\ChessBoard\ChessPieces\Definitions\Side;
 use ChessLogic\MatchDatas\MatchDataStore;
 use Illuminate\Support\Facades\Cache;
@@ -79,6 +80,73 @@ class MatchService
         $this->broadcastMatch($player1, $player2, $channel);
     }
 
+    public static function getMatchFromCache(string $channel) : ?array
+    {
+        $cacheKey = 'game:' . str_replace('private-', '', $channel);
+        return Cache::get($cacheKey);
+    }
+
+    public static function updateMatchInCache(string $channel, array $data) : void
+    {
+        $cacheKey = 'game:' . str_replace('private-', '', $channel);
+        Cache::put($cacheKey, $data, now()->addMinutes(30));
+    }
+
+    public static function removeMatchFromCache(string $channel) : bool
+    {
+        $cacheKey = 'game:' . str_replace('private-', '', $channel);
+        return Cache::forget($cacheKey);
+    }
+
+    public static function saveMatchToDB(string $channel) : void
+    {
+        $data = self::getMatchFromCache($channel);
+
+        if (!$data) {
+            return;
+        }
+
+        $store = MatchDataStore::fromCache($data);
+
+        if ($store->MatchPoints->getMatchPointsReason() !== 'Abort')
+        {
+            $moves = collect($store->MatchState->Notations)->map(fn($row) => [
+                'round' => $row->Round,
+                'white' => $row->WhitesNotation,
+                'black' => $row->BlacksNotation,
+            ])->toJson();
+
+            $fields = [
+                'match_id' => $store->MatchID,
+                'white_id' => $store->PlayerDatas[Side::White->value]->ID,
+                'black_id' => $store->PlayerDatas[Side::Black->value]->ID,
+                'gamemode' => self::getGameMode($store->MatchState->MatchDuration),
+                'match_duration' => $store->MatchState->MatchDuration,
+                'played_at' => $store->PlayedAt,
+                'moves' => $moves,
+                'match_end_result' => $store->MatchPoints->getMatchPointsReason(),
+                'winner_id' => $store->MatchPoints->WinnerID ?: null,
+                'winner_time' => $store->MatchPoints->WinnerTime ?: null,
+            ];
+
+            Matches::create($fields);
+        }
+    }
+
+    private static function getGameMode(string $match_duration) : string 
+    {
+        $base = (int)$match_duration;
+
+        if ($base < 3) {
+            return 'Bullet';
+        }
+
+        if ($base >= 3 && $base <= 5) {
+            return 'Blitz';
+        }
+
+        return 'Rapid';
+    }
 
     private function broadcastMatch(int $player1, int $player2, string $channel) : void
     {
