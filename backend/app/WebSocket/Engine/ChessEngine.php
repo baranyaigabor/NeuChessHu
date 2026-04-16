@@ -73,6 +73,51 @@ class ChessEngine
         return $validator->currentLegalMovesWithSelectedPiece($pieceMatrix, $payload['from'], $side);
     }
 
+    private function movePiece(array $payload) : string
+    {
+        [$matchDataStore,, $move] = $this->methodsFactory($payload['channel']);
+
+        $promotionChoice = Piece::from($payload['promotionChoice']);
+
+        $currentSide = $matchDataStore->MatchState->CurrentSide;
+        $timedOut = !$matchDataStore->Clocks->onMove($currentSide);
+        
+        $moveResult = $move->movePiece($payload['from'], $payload['to'], $promotionChoice);
+        
+        if ($timedOut)
+        {
+            $winningSide = $currentSide === Side::White ? Side::Black : Side::White;
+            $matchDataStore->MatchPoints->markMatchEnded();
+            $matchDataStore->MatchPoints->setMatchPointsReason('Timeout', isForcedDraw: false);
+
+            $winningSide = $currentSide === Side::White ? Side::Black : Side::White;
+
+            $winnerRemainingMs = $winningSide === Side::White
+                ? $matchDataStore->Clocks->WhiteRemainingMs
+                : $matchDataStore->Clocks->BlackRemainingMs;
+
+            $matchDataStore->MatchPoints->setWinner(
+                $matchDataStore->PlayerDatas[$winningSide->value]->ID, 
+                Clocks::formatTime($winnerRemainingMs)
+            );
+
+            $matchDataStore->MatchState->CurrentSide = Side::None;
+        }
+
+        $result = [
+            'sound' => $moveResult['sound'],
+            'match_state' => $matchDataStore->MatchState->jsonSerialize(),
+            'player_datas' => $matchDataStore->serializePlayerDatas(),
+            'match_points' => $matchDataStore->MatchPoints->jsonSerialize(),
+            'draw_trackers' => $matchDataStore->DrawTrackers->jsonSerialize(),
+            'clocks' => $matchDataStore->Clocks->jsonSerialize()
+        ];
+
+        $this->updateMatchToClients($payload['channel'], $result, false);
+
+        return $result['sound'];
+    }
+
     private function chatMessage(array $payload) : array
     {
         [,,, $chatMessage] = $this->methodsFactory($payload['channel']);
