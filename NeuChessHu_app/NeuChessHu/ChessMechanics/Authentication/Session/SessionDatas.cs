@@ -8,7 +8,7 @@ public class SessionDatas : ObservableBase
     UserData? user;
 
     public string? Token { get; internal set; }
-    public int? UserID {  get; internal set; }
+    public int? UserID { get; internal set; }
     public UserData? User 
     { 
         get => user; 
