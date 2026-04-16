@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Cache;
 
 class MatchService 
 {
+    private function createChannel(int $player1, int $player2) : string
+    {
+        $timestamp = now()->format('YmdHis');
+        return "{$player1}-{$player2}-{$timestamp}";
+    }
+    
     private function createMatch(int $player1, int $player2, string $match_duration,
         string $channel) : void
     {
