@@ -14,7 +14,7 @@ class MatchService
         $timestamp = now()->format('YmdHis');
         return "{$player1}-{$player2}-{$timestamp}";
     }
-
+    
     private function createMatch(int $player1, int $player2, string $match_duration,
         string $channel) : void
     {
@@ -38,24 +38,7 @@ class MatchService
         $this->broadcastMatch($player1, $player2, $channel);
     }
 
-    public static function getMatchFromCache(string $channel) : ?array
-    {
-        $cacheKey = 'game:' . str_replace('private-', '', $channel);
-        return Cache::get($cacheKey);
-    }
-
-    public static function updateMatchInCache(string $channel, array $data) : void
-    {
-        $cacheKey = 'game:' . str_replace('private-', '', $channel);
-        Cache::put($cacheKey, $data, now()->addMinutes(30));
-    }
-
-    public static function removeMatchFromCache(string $channel) : bool
-    {
-        $cacheKey = 'game:' . str_replace('private-', '', $channel);
-        return Cache::forget($cacheKey);
-    }
-
+    
     private function broadcastMatch(int $player1, int $player2, string $channel) : void
     {
         broadcast(new ChannelAssignment($channel, $player1));
