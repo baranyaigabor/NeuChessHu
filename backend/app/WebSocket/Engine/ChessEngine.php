@@ -152,6 +152,25 @@ class ChessEngine
         return "Ok";
     }
 
+    private function drawResponseSetter(array $payload)
+    {
+        [$matchDataStore] = $this->methodsFactory($payload['channel']);
+
+        MatchDataStore::drawResponseSetter($matchDataStore, $payload['userID'], $payload['drawResponse']);
+
+        $result = [
+            'match_state' => $matchDataStore->MatchState->jsonSerialize(),
+            'player_datas' => $matchDataStore->serializePlayerDatas(),
+            'match_points' => $matchDataStore->MatchPoints->jsonSerialize(),
+            'draw_trackers' => $matchDataStore->DrawTrackers->jsonSerialize(),
+            'clocks' => $matchDataStore->Clocks->jsonSerialize()
+        ];
+
+        $this->updateMatchToClients($payload['channel'], $result, false);
+
+        return "Ok";
+    }
+
     private function updateMatchToClients(string $channel, array $data, bool $isChat): void
     {
         $cacheKey = str_replace('private-', '', $channel);
