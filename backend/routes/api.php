@@ -6,7 +6,9 @@ use App\Http\Controllers\Auth\DesktopAuthController;
 use App\Http\Controllers\ChatUpdateController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MatchesController;
+use App\Http\Controllers\MatchReadyController;
 use App\Http\Controllers\MatchUpdateController;
+use App\Http\Controllers\PendingChannelController;
 use App\Http\Controllers\QueueController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +31,11 @@ Route::post('/leave/matchmakingqueue', [QueueController::class, 'leave'])
     ->middleware('auth:sanctum');
 
 Route::post('/broadcasting/auth', [BroadcastAuthController::class, 'broadcastAuthenticate'])
+    ->middleware('auth:sanctum');
+
+Route::post('/match/ready', [MatchReadyController::class, 'ready'])
+    ->middleware('auth:sanctum');
+Route::get('/match/pendingchannel', [PendingChannelController::class, 'showPendingChannel'])
     ->middleware('auth:sanctum');
 
 Route::post('match/state-update', [MatchUpdateController::class, 'update']);
