@@ -73,6 +73,20 @@ class ChessEngine
         return $validator->currentLegalMovesWithSelectedPiece($pieceMatrix, $payload['from'], $side);
     }
 
+    private function chatMessage(array $payload) : array
+    {
+        [,,, $chatMessage] = $this->methodsFactory($payload['channel']);
+        
+        $result = $chatMessage->handleMessage($payload['userID'], $payload['message']);
+        
+        if ($result['Status'] === 'Success')
+        {
+            $this->updateMatchToClients($payload['channel'], 
+                ['new_message' => $result['NewMessage']], isChat: true);
+        }
+
+        return $result;
+    }
 
 
     private function updateMatchToClients(string $channel, array $data, bool $isChat): void
