@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Events\ChannelAssignment;
+use App\Events\MatchPointsUpdated;
+use App\Events\MatchStarted;
+use App\Events\PlayerDatasUpdated;
 use App\Http\Controllers\QueueController;
 use ChessLogic\ChessBoard\ChessPieces\Definitions\Side;
 use ChessLogic\MatchDatas\MatchDataStore;
@@ -25,6 +28,26 @@ class MatchService
         $this->createMatch($player1, $player2, $match_duration, $channel);
 
         return $channel;
+    }
+
+    public static function startMatch(string $channel) : void
+    {
+        $cacheKey = str_replace('private-', '', $channel);
+        $data = Cache::get("game:{$cacheKey}");
+
+        if (!$data) {
+            return;
+        }
+    
+        broadcast(new MatchStarted($cacheKey, [
+            'WhiteID' => $data['white_id'],
+            'BlackID' => $data['black_id'],
+            'InitialState' => $data['match_state'],
+            'Clocks' => $data['clocks'],
+        ]));
+    
+        broadcast(new PlayerDatasUpdated($cacheKey, $data['player_datas']));
+        broadcast(new MatchPointsUpdated($cacheKey, $data['match_points']));
     }
 
     private function createChannel(int $player1, int $player2) : string
