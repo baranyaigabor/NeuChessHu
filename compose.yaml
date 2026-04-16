@@ -150,6 +150,22 @@ services:
       SOKETI_DEBUG: "1"
       SOKETI_METRICS_ENABLED: "false"
 
+  chessengine:
+    container_name: chessengine
+    image: rcsnjszg/backend2025
+    command: php -d memory_limit=512M /www/app/WebSocket/ChessEngineServer.php
+    volumes:
+      - ./backend:/www
+    ports:
+      - "7001:7001"
+    networks:
+      - fullstack
+    environment:
+      DB_HOST: db
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
   clamav:
     container_name: clamav
     image: clamav/clamav:1.4
