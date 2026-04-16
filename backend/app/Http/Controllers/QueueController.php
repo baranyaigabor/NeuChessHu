@@ -45,4 +45,26 @@ class QueueController
             'message' => 'Player successfully removed from the matchmaking queue.'
         ]);
     }
+    
+    public function matchPlayersFromDB(string $match_duration) : ?array
+    {
+        return DB::transaction(function () use ($match_duration): ?array {
+            $players = MatchmakingQueue::where('match_duration', $match_duration)
+                ->orderBy('joined_at')
+                ->lockForUpdate()
+                ->limit(2)
+                ->get();
+
+            if ($players->count() < 2) {
+                return null;
+            }
+
+            $player1 = (int)$players[0]->player_id;
+            $player2 = (int)$players[1]->player_id;
+
+            MatchmakingQueue::whereIn('player_id', [$player1, $player2])->delete();
+
+            return [$player1, $player2];
+        });
+    }
 }
