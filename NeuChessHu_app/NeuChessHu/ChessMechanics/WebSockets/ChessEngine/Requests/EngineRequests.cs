@@ -1,4 +1,5 @@
-﻿using ChessMechanics.ChessBoard.Definitions;
+﻿using ChessMechanics.ChessBoard.ChessPieces;
+using ChessMechanics.ChessBoard.Definitions;
 using ChessMechanics.MatchData.MatchDatas.ComplexTypeJSONConverters;
 using ChessMechanics.WebSockets.ChessEngine.Requests.Payloads;
 using Newtonsoft.Json;
@@ -61,11 +62,34 @@ public class EngineRequests(ChessEngineTasks tasks, ChessEngineClientService che
         return response.Deserialize<bool>();
     }
 
+    public async Task<bool[,]> LegalMovesWithSelectedPieceRequestAsync(string channel,
+    Tuple<int, int> from, ChessPiece[,] pieceMatrix, Side playingSide)
+    {
+        JsonElement response = await SendRequestAsync("request-legal-moves",
+            LegalMovesPayload.CreateLegalMovesPayload(channel, from, pieceMatrix, playingSide));
+
+        bool[][] jaggedBoard = response.Deserialize<bool[][]>()!;
+
+        return ConvertToMatrix(jaggedBoard);
+    }
+
+
     internal static bool DoesFileExist(string soundName)
     {
         List<string> soundFileNames = Directory.GetFiles(Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, "Resources", "Sounds"), "*.wav").Select(Path.GetFileNameWithoutExtension).ToList()!;
 
         return soundFileNames.Contains(soundName);
+    }
+
+    static bool[,] ConvertToMatrix(bool[][] jaggedBoard)
+    {
+        bool[,] legalMovesWithSelectedPiece = new bool[8, 8];
+
+        for (int r = 0; r < 8; r++)
+            for (int c = 0; c < 8; c++)
+                legalMovesWithSelectedPiece[r, c] = jaggedBoard[r][c];
+
+        return legalMovesWithSelectedPiece;
     }
 }
