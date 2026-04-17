@@ -81,4 +81,20 @@ public static class Patcher
             }, null);
         }
     }
+
+    public static void PatchMatchPoints(MatchPointsDTO matchPointsDTO, MatchPoints matchPoints)
+    {
+        if (matchPointsDTO.MatchPointsReason is not null)
+            matchPoints.MatchPointsReason = matchPointsDTO.MatchPointsReason;
+
+        if (matchPointsDTO.ClaimForDraw is not null)
+            matchPoints.ClaimForDraw = (bool)matchPointsDTO.ClaimForDraw;
+
+        if (matchPointsDTO.MatchEnded is not null)
+            matchPoints.MatchEnded = (bool)matchPointsDTO.MatchEnded;
+
+        if (matchPointsDTO.WinnerID is not null)
+            matchPoints.WinnerID = (int)matchPointsDTO.WinnerID;
+    }
+
 }
