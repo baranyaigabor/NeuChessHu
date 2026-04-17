@@ -163,10 +163,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Resources\Images\Dynamics\Chat\ChatPic_dark.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
