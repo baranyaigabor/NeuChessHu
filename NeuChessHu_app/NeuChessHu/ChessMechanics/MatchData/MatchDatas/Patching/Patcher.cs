@@ -1,4 +1,5 @@
 ﻿using ChessMechanics.ChessBoard.Definitions;
+using ChessMechanics.MatchData.Clock;
 using ChessMechanics.MatchData.MatchDatas.DataTransferObjects;
 using ChessMechanics.MatchData.MatchDatas.Models;
 using ChessMechanics.MatchData.MatchDatas.Models.DomainModels;
@@ -106,4 +107,7 @@ public static class Patcher
         if (chatMessagesDTO.NewMessage is not null)
             uiContext.Post(_ => chatMessages.ChatMessageList.Add(chatMessagesDTO.NewMessage), null);
     }
+
+    public static void PatchClocks(ClocksDTO clocksDTO, ClockHandler clocks) =>
+        clocks.SyncFromServer(clocksDTO.WhiteRemainingMs, clocksDTO.BlackRemainingMs);
 }
