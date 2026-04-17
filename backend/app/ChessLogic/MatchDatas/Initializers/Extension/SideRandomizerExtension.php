@@ -12,7 +12,7 @@ class SideRandomizerExtension
      */
     public static function randomize(array $sides): array
     {
-        $random = random_int(0, 20260430);
+        $random = random_int(0, 20260428);
 
         if ($random % 2 === 0) {
             return array_reverse($sides);

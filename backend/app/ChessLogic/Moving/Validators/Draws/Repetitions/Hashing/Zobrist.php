@@ -28,8 +28,8 @@ class Zobrist
             return;
         }
 
-        $rng = new Mt19937(20260430);
-        $random = new Randomizer($rng);
+        $randomNumberGenerator = new Mt19937(20260428);
+        $random = new Randomizer($randomNumberGenerator);
 
         for ($color = 0; $color < 2; $color++) 
         {
