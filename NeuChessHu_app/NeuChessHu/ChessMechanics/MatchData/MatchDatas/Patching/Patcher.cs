@@ -1,4 +1,5 @@
-﻿using ChessMechanics.MatchData.MatchDatas.DataTransferObjects;
+﻿using ChessMechanics.ChessBoard.Definitions;
+using ChessMechanics.MatchData.MatchDatas.DataTransferObjects;
 using ChessMechanics.MatchData.MatchDatas.Models;
 using ChessMechanics.MatchData.MatchDatas.Models.DomainModels;
 using ChessMechanics.MatchData.MatchDatas.Patching.Orientation;
@@ -53,5 +54,31 @@ public static class Patcher
 
         if (matchStateDTO.EnPassantTarget is not null)
             matchState.EnPassantTarget = matchStateDTO.EnPassantTarget;
+    }
+
+    public static void PatchPlayerDatas(PlayerDatasDTO playerDatasDTO,
+        Dictionary<Side, PlayerDataStore> playerDatas, SynchronizationContext uiContext)
+    {
+        PlayerDataStore player = playerDatas[playerDatasDTO.Side];
+
+        if (playerDatasDTO.ID is not null)
+            player.ID = playerDatasDTO.ID;
+
+        if (playerDatasDTO.Points is not null)
+            player.Points = playerDatasDTO.Points.Value;
+
+        if (playerDatasDTO.Time is not null)
+            player.Time = playerDatasDTO.Time;
+
+        if (playerDatasDTO.CapturedPieces is not null)
+        {
+            List<Piece> capturedPiecesList = playerDatasDTO.CapturedPieces.ToList();
+            uiContext.Post(_ =>
+            {
+                player.CapturedPieces.Clear();
+                foreach (Piece piece in capturedPiecesList)
+                    player.CapturedPieces.Add(piece);
+            }, null);
+        }
     }
 }
