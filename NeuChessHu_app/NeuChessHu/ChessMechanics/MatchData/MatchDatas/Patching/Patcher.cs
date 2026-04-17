@@ -97,4 +97,13 @@ public static class Patcher
             matchPoints.WinnerID = (int)matchPointsDTO.WinnerID;
     }
 
+    public static void PatchChatMessages(ChatMessagesDTO chatMessagesDTO,
+        ChatMessages chatMessages, SynchronizationContext uiContext)
+    {
+        if (chatMessagesDTO.Status is not null)
+            chatMessages.Status = chatMessagesDTO.Status;
+
+        if (chatMessagesDTO.NewMessage is not null)
+            uiContext.Post(_ => chatMessages.ChatMessageList.Add(chatMessagesDTO.NewMessage), null);
+    }
 }
