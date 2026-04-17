@@ -54,6 +54,13 @@ public class EngineRequests(ChessEngineTasks tasks, ChessEngineClientService che
             : throw new ArgumentException(soundName);
     }
 
+    public async Task<bool> IsLegalMoveRequestAsync(string channel, Tuple<int, int> from, Tuple<int, int> to)
+    {
+        JsonElement response = await SendRequestAsync("request-is-legal-move", IsLegalMovePayload.CreateIsLegalMovePayload(channel, from, to));
+
+        return response.Deserialize<bool>();
+    }
+
     internal static bool DoesFileExist(string soundName)
     {
         List<string> soundFileNames = Directory.GetFiles(Path.Combine(
