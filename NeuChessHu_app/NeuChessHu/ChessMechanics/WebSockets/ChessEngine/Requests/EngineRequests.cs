@@ -73,6 +73,13 @@ public class EngineRequests(ChessEngineTasks tasks, ChessEngineClientService che
         return ConvertToMatrix(jaggedBoard);
     }
 
+    public async Task<string> ChatMessageRequestAsync(string channel, string message, int userID)
+    {
+        JsonElement response = await SendRequestAsync("request-chat-message",
+            ChatMessagePayload.Create(channel, userID, message));
+
+        return response.GetProperty("Status").GetString()!;
+    }
 
     internal static bool DoesFileExist(string soundName)
     {
