@@ -1,10 +1,8 @@
-﻿using NeuChessHu.Resources.Images.Register.Images.Dynamics.Localized;
+﻿using NeuChessHu.Properties;
+using NeuChessHu.Resources.Images.Register.Images.Dynamics.Localized;
 using NeuChessHu.Resources.Languages;
 using NeuChessHu.Resources.Types;
-using NeuChessHu.Resources.Types.ThemeTypes;
-using Properties;
 using System.Globalization;
-using System.Reflection;
 
 namespace NeuChessHu.UserSettings.SettingManagers;
 
