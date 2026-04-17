@@ -5,16 +5,11 @@ namespace NeuChessHu.Resources.Types.ThemeTypes;
 public readonly struct BoardTheme(string value) : IEquatable<BoardTheme>
 {
     public string Value { get; } = value ?? throw new ArgumentNullException(nameof(Value));
-    
+
     public static BoardTheme PastelGreen { get; } = new("Pastel Green");
-    public static BoardTheme BrightBlue { get; } = new("Bright Blue");
-    public static BoardTheme PastelBlue { get; } = new("Pastel Blue");
-    public static BoardTheme PinkWorld { get; } = new("Pink World");
     public static BoardTheme Modern { get; } = new("Modern");
     public static BoardTheme Wooden { get; } = new("Wooden");
-    public static BoardTheme Fradi { get; } = new("Fradi");
     public static BoardTheme Royal { get; } = new("Royal");
-    public static BoardTheme Death { get; } = new("Death");
 
     public static readonly Dictionary<string, BoardTheme> AllBoardThemes = typeof(BoardTheme)
         .GetProperties(BindingFlags.Public | BindingFlags.Static)

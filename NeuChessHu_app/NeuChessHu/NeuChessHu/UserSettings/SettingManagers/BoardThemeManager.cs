@@ -13,18 +13,6 @@ internal static class BoardThemeManager
             PastelGreenBoard.Set
         },
         {
-            BoardTheme.BrightBlue,
-            BrightBlueBoard.Set
-        },
-        {
-            BoardTheme.PastelBlue,
-            PastelBlueBoard.Set
-        },
-        {
-            BoardTheme.PinkWorld,
-            PinkWorldBoard.Set
-        },
-        {
             BoardTheme.Modern,
             ModernBoard.Set
         },
@@ -33,17 +21,9 @@ internal static class BoardThemeManager
             WoodenBoard.Set
         },
         {
-            BoardTheme.Fradi,
-            FradiBoard.Set
-        },
-        {
             BoardTheme.Royal,
             RoyalBoard.Set
-        },
-        {
-            BoardTheme.Death,
-            DeathBoard.Set
-        },
+        }
     };
 
     internal static BoardTheme Decode()
