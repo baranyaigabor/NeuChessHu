@@ -1,6 +1,7 @@
 ﻿using ChessMechanics.MatchData.MatchDatas.ComplexTypeJSONConverters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.ComponentModel;
 using System.Text.Json;
 
 namespace ChessMechanics.WebSockets.ChessEngine.Requests;
@@ -18,7 +19,8 @@ public class EngineRequests(ChessEngineTasks tasks, ChessEngineClientService che
             Converters =
             {
                 new ChessPieceConverter(),
-                new ChessPieceMatrixConverter()
+                new ChessPieceMatrixConverter(),
+                new TupleConverter()
             }
         };
 
