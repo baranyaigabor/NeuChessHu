@@ -81,6 +81,11 @@ public class EngineRequests(ChessEngineTasks tasks, ChessEngineClientService che
         return response.GetProperty("Status").GetString()!;
     }
 
+    public async Task<string> MatchPointRequestAsync(string channel, int userID, string matchPointReason) =>
+        (await SendRequestAsync("request-match-point",
+            MatchPointPayload.Create(channel, userID, matchPointReason))).Deserialize<string>()!;
+
+
     internal static bool DoesFileExist(string soundName)
     {
         List<string> soundFileNames = Directory.GetFiles(Path.Combine(
