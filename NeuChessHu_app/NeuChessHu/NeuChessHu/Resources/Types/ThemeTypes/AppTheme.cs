@@ -6,7 +6,6 @@ public readonly struct AppTheme(string value) : IEquatable<AppTheme>
 {
     public string Value { get; } = value ?? throw new ArgumentNullException(nameof(Value));
 
-    public static AppTheme System { get; } = new("System");
     public static AppTheme Light { get; } = new("Light");
     public static AppTheme Dark { get; } = new("Dark");
 

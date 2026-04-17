@@ -42,29 +42,21 @@ internal class HungarianDictionary
     }
     static void SetSettingsNames()
     {
-        resources["AppThemeText"] = "App témája";
         resources["BoardThemeText"] = "Tábla témája";
         resources["PieceThemeText"] = "Bábuk témája";
         resources["LanguageText"] = "Nyelv";
+        resources["DarkModeText"] = "Sötét mód";
         resources["DisableSoundsText"] = "Hangok kikapcsolása";
-        resources["FocusModeText"] = "Fókusz mód";
         resources["AutoQueenText"] = "Automatikus királynő";
-        resources["ConfirmEachMoveText"] = "Lépések megerősítése";
     }
 
     static void SetSettingsValues()
     {
-        resources["SystemAppTheme"] = "Rendszer";
         resources["DarkAppTheme"] = "Sötét";
         resources["LightAppTheme"] = "Világos";
-
-        resources["BrightBlueBoardTheme"] = "Világos kék";
-        resources["DeathBoardTheme"] = "Kietlen";
-        resources["FradiBoardTheme"] = "Fradi színek";
+         
         resources["ModernBoardTheme"] = "Modern hatású";
-        resources["PastelBlueBoardTheme"] = "Pasztel kék";
         resources["PastelGreenBoardTheme"] = "Pasztel zöld";
-        resources["PinkWorldBoardTheme"] = "Pink mámor";
         resources["RoyalBoardTheme"] = "Királyi";
         resources["WoodenBoardTheme"] = "Fa hatású";
 

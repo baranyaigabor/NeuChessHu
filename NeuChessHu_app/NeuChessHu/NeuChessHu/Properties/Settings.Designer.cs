@@ -25,18 +25,6 @@ namespace NeuChessHu.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("System")]
-        public string AppTheme {
-            get {
-                return ((string)(this["AppTheme"]));
-            }
-            set {
-                this["AppTheme"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Default")]
         public string PieceTheme {
             get {
@@ -86,36 +74,12 @@ namespace NeuChessHu.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ConfirmEachMove {
-            get {
-                return ((bool)(this["ConfirmEachMove"]));
-            }
-            set {
-                this["ConfirmEachMove"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool AutoQueen {
             get {
                 return ((bool)(this["AutoQueen"]));
             }
             set {
                 this["AutoQueen"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool FocusMode {
-            get {
-                return ((bool)(this["FocusMode"]));
-            }
-            set {
-                this["FocusMode"] = value;
             }
         }
         
@@ -128,6 +92,18 @@ namespace NeuChessHu.Properties {
             }
             set {
                 this["LastMatchDuration"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DarkMode {
+            get {
+                return ((bool)(this["DarkMode"]));
+            }
+            set {
+                this["DarkMode"] = value;
             }
         }
     }

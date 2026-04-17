@@ -44,29 +44,21 @@ internal class EnglishDictionary
 
     static void SetSettingsNames()
     {
-        resources["AppThemeText"] = "App Theme";
         resources["BoardThemeText"] = "Board Theme";
         resources["PieceThemeText"] = "Piece Theme";
         resources["LanguageText"] = "Language";
+        resources["DarkModeText"] = "Dark Mode";
         resources["DisableSoundsText"] = "Disable Sounds";
-        resources["FocusModeText"] = "Focus Mode";
         resources["AutoQueenText"] = "Auto-Queen";
-        resources["ConfirmEachMoveText"] = "Confirm Each Move";
     }
 
     static void SetSettingsValues()
     {
-        resources["SystemAppTheme"] = "System";
         resources["DarkAppTheme"] = "Dark";
         resources["LightAppTheme"] = "Light";
 
-        resources["BrightBlueBoardTheme"] = "Bright Blue";
-        resources["DeathBoardTheme"] = "Death";
-        resources["FradiBoardTheme"] = "Fradi";
         resources["ModernBoardTheme"] = "Modern Style";
-        resources["PastelBlueBoardTheme"] = "Pastel Blue";
         resources["PastelGreenBoardTheme"] = "Pastel Green";
-        resources["PinkWorldBoardTheme"] = "Pink World";
         resources["RoyalBoardTheme"] = "Royal";
         resources["WoodenBoardTheme"] = "Wooden Style";
 

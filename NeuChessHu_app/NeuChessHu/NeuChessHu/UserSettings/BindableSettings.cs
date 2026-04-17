@@ -9,25 +9,6 @@ namespace NeuChessHu.UserSettings;
 
 public partial class BindableSettings(Settings settings) : ObservableBase
 {
-    public AppTheme AppTheme
-    {
-        get => AppThemeManager.Decode();
-        set
-        {
-            if (value == default || value.Value is null) return;
-
-            string appTheme = value.Value;
-
-            if (settings.AppTheme != appTheme)
-            {
-                settings.AppTheme = appTheme;
-                settings.Save();
-
-                AppThemeManager.ApplyTheme(value);
-                RaisePropertyChanged();
-            }
-        }
-    }
     public BoardTheme BoardTheme
     {
         get => BoardThemeManager.Decode();
@@ -43,6 +24,25 @@ public partial class BindableSettings(Settings settings) : ObservableBase
                 settings.Save();
 
                 BoardThemeManager.ApplyTheme(value);
+                RaisePropertyChanged();
+            }
+        }
+    }
+
+    public PieceTheme PieceTheme
+    {
+        get => PieceThemeManager.Decode();
+        set
+        {
+            if (value == default || value.Value is null) return;
+
+            string pieceTheme = value.Value;
+
+            if (settings.PieceTheme != pieceTheme)
+            {
+                settings.PieceTheme = pieceTheme;
+                settings.Save();
+
                 RaisePropertyChanged();
             }
         }
@@ -68,24 +68,6 @@ public partial class BindableSettings(Settings settings) : ObservableBase
         }
     }
 
-    public PieceTheme PieceTheme
-    {
-        get => PieceThemeManager.Decode();
-        set
-        {
-            if (value == default || value.Value is null) return;
-
-            string pieceTheme = value.Value;
-
-            if (settings.PieceTheme != pieceTheme)
-            {
-                settings.PieceTheme = pieceTheme;
-                settings.Save();
-
-                RaisePropertyChanged();
-            }
-        }
-    }
 
     public bool DisableSounds
     {
@@ -98,21 +80,6 @@ public partial class BindableSettings(Settings settings) : ObservableBase
                 settings.Save();
 
                 Sounds.IsMuted = value;
-            }
-        }
-    }
-
-    public bool FocusMode
-    {
-        get => settings.FocusMode;
-        set
-        {
-            if (settings.FocusMode != value)
-            {
-                settings.FocusMode = value;
-                settings.Save();
-
-                RaisePropertyChanged();
             }
         }
     }
@@ -132,16 +99,17 @@ public partial class BindableSettings(Settings settings) : ObservableBase
         }
     }
 
-    public bool ConfirmEachMove
+    public bool DarkMode
     {
-        get => settings.ConfirmEachMove;
+        get => AppThemeManager.Decode();
         set
         {
-            if (settings.ConfirmEachMove != value)
+            if (settings.DarkMode != value)
             {
-                settings.ConfirmEachMove = value;
+                settings.DarkMode = value;
                 settings.Save();
 
+                AppThemeManager.ApplyTheme(value);
                 RaisePropertyChanged();
             }
         }

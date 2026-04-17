@@ -83,7 +83,7 @@ public class MenuSideBarViewModel : ObservableBase, IDisposable
 
     void OnSettingsChanged(object? s, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is nameof(Settings.AppTheme))
+        if (e.PropertyName is nameof(Settings.DarkMode))
             MoreIconSource = AppResources.Get<BitmapImage>(
                 playStockfishButtonVisibility is Visibility.Visible
                     ? "MoreDownImage"
