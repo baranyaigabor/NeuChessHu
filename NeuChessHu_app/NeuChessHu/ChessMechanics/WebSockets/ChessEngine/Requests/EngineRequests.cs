@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ChessMechanics.MatchData.MatchDatas.ComplexTypeJSONConverters;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Text.Json;
 
@@ -16,7 +17,7 @@ public class EngineRequests(ChessEngineTasks tasks, ChessEngineClientService che
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
             Converters =
             {
-
+                new ChessPieceConverter(),
             }
         };
 
