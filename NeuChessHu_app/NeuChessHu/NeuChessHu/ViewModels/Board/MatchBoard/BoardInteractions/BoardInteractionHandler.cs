@@ -1,12 +1,12 @@
 ﻿using ChessMechanics.ChessBoard.ChessPieces;
 using ChessMechanics.ChessBoard.Definitions;
 using ChessMechanics.Common;
-using ChessMechanics.MatchData.Clock;
 using ChessMechanics.MatchData.MatchDatas;
 using ChessMechanics.MatchData.MatchDatas.Models;
 using ChessMechanics.WebSockets.ChessEngine.Requests;
 using NeuChessHu.Services.SoundServices;
 using NeuChessHu.UserSettings;
+using NeuChessHu.ViewModels.Board.MatchBoard.BoardInteractions.TileColors;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,7 +19,6 @@ public class BoardInteractionHandler : ObservableBase, IDisposable
     readonly BindableSettings settings;
     readonly MatchDataStore matchDataStore;
     readonly EngineRequests requests;
-    readonly ClockHandler clocks;
     ChessPiece[,] pieceMatrix;
 
     bool[,]? currentLegalMoves;
@@ -31,12 +30,11 @@ public class BoardInteractionHandler : ObservableBase, IDisposable
     public Action? OnOpenPromotionWindow { get; set; }
 
     public BoardInteractionHandler(BindableSettings settings, MatchDataStore matchDataStore,
-        EngineRequests requests, ClockHandler clocks)
+        EngineRequests requests)
     {
         this.settings = settings;
         this.matchDataStore = matchDataStore;
         this.requests = requests;
-        this.clocks = clocks;
 
         matchDataStore.MatchState.PropertyChanged += OnMatchStateChanged;
 
@@ -94,6 +92,9 @@ public class BoardInteractionHandler : ObservableBase, IDisposable
 
                     Sounds.Play(sound);
                 }
+
+                else await Application.Current.Dispatcher.InvokeAsync(async () =>
+                        await TileColorsSetters.PlayIllegalMoveAsync(from, boardUI));
             }
 
             await AppearenceHighlighter(boardUI, null, from);
@@ -113,10 +114,14 @@ public class BoardInteractionHandler : ObservableBase, IDisposable
             {
                 if (previousCoordinates is not null && !previousCoordinates.Equals(fromCoordinates))
                 {
+                    TileColorsSetters.DeselectTile(previousCoordinates, boardUI);
+
                     for (int r = 0; r < 8; r++)
                         for (int c = 0; c < 8; c++)
                             IsRemovingHighlighter(boardUI, r, c, isRemoving: true);
                 }
+
+                TileColorsSetters.SelectTile(fromCoordinates, boardUI);
 
                 for (int r = 0; r < 8; r++)
                     for (int c = 0; c < 8; c++)
@@ -124,6 +129,8 @@ public class BoardInteractionHandler : ObservableBase, IDisposable
             }
             else
             {
+                TileColorsSetters.DeselectTile(fromCoordinates, boardUI);
+
                 for (int r = 0; r < 8; r++)
                     for (int c = 0; c < 8; c++)
                         IsRemovingHighlighter(boardUI, r, c, isRemoving: true);
