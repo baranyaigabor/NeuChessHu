@@ -1,5 +1,4 @@
-﻿using NeuChessHu.Converters;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -37,7 +36,7 @@ internal static class SelectableSettings
         (settingSection.Children[0] as Label)!.SetResourceReference(Label.ContentProperty, propertyName + "Text");
         (settingSection.Children[0] as Label)!.SetResourceReference(Label.ForegroundProperty, "TextPopUpBrush");
 
-        CreateSettingsBox(settingSection, propertyName);        
+        CreateSettingsBox(settingSection, propertyName);
 
         DockPanel.SetDock(settingSection.Children[0], Dock.Left);
         DockPanel.SetDock(settingSection.Children[1], Dock.Right);
@@ -56,9 +55,9 @@ internal static class SelectableSettings
         settingBox.SetBinding(ComboBox.SelectedItemProperty, selectedItemBinding);
 
         settingBox.MaxDropDownHeight = 170;
-        settingBox.ItemTemplate = new DataTemplate 
-        { 
-            VisualTree = CreateSettingTextFactory() 
+        settingBox.ItemTemplate = new DataTemplate
+        {
+            VisualTree = CreateSettingTextFactory()
         };
     }
 
