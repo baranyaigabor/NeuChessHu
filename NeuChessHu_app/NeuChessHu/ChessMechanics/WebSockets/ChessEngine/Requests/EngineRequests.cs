@@ -1,7 +1,8 @@
-﻿using ChessMechanics.MatchData.MatchDatas.ComplexTypeJSONConverters;
+﻿using ChessMechanics.ChessBoard.Definitions;
+using ChessMechanics.MatchData.MatchDatas.ComplexTypeJSONConverters;
+using ChessMechanics.WebSockets.ChessEngine.Requests.Payloads;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System.ComponentModel;
 using System.Text.Json;
 
 namespace ChessMechanics.WebSockets.ChessEngine.Requests;
@@ -37,5 +38,27 @@ public class EngineRequests(ChessEngineTasks tasks, ChessEngineClientService che
         }
 
         return await tasks.PendingRequests[requestID].Task;
+    }
+
+    public async Task<string> MovePieceRequest(string channel, Tuple<int, int> from,
+      Tuple<int, int> to, Piece promotionChoice)
+    {
+        JsonElement response = await SendRequestAsync("request-move-piece",
+            MovePiecePayload.CreateMovePiecePayload(channel, from, to, promotionChoice));
+
+        string? soundName = response.Deserialize<string>()
+            ?? throw new NullReferenceException();
+
+        return DoesFileExist(soundName)
+            ? soundName
+            : throw new ArgumentException(soundName);
+    }
+
+    internal static bool DoesFileExist(string soundName)
+    {
+        List<string> soundFileNames = Directory.GetFiles(Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory, "Resources", "Sounds"), "*.wav").Select(Path.GetFileNameWithoutExtension).ToList()!;
+
+        return soundFileNames.Contains(soundName);
     }
 }
