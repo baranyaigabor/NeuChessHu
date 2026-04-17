@@ -13,8 +13,7 @@ internal static class StaticImages
         { "GoldenMedalImage", new($"{basePath}Misc/GoldenMedal.png") },
         { "BulletImage", new($"{basePath}MatchDurations/BulletIcon.png") },
         { "BlitzImage", new($"{basePath}MatchDurations/BlitzIcon.png") },
-        { "RapidImage", new($"{basePath}MatchDurations/RapidIcon.png") },
-        { "CustomImage", new($"{basePath}MatchDurations/CustomIcon.png") }
+        { "RapidImage", new($"{basePath}MatchDurations/RapidIcon.png") }
     };
 
     internal static void Register()

@@ -15,7 +15,10 @@ internal static class ThemedImages
         { "MoreDownImage", new($"{basePath}MoreArrows/MoreUp_light.png") },
         { "MoreUpImage", new($"{basePath}MoreArrows/MoreDown_light.png") },
         { "ChatImage", new($"{basePath}Chat/ChatPic_light.png") },
+        { "SendMessageImage", new($"{basePath}SendMessage/SendMessage_light.png") },
         { "OptionsImage", new($"{basePath}Options/OptionsPic_light.png") },
+        { "TickImage", new($"{basePath}Tick/Tick_light.png") },
+        { "CrossImage", new($"{basePath}Cross/Cross_light.png") },
     };
 
     internal static void SetTheme(AppTheme appTheme)

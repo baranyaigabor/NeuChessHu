@@ -10,6 +10,7 @@ internal class EnglishDictionary
     {
         SetCommonTexts();
         SetMenuSideBarTexts();
+        SetMatchSideBarTexts();
         SetSettingsNames();
         SetOptionsPopUpTexts();
         SetLookingForMatchWindowTexts();
@@ -30,9 +31,15 @@ internal class EnglishDictionary
     {
         resources["StartGameText"] = "Start Game";
         resources["MoreOptionsText"] = "More";
-        resources["JoinTournamentText"] = "Join Tournament";
         resources["PlayStockfishText"] = "Play against Stockfish";
-        resources["CustomGameText"] = "Custom Game";
+    }
+
+    static void SetMatchSideBarTexts()
+    {
+        resources["ChatInputPlaceHolderText"] = "Message...";
+        resources["ViolationNotificationText"] = "Please, communicate with respect!";
+        resources["ResignConfirmationText"] = "Resign?";
+        resources["DrawConfirmationText"] = "Draw?";
     }
 
     static void SetSettingsNames()
@@ -132,6 +139,7 @@ internal class EnglishDictionary
     {
         resources["ProfileSettingsText"] = "Profile Settings";
         resources["LogoutText"] = "Logout";
+        resources["QuitApplicationText"] = "Quit";
     }
 
     static void SetLoginPopUpTexts()

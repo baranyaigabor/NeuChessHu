@@ -9,6 +9,7 @@ internal class HungarianDictionary
     {
         SetCommonTexts();
         SetMenuSideBarTexts();
+        SetMatchSideBarTexts();
         SetSettingsNames();
         SetSettingsValues();
         SetOptionsPopUpTexts();
@@ -29,11 +30,16 @@ internal class HungarianDictionary
     {
         resources["StartGameText"] = "Játék indítása";
         resources["MoreOptionsText"] = "Több";
-        resources["JoinTournamentText"] = "Tornák";
         resources["PlayStockfishText"] = "Játssz Stockfish-sel";
-        resources["CustomGameText"] = "Custom játék";
     }
 
+    static void SetMatchSideBarTexts()
+    {
+        resources["ChatInputPlaceHolderText"] = "Üzenet...";
+        resources["ViolationNotificationText"] = "Kérlek, tisztelettel kommunikálj!";
+        resources["ResignConfirmationText"] = "Feladod?";
+        resources["DrawConfirmationText"] = "Döntetlen?";
+    }
     static void SetSettingsNames()
     {
         resources["AppThemeText"] = "App témája";
@@ -131,6 +137,7 @@ internal class HungarianDictionary
     {
         resources["ProfileSettingsText"] = "Profil beállítások";
         resources["LogoutText"] = "Kijelentkezés";
+        resources["QuitApplicationText"] = "Kilépés";
     }
 
     static void SetLoginPopUpTexts()
@@ -144,7 +151,7 @@ internal class HungarianDictionary
         resources["ChooseTimeText"] = "Válassz játékhosszt";
         resources["BulletText"] = "Bullet";
         resources["BlitzText"] = "Blitz";
-        resources["RapidText"] = "Rapid"; 
+        resources["RapidText"] = "Rapid";
         resources["BulletOneMinText"] = "1 perc";
         resources["BlitzThreeMinText"] = "3 perc";
         resources["BlitzFiveMinText"] = "5 perc";

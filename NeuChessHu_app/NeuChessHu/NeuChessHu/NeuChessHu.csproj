@@ -12,6 +12,8 @@
   <ItemGroup>
     <None Remove="Resources\Images\Dynamics\Chat\ChatPic_dark.png" />
     <None Remove="Resources\Images\Dynamics\Chat\ChatPic_light.png" />
+    <None Remove="Resources\Images\Dynamics\Cross\Cross_dark.png" />
+    <None Remove="Resources\Images\Dynamics\Cross\Cross_light.png" />
     <None Remove="Resources\Images\Dynamics\DefaultProfilePictures\ProfilePic_dark.png" />
     <None Remove="Resources\Images\Dynamics\DefaultProfilePictures\ProfilePic_light.png" />
     <None Remove="Resources\Images\Dynamics\Flags\EnglishFlag.svg" />
@@ -26,10 +28,11 @@
     <None Remove="Resources\Images\Dynamics\Options\OptionsPic_light.png" />
     <None Remove="Resources\Images\Dynamics\SendMessage\SendMessage_dark.png" />
     <None Remove="Resources\Images\Dynamics\SendMessage\SendMessage_light.png" />
+    <None Remove="Resources\Images\Dynamics\Tick\Tick_dark.png" />
+    <None Remove="Resources\Images\Dynamics\Tick\Tick_light.png" />
     <None Remove="Resources\Images\Statics\Icons\NeuChess_Hu.ico" />
     <None Remove="Resources\Images\Statics\MatchDurations\BlitzIcon.png" />
     <None Remove="Resources\Images\Statics\MatchDurations\BulletIcon.png" />
-    <None Remove="Resources\Images\Statics\MatchDurations\CustomIcon.png" />
     <None Remove="Resources\Images\Statics\MatchDurations\RapidIcon.png" />
     <None Remove="Resources\Images\Statics\Misc\GoldenMedal.png" />
     <None Remove="Resources\Images\Statics\Misc\HandMovesPiece.svg" />
@@ -40,9 +43,7 @@
     <None Remove="Resources\Sounds\MatchEnd.wav" />
     <None Remove="Resources\Sounds\MatchStart.wav" />
     <None Remove="Resources\Sounds\Move.wav" />
-    <None Remove="Resources\Sounds\Premove.wav" />
     <None Remove="Resources\Sounds\Promotion.wav" />
-    <None Remove="Resources\Sounds\TenSeconds.wav" />
     <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\BishopBlack.png" />
     <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\KingBlack.png" />
     <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\KnightBlack.png" />
@@ -169,6 +170,12 @@
     <Resource Include="Resources\Images\Dynamics\Chat\ChatPic_light.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\Dynamics\Cross\Cross_dark.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\Cross\Cross_light.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Images\Dynamics\DefaultProfilePictures\ProfilePic_dark.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -211,13 +218,16 @@
     <Resource Include="Resources\Images\Dynamics\SendMessage\SendMessage_light.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Resources\Images\Dynamics\Tick\Tick_dark.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\Dynamics\Tick\Tick_light.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Images\Statics\MatchDurations\BlitzIcon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\Statics\MatchDurations\BulletIcon.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Statics\MatchDurations\CustomIcon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\Statics\MatchDurations\RapidIcon.png">
@@ -250,13 +260,7 @@
     <Resource Include="Resources\Sounds\Move.wav">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Sounds\Premove.wav">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\Sounds\Promotion.wav">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Sounds\TenSeconds.wav">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
