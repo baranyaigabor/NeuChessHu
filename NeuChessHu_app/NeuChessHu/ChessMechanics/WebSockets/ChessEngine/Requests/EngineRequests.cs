@@ -18,6 +18,7 @@ public class EngineRequests(ChessEngineTasks tasks, ChessEngineClientService che
             Converters =
             {
                 new ChessPieceConverter(),
+                new ChessPieceMatrixConverter()
             }
         };
 
