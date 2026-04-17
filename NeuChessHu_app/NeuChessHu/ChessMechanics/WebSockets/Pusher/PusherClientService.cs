@@ -130,7 +130,8 @@ public class PusherClientService : IAsyncDisposable
                     new ChessPieceConverter(),
                     new ChessPieceMatrixConverter(),
                     new TupleConverter(),
-                    new SideConverter()
+                    new SideConverter(),
+                    new PieceConverter()
                 }
             };
 
