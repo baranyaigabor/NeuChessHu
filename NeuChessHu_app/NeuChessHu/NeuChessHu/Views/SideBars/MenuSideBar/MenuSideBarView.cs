@@ -1,6 +1,7 @@
 using Microsoft.Xaml.Behaviors;
 using NeuChessHu.CommandUtils;
 using NeuChessHu.Resources;
+using NeuChessHu.Resources.Behaviours;
 using SharpVectors.Converters;
 using System.Windows;
 using System.Windows.Controls;
@@ -149,6 +150,11 @@ public partial class MenuSideBarView : UserControl
 
         Binding customGameButtonBinding = new("CustomGameButtonVisibility") { Mode = BindingMode.OneWay };
         customGameButton.SetBinding(VisibilityProperty, customGameButtonBinding);
+
+        ScrollViewerBehaviours behaviour = new();
+        Binding scrollViewerBehaviourBinding = new("ScrollDirection") { Mode = BindingMode.OneWay };
+        BindingOperations.SetBinding(behaviour, ScrollViewerBehaviours.DirectionProperty, scrollViewerBehaviourBinding);
+        Interaction.GetBehaviors(menuSideBarBorder.Child).Add(behaviour);
 
         CommandAttachers.OnClickEvent(timeSetterButton, "OpenTimeSetterCommand");
         CommandAttachers.OnClickEvent(startButton, "StartMatchCommand");
