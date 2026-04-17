@@ -89,7 +89,6 @@ public class EngineRequests(ChessEngineTasks tasks, ChessEngineClientService che
         (await SendRequestAsync("request-draw-response",
             DrawResponsePayload.Create(channel, userID, drawResponse))).Deserialize<string>()!;
 
-
     internal static bool DoesFileExist(string soundName)
     {
         List<string> soundFileNames = Directory.GetFiles(Path.Combine(
