@@ -27,7 +27,7 @@ public partial class SettingsPopUpView : UserControl
             Style = AppResources.Get<Style>("PopUpsBorderStyle"),
             BorderThickness = new Thickness(2),
             CornerRadius = new CornerRadius(10),
-            Margin = new Thickness(210),
+            Margin = new Thickness(180),
             Width = 660,
             Height = 240,
         };
@@ -41,6 +41,8 @@ public partial class SettingsPopUpView : UserControl
         {
             Margin = new Thickness(0, 10, 0, 0)
         };
+
+        Border settingsBackgroundEffect = UIElements.PopUpBackgroundFactory(settingsMenu);
 
         StackPanel settingsPanel = new()
         {
@@ -74,26 +76,33 @@ public partial class SettingsPopUpView : UserControl
             }
         };
 
+        settingsBackgroundEffect.SetResourceReference(Border.BackgroundProperty, "PopUpBackground");
+
         (goBackButton.Child as Label)!.SetResourceReference(ForegroundProperty, "TextPopUpBrush");
 
         foreach (UIElement item in new UIElement[] { SelectableSettings.Create("Board Theme"),
-            SelectableSettings.Create("Piece Theme"), SelectableSettings.Create("Language") })
+            UIElements.HorizontalBarFactory(settingsMenu), SelectableSettings.Create("Piece Theme"),
+            UIElements.HorizontalBarFactory(settingsMenu), SelectableSettings.Create("Language") })
             selectableSettingsPanel.Children.Add(item);
 
         foreach (UIElement element in new UIElement[] { ToggleSettings.Create("Disable Sounds"),
-            ToggleSettings.Create("Auto-Queen"), ToggleSettings.Create("Dark Mode") })
+            UIElements.HorizontalBarFactory(settingsMenu), ToggleSettings.Create("Auto-Queen"),
+            UIElements.HorizontalBarFactory(settingsMenu), ToggleSettings.Create("Dark Mode") })
             toggleSettingsPanel.Children.Add(element);
 
-        foreach (UIElement element in new UIElement[] { selectableSettingsPanel,  toggleSettingsPanel})
+        foreach (UIElement element in new UIElement[] { selectableSettingsPanel,
+            UIElements.SettingsVerticalSeparatorFactory(), toggleSettingsPanel})
             settingsPanel.Children.Add(element);
 
-        foreach (UIElement element in new UIElement[] { settingsPanel, goBackButton})
+        foreach (UIElement element in new UIElement[] { settingsPanel, goBackButton })
             settingsMenu.Children.Add(element);
 
         CommandAttachers.OnClickEvent(goBackButton, "GoBackCommand");
 
+        Panel.SetZIndex(settingsBackgroundEffect, 0);
         Panel.SetZIndex(settingsMenu, 1);
 
+        settingsContainer.Children.Add(settingsBackgroundEffect);
         settingsContainer.Children.Add(settingsMenu);
         settingsBorder.Child = settingsContainer;
 
