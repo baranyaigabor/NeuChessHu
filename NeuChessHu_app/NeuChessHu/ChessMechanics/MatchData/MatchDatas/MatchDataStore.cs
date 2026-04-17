@@ -7,6 +7,8 @@ public class MatchDataStore
 {
     public string? MatchChannel { get; set; }
 
+    public Side PlayingSide { get; set; }
+
     public MatchPoints MatchPoints { get; }
     public MatchState MatchState { get; }
     public Dictionary<Side, PlayerDataStore> PlayerDatas { get; }
