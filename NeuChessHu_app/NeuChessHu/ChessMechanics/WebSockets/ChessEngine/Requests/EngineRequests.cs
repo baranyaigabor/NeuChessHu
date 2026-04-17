@@ -85,6 +85,10 @@ public class EngineRequests(ChessEngineTasks tasks, ChessEngineClientService che
         (await SendRequestAsync("request-match-point",
             MatchPointPayload.Create(channel, userID, matchPointReason))).Deserialize<string>()!;
 
+    public async Task<string> DrawResponseRequestAsync(string channel, int userID, bool drawResponse) =>
+        (await SendRequestAsync("request-draw-response",
+            DrawResponsePayload.Create(channel, userID, drawResponse))).Deserialize<string>()!;
+
 
     internal static bool DoesFileExist(string soundName)
     {
