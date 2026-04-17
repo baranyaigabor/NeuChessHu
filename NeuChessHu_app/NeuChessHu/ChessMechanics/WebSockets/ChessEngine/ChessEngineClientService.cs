@@ -1,4 +1,5 @@
 ﻿using System.Net.WebSockets;
+using System.Text.Json;
 using Websocket.Client;
 
 namespace ChessMechanics.WebSockets.ChessEngine;
@@ -47,6 +48,8 @@ public class ChessEngineClientService : IAsyncDisposable
         {
             if (x.Text is null)
                 return;
+
+            MessageHandler(x.Text);
         });
 
         return webSocketClient;
@@ -54,6 +57,43 @@ public class ChessEngineClientService : IAsyncDisposable
 
     public async Task SendAsync(string message) =>
         await webSocketClient.SendInstant(message);
+
+    void MessageHandler(string rawMessage)
+    {
+        try
+        {
+            MessageReceived?.Invoke(rawMessage);
+        }
+        catch (Exception) { }
+
+        try
+        {
+            JsonDocument jsonDoc = JsonDocument.Parse(rawMessage);
+            JsonElement root = jsonDoc.RootElement;
+
+            if (!root.TryGetProperty("requestID", out var idProp))
+                return;
+
+            string requestID = idProp.GetString()!;
+
+            if (root.TryGetProperty("error", out var errorProp))
+            {
+                if (tasks.PendingRequests.TryRemove(requestID, out var errorTcs))
+                    errorTcs.SetException(new Exception(errorProp.GetString()));
+
+                return;
+            }
+
+            JsonElement payload = root.GetProperty("payload");
+
+            if (tasks.PendingRequests.TryRemove(requestID, out var taskCompletionSource))
+                taskCompletionSource.SetResult(payload);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 
     public async ValueTask DisposeAsync()
     {
