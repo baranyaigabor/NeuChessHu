@@ -3,6 +3,7 @@ using NeuChessHu.Converters;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 
 
@@ -308,6 +309,25 @@ internal static class MatchSideBarViewElements
             Foreground = ColorConverters.BrushFromString("#4A0F0F"),
             FontSize = 13.4,
             FontWeight = FontWeights.Bold,
+        }
+    };
+
+    internal static Border OptionAndChatButtonsFactory() => new()
+    {
+        BorderBrush = AppResources.Get<SolidColorBrush>("BorderBrush"),
+        BorderThickness = new Thickness(0.5, 0.5, 0.5, 1),
+        Cursor = AppResources.Get<Cursor>("CursorOnButtons"),
+        ForceCursor = true,
+        Child = new Grid
+        {
+            Children =
+            {
+                new Image()
+                {
+                    Width = 30,
+                    Height = 30,
+                }
+            }
         }
     };
 }
