@@ -1,4 +1,5 @@
 using NeuChessHu.CommandUtils;
+using NeuChessHu.Converters;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -159,6 +160,154 @@ internal static class MatchSideBarViewElements
             Width = 15,
             VerticalAlignment = VerticalAlignment.Center,
             HorizontalAlignment = HorizontalAlignment.Center,
+        }
+    };
+
+    internal static DockPanel ChatPanelDisplayFactory()
+    {
+        FrameworkElementFactory bubbleBorderFactory = new(typeof(Border));
+        bubbleBorderFactory.SetValue(Border.CornerRadiusProperty, new CornerRadius(10));
+        bubbleBorderFactory.SetValue(Border.MarginProperty, new Thickness(8, 3, 8, 3));
+        bubbleBorderFactory.SetValue(Border.PaddingProperty, new Thickness(10, 6, 10, 6));
+        bubbleBorderFactory.SetValue(Border.MaxWidthProperty, 160.0);
+
+        FrameworkElementFactory messageTextFactory = new(typeof(TextBlock));
+        messageTextFactory.SetBinding(TextBlock.TextProperty, new Binding("Message"));
+        messageTextFactory.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
+        messageTextFactory.SetValue(TextBlock.ForegroundProperty, Brushes.White);
+        messageTextFactory.SetValue(TextBlock.FontSizeProperty, 14.0);
+
+        bubbleBorderFactory.AppendChild(messageTextFactory);
+
+        FrameworkElementFactory wrapperFactory = new(typeof(Grid));
+        wrapperFactory.AppendChild(bubbleBorderFactory);
+
+        FrameworkElementFactory messagesPanelFactory = new(typeof(StackPanel));
+        messagesPanelFactory.SetValue(StackPanel.OrientationProperty, Orientation.Vertical);
+
+        ItemsControl messagesItemsControl = new()
+        {
+            ItemsPanel = new ItemsPanelTemplate(messagesPanelFactory),
+            Margin = new Thickness(0, 5, 0, 5),
+            ItemTemplate = new DataTemplate { VisualTree = wrapperFactory }
+        };
+
+        ScrollViewer scrollableContainer = new()
+        {
+            Padding = new Thickness(5, 0, 5, 0),
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
+            Content = messagesItemsControl
+        };
+
+        Border sendButton = new()
+        {
+            Style = AppResources.Get<Style>("SendButtonStyle"),
+            Child = new Image
+            {
+                Style = AppResources.Get<Style>("SendButtonImageStyle"),
+            }
+        };
+
+        DockPanel inputRow = new()
+        {
+            Height = 44,
+            VerticalAlignment = VerticalAlignment.Bottom,
+            Margin = new Thickness(5, 5, 5, -5),
+            Children =
+            {
+                sendButton,
+                InputFieldFactory()
+            }
+        };
+
+        Border violationNotification = ViolationNotificationFactory();
+
+        (sendButton.Child as Image)?.SetResourceReference(Image.SourceProperty, "SendMessageImage");
+        (inputRow.Children[1] as Border)!.SetResourceReference(Border.BackgroundProperty, "ButtonBrush");
+        (violationNotification.Child as Label)?.SetResourceReference(Label.ContentProperty, "ViolationNotificationText");
+
+        Grid inputContainer = ((inputRow.Children[1] as Border)!.Child as Grid)!;
+
+        Binding messageInputBinding = new("MessageInput")
+        {
+            Mode = BindingMode.TwoWay,
+            UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+        };
+        (inputContainer.Children[0] as TextBox)!.SetBinding(TextBox.TextProperty, messageInputBinding);
+
+        Binding chatMessagePlaceholderTextVisibilityBinding = new("ChatMessagePlaceholderTextVisibility")
+        { Mode = BindingMode.OneWay };
+        (inputContainer.Children[1] as TextBlock)!.SetBinding(TextBlock.VisibilityProperty,
+            chatMessagePlaceholderTextVisibilityBinding);
+
+        inputRow.SetBinding(DockPanel.VisibilityProperty, new Binding("InputRowVisibility"));
+        bubbleBorderFactory.SetBinding(Border.HorizontalAlignmentProperty, new Binding("Alignment"));
+        bubbleBorderFactory.SetBinding(Border.BackgroundProperty, new Binding("BubbleBackground"));
+        messagesItemsControl.SetBinding(ItemsControl.ItemsSourceProperty, new Binding("ChatMessageDisplays"));
+
+        violationNotification.SetBinding(Border.VisibilityProperty, new Binding("ViolationNotificationVisibility"));
+
+        DockPanel.SetDock(sendButton, Dock.Right);
+        DockPanel.SetDock(inputRow, Dock.Bottom);
+        DockPanel.SetDock(violationNotification, Dock.Bottom);
+
+        CommandAttachers.OnClickEvent(sendButton, "SendChatMessageCommand");
+
+        return new DockPanel
+        {
+            Margin = new Thickness(7, 5, 5, 5),
+            Children =
+            {
+                inputRow,
+                violationNotification,
+                scrollableContainer
+            }
+        };
+    }
+
+    static Border InputFieldFactory() => new()
+    {
+        Style = AppResources.Get<Style>("SendMessageBorderStyle"),
+        Child = new Grid
+        {
+            Children =
+            {
+                new TextBox()
+                {
+                    Style = AppResources.Get<Style>("SendMessageTextBoxStyle")
+                },
+                new TextBlock()
+                {
+                    Text = AppResources.Get<string>("ChatInputPlaceHolderText"),
+                    Foreground = Brushes.Gray,
+                    Opacity = 0.8,
+                    Margin = new Thickness(12, 0, 0, 0),
+                    IsHitTestVisible = false,
+                    VerticalAlignment = VerticalAlignment.Center
+                }
+            }
+        }
+    };
+
+    static Border ViolationNotificationFactory() => new()
+    {
+        Height = 30,
+        Width = 247,
+        Margin = new Thickness(10, 10, 0, 0),
+        HorizontalAlignment = HorizontalAlignment.Left,
+        BorderBrush = ColorConverters.BrushFromString("#4A0F0F"),
+        BorderThickness = new Thickness(2),
+        CornerRadius = new CornerRadius(10),
+        Background = ColorConverters.BrushFromString("#F2B8B5"),
+        Opacity = 0.85,
+        Child = new Label
+        {
+            HorizontalAlignment = HorizontalAlignment.Center,
+            Style = AppResources.Get<Style>("TextStyle"),
+            Foreground = ColorConverters.BrushFromString("#4A0F0F"),
+            FontSize = 13.4,
+            FontWeight = FontWeights.Bold,
         }
     };
 }
