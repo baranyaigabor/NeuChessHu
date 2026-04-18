@@ -330,4 +330,71 @@ internal static class MatchSideBarViewElements
             }
         }
     };
+
+    internal static DockPanel NotationRowFactory()
+    {
+        ItemsControl notationsItemsControl = new()
+        {
+            ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(StackPanel))),
+            Margin = new Thickness(30, 20, 0, 20),
+            HorizontalAlignment = HorizontalAlignment.Center,
+        };
+        notationsItemsControl.SetBinding(ItemsControl.ItemsSourceProperty, new Binding("Notations"));
+
+        FrameworkElementFactory rowFactory = new(typeof(StackPanel));
+        rowFactory.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
+        rowFactory.SetValue(StackPanel.HeightProperty, 40.0);
+
+        FrameworkElementFactory roundFactory = new(typeof(Label));
+        roundFactory.SetBinding(ContentControl.ContentProperty, new Binding("Round"));
+        roundFactory.SetValue(Label.WidthProperty, 40.0);
+        roundFactory.SetValue(Label.StyleProperty, AppResources.Get<Style>("TextStyle"));
+        roundFactory.SetValue(Label.FontSizeProperty, 18.0);
+        roundFactory.SetValue(Label.FontWeightProperty, FontWeights.SemiBold);
+
+        FrameworkElementFactory whiteFactory = new(typeof(Label));
+        whiteFactory.SetBinding(ContentControl.ContentProperty, new Binding("White"));
+
+        FrameworkElementFactory blackFactory = new(typeof(Label));
+        blackFactory.SetBinding(ContentControl.ContentProperty, new Binding("Black"));
+
+        foreach (FrameworkElementFactory element in new List<FrameworkElementFactory> { whiteFactory, blackFactory })
+        {
+            element.SetValue(Label.WidthProperty, 90.0);
+            element.SetValue(Label.StyleProperty, AppResources.Get<Style>("TextStyle"));
+            element.SetValue(Label.FontSizeProperty, 17.0);
+            element.SetValue(Label.FontWeightProperty, FontWeights.SemiBold);
+            element.SetValue(Label.MarginProperty, new Thickness(0, 0, 0, 0));
+        }
+
+        Border resignDrawConfirmationPanel = ResignDrawConfirmationPanelFactory();
+
+        foreach (FrameworkElementFactory element in new List<FrameworkElementFactory> { roundFactory, whiteFactory, blackFactory })
+            rowFactory.AppendChild(element);
+
+        notationsItemsControl.ItemTemplate = new DataTemplate
+        {
+            VisualTree = rowFactory
+        };
+
+        ScrollViewer scrollableContainer = new()
+        {
+            VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+            Content = notationsItemsControl
+        };
+
+        resignDrawConfirmationPanel.SetBinding(Border.VisibilityProperty, new Binding("ResignDrawConfirmationPanelVisibility"));
+
+        DockPanel.SetDock(resignDrawConfirmationPanel, Dock.Bottom);
+        DockPanel.SetDock(scrollableContainer, Dock.Bottom);
+
+        return new()
+        {
+            Children =
+            {
+                resignDrawConfirmationPanel,
+                scrollableContainer
+            }
+        };
+    }
 }
