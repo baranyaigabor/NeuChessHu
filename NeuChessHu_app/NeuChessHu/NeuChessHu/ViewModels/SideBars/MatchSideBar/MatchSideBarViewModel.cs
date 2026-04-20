@@ -552,4 +552,19 @@ public class MatchSideBarViewModel : ObservableBase
 
         else await requests.DrawResponseRequestAsync(matchDataStore.MatchChannel!, (int)session.UserID!, isConfirmed);
     }
+
+    public void Dispose()
+    {
+        settings.PropertyChanged -= OnSettingsChanged;
+
+        foreach (Side side in new[] { Side.White, Side.Black })
+        {
+            matchDataStore.PlayerDatas[side].PropertyChanged -= OnPlayerDataChanged;
+            matchDataStore.PlayerDatas[side].CapturedPieces.CollectionChanged -= OnCapturedPiecesChanged;
+        }
+
+        matchDataStore.MatchPoints.PropertyChanged -= OnMatchPointsChanged;
+        Notations.CollectionChanged -= OnNotationsChanged;
+        matchDataStore.ChatMessageList.ChatMessageList.CollectionChanged -= OnChatMessagesChanged;
+    }
 }
