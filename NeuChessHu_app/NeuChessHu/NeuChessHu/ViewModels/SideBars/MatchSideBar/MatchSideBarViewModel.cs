@@ -1,0 +1,294 @@
+using ChessMechanics.Authentication.Session;
+using ChessMechanics.ChessBoard.Definitions;
+using ChessMechanics.Common;
+using ChessMechanics.MatchData.MatchDatas;
+using ChessMechanics.MatchData.MatchDatas.Models.DomainModels;
+using ChessMechanics.WebSockets.ChessEngine.Requests;
+using NeuChessHu.Resources.Types;
+using NeuChessHu.UserSettings;
+using NeuChessHu.ViewModels.SideBars.MatchSideBar.Displays;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+
+namespace NeuChessHu.ViewModels.SideBars.MatchSideBar;
+
+public class MatchSideBarViewModel : ObservableBase
+{
+    readonly BindableSettings settings;
+    readonly SessionDatas session;
+    readonly MatchDataStore matchDataStore;
+    readonly EngineRequests requests;
+
+    Side opponentSide;
+    Side playerSide;
+
+    bool isDrawOfferPending;
+
+    string opponentNickname;
+    string playerNickname;
+    ImageSource? opponentProfilePicture;
+    ImageSource? playerProfilePicture;
+    Style opponentProfilePictureStyle;
+    Style playerProfilePictureStyle;
+
+    string opponentClock;
+    string playerClock;
+    string opponentPoints;
+    string playerPoints;
+
+    string messageInput;
+    ScrollTo notationsAndChatScrollDirection;
+    Visibility notationsVisibility;
+    Visibility chatVisibility;
+    Visibility chatMessagePlaceholderTextVisibility;
+    Visibility unreadMessageNotificationVisibility;
+    Visibility violationNotificationVisibility;
+    Visibility resignDrawConfirmationPanelVisibility;
+    Visibility inputRowVisibility;
+    Thickness chatButtonThickness;
+
+    string resignDrawConfirmationText;
+
+    public string OpponentNickname
+    {
+        get => opponentNickname;
+        private set
+        {
+            opponentNickname = value;
+            RaisePropertyChanged();
+        }
+    }
+    public string PlayerNickname
+    {
+        get => playerNickname;
+        private set
+        {
+            playerNickname = value;
+            RaisePropertyChanged();
+        }
+    }
+    public ImageSource? OpponentProfilePicture
+    {
+        get => opponentProfilePicture;
+        private set
+        {
+            opponentProfilePicture = value;
+            RaisePropertyChanged();
+        }
+    }
+    public ImageSource? PlayerProfilePicture
+    {
+        get => playerProfilePicture;
+        private set
+        {
+            playerProfilePicture = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public Style OpponentProfilePictureStyle
+    {
+        get => opponentProfilePictureStyle;
+        private set
+        {
+            opponentProfilePictureStyle = value;
+            RaisePropertyChanged();
+        }
+    }
+    public Style PlayerProfilePictureStyle
+    {
+        get => playerProfilePictureStyle;
+        private set
+        {
+            playerProfilePictureStyle = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public string OpponentClock
+    {
+        get => opponentClock;
+        private set { opponentClock = value; RaisePropertyChanged(); }
+    }
+    public string PlayerClock
+    {
+        get => playerClock;
+        private set { playerClock = value; RaisePropertyChanged(); }
+    }
+
+    public string OpponentPoints
+    {
+        get => opponentPoints;
+        private set { opponentPoints = value; RaisePropertyChanged(); }
+    }
+
+    public string PlayerPoints
+    {
+        get => playerPoints;
+        private set { playerPoints = value; RaisePropertyChanged(); }
+    }
+
+    public ObservableCollection<CapturedPiecesDisplay> OpponentPieces { get; } = [];
+    public ObservableCollection<CapturedPiecesDisplay> PlayerPieces { get; } = [];
+
+    public ObservableCollection<SANNotationRow> Notations => matchDataStore.MatchState.Notations!;
+    public ObservableCollection<ChatMessageDisplay> ChatMessageDisplays { get; } = [];
+
+    public string MessageInput
+    {
+        get => messageInput;
+        set
+        {
+            messageInput = string.IsNullOrWhiteSpace(value)
+                ? value
+                : char.ToUpper(value[0]) + value.Substring(1);
+
+            ChatMessagePlaceholderTextVisibility = string.IsNullOrWhiteSpace(value)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
+            RaisePropertyChanged();
+        }
+    }
+
+    public ScrollTo NotationsScrollDirection
+    {
+        get => notationsAndChatScrollDirection;
+        private set
+        {
+            notationsAndChatScrollDirection = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public ScrollTo ChatScrollDirection
+    {
+        get => notationsAndChatScrollDirection;
+        private set
+        {
+            notationsAndChatScrollDirection = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public Visibility NotationsVisibility
+    {
+        get => notationsVisibility;
+        private set
+        {
+            notationsVisibility = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public Visibility ChatVisibility
+    {
+        get => chatVisibility;
+        internal set
+        {
+            chatVisibility = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public Visibility ChatMessagePlaceholderTextVisibility
+    {
+        get => chatMessagePlaceholderTextVisibility;
+        private set
+        {
+            chatMessagePlaceholderTextVisibility = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public Visibility UnreadMessageNotificationVisibility
+    {
+        get => unreadMessageNotificationVisibility;
+        private set
+        {
+            unreadMessageNotificationVisibility = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public Visibility ViolationNotificationVisibility
+    {
+        get => violationNotificationVisibility;
+        private set
+        {
+            violationNotificationVisibility = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public Visibility ResignDrawConfirmationPanelVisibility
+    {
+        get => resignDrawConfirmationPanelVisibility;
+        internal set
+        {
+            resignDrawConfirmationPanelVisibility = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public Visibility InputRowVisibility
+    {
+        get => inputRowVisibility;
+        internal set
+        {
+            inputRowVisibility = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public Thickness ChatButtonThickness
+    {
+        get => chatButtonThickness;
+        private set
+        {
+            chatButtonThickness = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public string ResignDrawConfirmationText
+    {
+        get => resignDrawConfirmationText;
+        internal set
+        {
+            resignDrawConfirmationText = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public bool ShouldResignDrawConfirmationPanelBeVisible { get; internal set; }
+
+    public Action? OnOpenOptions { get; internal set; }
+
+    public ICommand OpenCloseChatCommand { get; }
+    public ICommand SendChatMessageCommand { get; }
+    public ICommand ConfirmOrCancelCommand { get; }
+    public ICommand OpenOptionsCommand { get; }
+
+    public MatchSideBarViewModel(BindableSettings settings, SessionDatas session,
+        MatchDataStore matchDataStore, EngineRequests requests)
+    {
+        this.settings = settings;
+        this.session = session;
+        this.matchDataStore = matchDataStore;
+        this.requests = requests;
+
+        ChatVisibility = Visibility.Collapsed;
+        UnreadMessageNotificationVisibility = Visibility.Collapsed;
+        ViolationNotificationVisibility = Visibility.Collapsed;
+        ResignDrawConfirmationPanelVisibility = Visibility.Collapsed;
+
+        ShouldResignDrawConfirmationPanelBeVisible = false;
+
+        ChatButtonThickness = new Thickness(0.5, 0.5, 0.5, 1);
+
+    }
+
+}
