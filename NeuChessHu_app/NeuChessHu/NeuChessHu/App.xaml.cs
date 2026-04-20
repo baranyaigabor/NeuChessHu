@@ -21,6 +21,8 @@ public partial class App : Application
 
     protected override async void OnStartup(StartupEventArgs e)
     {
+        Current.ThemeMode = ThemeMode.System;
+
         base.OnStartup(e);
 
         InitializeAppEnvironment();
