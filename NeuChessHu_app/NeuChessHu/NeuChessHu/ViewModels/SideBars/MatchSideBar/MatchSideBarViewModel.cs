@@ -307,6 +307,7 @@ public class MatchSideBarViewModel : ObservableBase
 
         ChatButtonThickness = new Thickness(0.5, 0.5, 0.5, 1);
 
+        OpenCloseChatCommand = new CommandExecuter<object?>(_ => SwapNotationsChatPanel());
         OpenOptionsCommand = new CommandExecuter<object?>(_ => OnOpenOptions?.Invoke());
 
         _ = InitializeAsync();
@@ -362,6 +363,9 @@ public class MatchSideBarViewModel : ObservableBase
             && !isDrawOfferPending)
         {
             isDrawOfferPending = true;
+
+            if (NotationsVisibility is not Visibility.Visible)
+                SwapNotationsChatPanel();
 
             ResignDrawConfirmationText = AppResources.Get<string>("DrawConfirmationText");
             ResignDrawConfirmationPanelVisibility = Visibility.Visible;
@@ -421,6 +425,39 @@ public class MatchSideBarViewModel : ObservableBase
             if (playerSide is Side.Black)
                 CapturedPiecesDisplay.Add(PlayerPieces, matchDataStore.PlayerDatas[Side.Black].CapturedPieces, opponentSide, settings);
             else CapturedPiecesDisplay.Add(OpponentPieces, matchDataStore.PlayerDatas[Side.Black].CapturedPieces, playerSide, settings);
+        }
+    }
+
+    internal void SwapNotationsChatPanel()
+    {
+        if (NotationsVisibility is Visibility.Visible)
+        {
+            NotationsVisibility = Visibility.Collapsed;
+
+            ChatVisibility = Visibility.Visible;
+            ChatScrollDirection = ScrollTo.Top;
+            ChatScrollDirection = ScrollTo.Bottom;
+
+            ChatButtonThickness = new Thickness(0.5, 0.5, 0.5, 0);
+
+            if (UnreadMessageNotificationVisibility is Visibility.Visible)
+                UnreadMessageNotificationVisibility = Visibility.Collapsed;
+
+            if (ResignDrawConfirmationPanelVisibility is Visibility.Visible)
+                ResignDrawConfirmationPanelVisibility = Visibility.Collapsed;
+        }
+        else
+        {
+            ChatVisibility = Visibility.Collapsed;
+
+            NotationsVisibility = Visibility.Visible;
+            NotationsScrollDirection = ScrollTo.Top;
+            NotationsScrollDirection = ScrollTo.Bottom;
+
+            ChatButtonThickness = new Thickness(0.5, 0.5, 0.5, 1);
+
+            if (ShouldResignDrawConfirmationPanelBeVisible)
+                ResignDrawConfirmationPanelVisibility = Visibility.Visible;
         }
     }
 
