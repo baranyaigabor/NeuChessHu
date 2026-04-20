@@ -1,12 +1,14 @@
 ﻿using ChessMechanics.ChessBoard.ChessPieces;
 using ChessMechanics.ChessBoard.Definitions;
 using ChessMechanics.Common;
+using ChessMechanics.MatchData.Clock;
 using ChessMechanics.MatchData.MatchDatas;
 using ChessMechanics.MatchData.MatchDatas.Models;
 using ChessMechanics.WebSockets.ChessEngine.Requests;
 using NeuChessHu.Services.SoundServices;
 using NeuChessHu.UserSettings;
 using NeuChessHu.ViewModels.Board.MatchBoard.BoardInteractions.TileColors;
+using NeuChessHu.ViewModels.Overlays.MatchOverlays.MatchWindows;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,7 +21,9 @@ public class BoardInteractionHandler : ObservableBase, IDisposable
     readonly BindableSettings settings;
     readonly MatchDataStore matchDataStore;
     readonly EngineRequests requests;
+    readonly ClockHandler clocks;
     ChessPiece[,] pieceMatrix;
+    PromotionWindowViewModel promotionWindow;
 
     bool[,]? currentLegalMoves;
 
@@ -27,14 +31,22 @@ public class BoardInteractionHandler : ObservableBase, IDisposable
     Tuple<int, int>? to;
     Tuple<int, int>? selectedTileCoordinates;
 
+    public PromotionWindowViewModel PromotionWindow
+    {
+        get => promotionWindow;
+        private set { promotionWindow = value; RaisePropertyChanged(); }
+    }
+
     public Action? OnOpenPromotionWindow { get; set; }
 
     public BoardInteractionHandler(BindableSettings settings, MatchDataStore matchDataStore,
-        EngineRequests requests)
+        EngineRequests requests, ClockHandler clocks, PromotionWindowViewModel promotionWindow)
     {
         this.settings = settings;
         this.matchDataStore = matchDataStore;
         this.requests = requests;
+        this.clocks = clocks;
+        this.promotionWindow = promotionWindow;
 
         matchDataStore.MatchState.PropertyChanged += OnMatchStateChanged;
 
@@ -87,7 +99,7 @@ public class BoardInteractionHandler : ObservableBase, IDisposable
                 {
                     Piece promotionChoice = await PromotionPieceDefiner(from, to);
 
-                    string sound = await requests.MovePieceRequest(matchDataStore.MatchChannel!,
+                    string sound = await requests.MovePieceRequest(matchDataStore.MatchChannel!, 
                         CoordinatesToServer(from), CoordinatesToServer(to), promotionChoice);
 
                     Sounds.Play(sound);
@@ -185,6 +197,7 @@ public class BoardInteractionHandler : ObservableBase, IDisposable
             if (!settings.AutoQueen)
             {
                 await Application.Current.Dispatcher.InvokeAsync(() => OnOpenPromotionWindow!.Invoke());
+                return await promotionWindow.WaitForChooseAsync();
             }
             else return Piece.Queen;
         }
