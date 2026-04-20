@@ -289,6 +289,21 @@ public class MatchSideBarViewModel : ObservableBase
 
         ChatButtonThickness = new Thickness(0.5, 0.5, 0.5, 1);
 
+        _ = InitializeAsync();
     }
 
+    async Task InitializeAsync()
+    {
+        await matchDataStore.Initialize;
+
+        await Application.Current.Dispatcher.InvokeAsync(async () =>
+        {
+            playerSide = matchDataStore.PlayingSide;
+            opponentSide = playerSide is Side.White ? Side.Black : Side.White;
+
+            PlayerClock = matchDataStore.PlayerDatas[playerSide].Time;
+            OpponentClock = matchDataStore.PlayerDatas[opponentSide].Time;
+
+        });
+    }
 }
