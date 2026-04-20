@@ -24,8 +24,7 @@ public class APIHandlers : IDisposable
     void OnSessionChanged(object? s, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is nameof(SessionDatas.Token))
-            HttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", session.Token);
+            CreateHttpClient();
     }
 
     HttpClient CreateHttpClient() => new()
@@ -64,6 +63,9 @@ public class APIHandlers : IDisposable
     internal async Task<string?> HttpGetPendingChannelAsync() =>
         await HttpClient.GetStringAsync($"{baseUrl}match/pendingchannel");
 
-    public void Dispose() =>
+    public void Dispose()
+    {
         httpClient?.Dispose();
+        httpClient = null;
+    }
 }

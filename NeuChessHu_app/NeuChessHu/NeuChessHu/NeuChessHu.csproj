@@ -6,6 +6,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+	<NoWarn>WPF0001</NoWarn>
+	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ApplicationIcon>Resources\Images\Statics\Icons\NeuChess_Hu.ico</ApplicationIcon>
   </PropertyGroup>
 
