@@ -2,6 +2,7 @@
 using ChessMechanics.Authentication.Session;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NeuChessHu.Callback;
 using NeuChessHu.Configs;
 using NeuChessHu.Resources;
 using NeuChessHu.Resources.Images.Register.Icons;
@@ -25,6 +26,9 @@ public partial class App : Application
 
         base.OnStartup(e);
 
+        if (!SingleInstanceManager.CanCreateNewInstance(this, e))
+            return;
+
         InitializeAppEnvironment();
         await InitializeUIEnvironment(e);
     }
@@ -36,6 +40,8 @@ public partial class App : Application
 
         await AppHost!.StopAsync();
         AppHost.Dispose();
+
+        SingleInstanceManager.Dispose();
 
         base.OnExit(e);
     }
