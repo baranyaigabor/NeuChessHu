@@ -298,6 +298,8 @@ public class MatchSideBarViewModel : ObservableBase
 
         Notations.CollectionChanged += OnNotationsChanged;
 
+        matchDataStore.ChatMessageList.ChatMessageList.CollectionChanged += OnChatMessagesChanged;
+
         ChatVisibility = Visibility.Collapsed;
         UnreadMessageNotificationVisibility = Visibility.Collapsed;
         ViolationNotificationVisibility = Visibility.Collapsed;
@@ -308,6 +310,8 @@ public class MatchSideBarViewModel : ObservableBase
         ChatButtonThickness = new Thickness(0.5, 0.5, 0.5, 1);
 
         OpenCloseChatCommand = new CommandExecuter<object?>(_ => SwapNotationsChatPanel());
+        SendChatMessageCommand = new CommandExecuter<string>(async x => await SendMessage());
+        ConfirmOrCancelCommand = new CommandExecuter<bool>(async args => await OnConfirmOrCancel(args));
         OpenOptionsCommand = new CommandExecuter<object?>(_ => OnOpenOptions?.Invoke());
 
         _ = InitializeAsync();
@@ -461,6 +465,21 @@ public class MatchSideBarViewModel : ObservableBase
         }
     }
 
+    void OnChatMessagesChanged(object? s, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.NewItems is not null)
+        {
+            foreach (ChatMessageRow messageRow in e.NewItems)
+                ChatMessageDisplay.Add(ChatMessageDisplays, messageRow, (int)session.UserID!, playerSide);
+
+            if (ChatVisibility is Visibility.Collapsed)
+                UnreadMessageNotificationVisibility = Visibility.Visible;
+
+            ChatScrollDirection = ScrollTo.Top;
+            ChatScrollDirection = ScrollTo.Bottom;
+        }
+    }
+
     void UsersInfosLoader()
     {
         PlayerNickname = matchDataStore.PlayerDatas[playerSide].UserData!.Nickname;
@@ -490,4 +509,47 @@ public class MatchSideBarViewModel : ObservableBase
         AppResources.Get<Style>(profilePicture is "Unknown"
             ? "DefaultProfilePictureStyle"
             : "ProfilePictureStyle");
+
+    async Task SendMessage()
+    {
+        if (string.IsNullOrWhiteSpace(MessageInput))
+            return;
+
+        string response = await requests.ChatMessageRequestAsync(matchDataStore.MatchChannel!,
+            MessageInput, (int)session.UserID!);
+
+        MessageInput = string.Empty;
+
+        if (response is "Violation")
+            ShowViolationNotification();
+    }
+
+    void ShowViolationNotification()
+    {
+        ViolationNotificationVisibility = Visibility.Visible;
+
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(5000);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ViolationNotificationVisibility = Visibility.Collapsed;
+            });
+        });
+    }
+
+    async Task OnConfirmOrCancel(bool isConfirmed)
+    {
+        ResignDrawConfirmationPanelVisibility = Visibility.Collapsed;
+        ShouldResignDrawConfirmationPanelBeVisible = false;
+
+        if (ResignDrawConfirmationText == AppResources.Get<string>("ResignConfirmationText"))
+        {
+            if (isConfirmed)
+                await requests.MatchPointRequestAsync(matchDataStore.MatchChannel!, (int)session.UserID!, "Resign");
+            else return;
+        }
+
+        else await requests.DrawResponseRequestAsync(matchDataStore.MatchChannel!, (int)session.UserID!, isConfirmed);
+    }
 }
