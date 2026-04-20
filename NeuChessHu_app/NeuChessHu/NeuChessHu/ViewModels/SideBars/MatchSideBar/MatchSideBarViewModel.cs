@@ -2,12 +2,18 @@ using ChessMechanics.Authentication.Session;
 using ChessMechanics.ChessBoard.Definitions;
 using ChessMechanics.Common;
 using ChessMechanics.MatchData.MatchDatas;
+using ChessMechanics.MatchData.MatchDatas.Models;
 using ChessMechanics.MatchData.MatchDatas.Models.DomainModels;
 using ChessMechanics.WebSockets.ChessEngine.Requests;
+using NeuChessHu.CommandUtils;
+using NeuChessHu.Converters;
+using NeuChessHu.Resources;
 using NeuChessHu.Resources.Types;
 using NeuChessHu.UserSettings;
 using NeuChessHu.ViewModels.SideBars.MatchSideBar.Displays;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -280,6 +286,8 @@ public class MatchSideBarViewModel : ObservableBase
         this.matchDataStore = matchDataStore;
         this.requests = requests;
 
+        settings.PropertyChanged += OnSettingsChanged;
+
         ChatVisibility = Visibility.Collapsed;
         UnreadMessageNotificationVisibility = Visibility.Collapsed;
         ViolationNotificationVisibility = Visibility.Collapsed;
@@ -288,6 +296,8 @@ public class MatchSideBarViewModel : ObservableBase
         ShouldResignDrawConfirmationPanelBeVisible = false;
 
         ChatButtonThickness = new Thickness(0.5, 0.5, 0.5, 1);
+
+        OpenOptionsCommand = new CommandExecuter<object?>(_ => OnOpenOptions?.Invoke());
 
         _ = InitializeAsync();
     }
@@ -304,6 +314,45 @@ public class MatchSideBarViewModel : ObservableBase
             PlayerClock = matchDataStore.PlayerDatas[playerSide].Time;
             OpponentClock = matchDataStore.PlayerDatas[opponentSide].Time;
 
+            UsersInfosLoader();
         });
+    }
+
+    void OnSettingsChanged(object? s, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(BindableSettings.DarkMode))
+            UsersInfosLoader();
+
+        else if (e.PropertyName is nameof(BindableSettings.Language))
+            ResignDrawConfirmationText = ResignDrawConfirmationText.StartsWith('D')
+                ? AppResources.Get<string>("DrawConfirmationText")
+                : AppResources.Get<string>("ResignConfirmationText");
+    }
+
+    void OnPlayerDataChanged(object? s, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is not nameof(PlayerDataStore.Time))
+            return;
+
+        if (s == matchDataStore.PlayerDatas[playerSide])
+            PlayerClock = matchDataStore.PlayerDatas[playerSide].Time;
+        else OpponentClock = matchDataStore.PlayerDatas[opponentSide].Time;
+    }
+
+    void UsersInfosLoader()
+    {
+        PlayerNickname = matchDataStore.PlayerDatas[playerSide].UserData!.Nickname;
+        OpponentNickname = matchDataStore.PlayerDatas[opponentSide].UserData!.Nickname;
+
+        string playerProfilePictureString = matchDataStore.PlayerDatas[playerSide].UserData!.ProfilePicture!;
+        string opponentProfilePictureString = matchDataStore.PlayerDatas[opponentSide].UserData!.ProfilePicture!;
+
+        PlayerProfilePicture = playerProfilePictureString is not "Unknown"
+            ? ImageConverters.LoadProfilePicture(playerProfilePictureString)
+            : AppResources.Get<ImageSource>("DefaultProfilePictureImage");
+
+        OpponentProfilePicture = opponentProfilePictureString is not "Unknown"
+            ? ImageConverters.LoadProfilePicture(opponentProfilePictureString)
+            : AppResources.Get<ImageSource>("DefaultProfilePictureImage");
     }
 }
