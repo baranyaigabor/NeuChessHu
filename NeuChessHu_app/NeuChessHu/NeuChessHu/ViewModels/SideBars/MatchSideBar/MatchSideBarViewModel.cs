@@ -12,6 +12,7 @@ using NeuChessHu.Resources.Types;
 using NeuChessHu.UserSettings;
 using NeuChessHu.ViewModels.SideBars.MatchSideBar.Displays;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -287,12 +288,15 @@ public class MatchSideBarViewModel : ObservableBase
 
         settings.PropertyChanged += OnSettingsChanged;
 
+        matchDataStore.MatchPoints.PropertyChanged += OnMatchPointsChanged;
 
         foreach (Side side in new[] { Side.White, Side.Black })
         {
             matchDataStore.PlayerDatas[side].PropertyChanged += OnPlayerDataChanged;
+            matchDataStore.PlayerDatas[side].CapturedPieces.CollectionChanged += OnCapturedPiecesChanged;
         }
 
+        Notations.CollectionChanged += OnNotationsChanged;
 
         ChatVisibility = Visibility.Collapsed;
         UnreadMessageNotificationVisibility = Visibility.Collapsed;
@@ -344,6 +348,80 @@ public class MatchSideBarViewModel : ObservableBase
         if (s == matchDataStore.PlayerDatas[playerSide])
             PlayerClock = matchDataStore.PlayerDatas[playerSide].Time;
         else OpponentClock = matchDataStore.PlayerDatas[opponentSide].Time;
+    }
+
+    void OnNotationsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        NotationsScrollDirection = ScrollTo.Top;
+        NotationsScrollDirection = ScrollTo.Bottom;
+    }
+
+    void OnMatchPointsChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(MatchPoints.ClaimForDraw) && matchDataStore.MatchPoints.ClaimForDraw
+            && !isDrawOfferPending)
+        {
+            isDrawOfferPending = true;
+
+            ResignDrawConfirmationText = AppResources.Get<string>("DrawConfirmationText");
+            ResignDrawConfirmationPanelVisibility = Visibility.Visible;
+            ShouldResignDrawConfirmationPanelBeVisible = true;
+        }
+
+        else if (e.PropertyName is nameof(MatchPoints.ClaimForDraw) && !matchDataStore.MatchPoints.ClaimForDraw)
+            isDrawOfferPending = false;
+    }
+
+    void OnCapturedPiecesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        Side capturingSide = sender == matchDataStore.PlayerDatas[Side.White].CapturedPieces
+            ? Side.White
+            : Side.Black;
+
+        UpdateCapturedPieces(capturingSide);
+    }
+
+    void UpdateCapturedPieces(Side capturingSide)
+    {
+        int opponentPoints = matchDataStore.PlayerDatas[opponentSide].Points;
+        int playerPoints = matchDataStore.PlayerDatas[matchDataStore.PlayingSide].Points;
+
+        if (opponentPoints > playerPoints)
+        {
+            opponentPoints -= playerPoints;
+            playerPoints = 0;
+        }
+        else if (playerPoints > opponentPoints)
+        {
+            playerPoints -= opponentPoints;
+            opponentPoints = 0;
+        }
+        else
+        {
+            opponentPoints = 0;
+            playerPoints = 0;
+        }
+
+        OpponentPoints = opponentPoints > 0 ? "+" + opponentPoints : string.Empty;
+        PlayerPoints = playerPoints > 0 ? "+" + playerPoints : string.Empty;
+
+        RefreshCapturedImagesOrder(capturingSide);
+    }
+
+    void RefreshCapturedImagesOrder(Side capturingSide)
+    {
+        if (capturingSide == Side.White)
+        {
+            if (playerSide is Side.White)
+                CapturedPiecesDisplay.Add(PlayerPieces, matchDataStore.PlayerDatas[Side.White].CapturedPieces, opponentSide, settings);
+            else CapturedPiecesDisplay.Add(OpponentPieces, matchDataStore.PlayerDatas[Side.White].CapturedPieces, playerSide, settings);
+        }
+        else if (capturingSide == Side.Black)
+        {
+            if (playerSide is Side.Black)
+                CapturedPiecesDisplay.Add(PlayerPieces, matchDataStore.PlayerDatas[Side.Black].CapturedPieces, opponentSide, settings);
+            else CapturedPiecesDisplay.Add(OpponentPieces, matchDataStore.PlayerDatas[Side.Black].CapturedPieces, playerSide, settings);
+        }
     }
 
     void UsersInfosLoader()
