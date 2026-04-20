@@ -12,7 +12,6 @@ using NeuChessHu.Resources.Types;
 using NeuChessHu.UserSettings;
 using NeuChessHu.ViewModels.SideBars.MatchSideBar.Displays;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -288,6 +287,13 @@ public class MatchSideBarViewModel : ObservableBase
 
         settings.PropertyChanged += OnSettingsChanged;
 
+
+        foreach (Side side in new[] { Side.White, Side.Black })
+        {
+            matchDataStore.PlayerDatas[side].PropertyChanged += OnPlayerDataChanged;
+        }
+
+
         ChatVisibility = Visibility.Collapsed;
         UnreadMessageNotificationVisibility = Visibility.Collapsed;
         ViolationNotificationVisibility = Visibility.Collapsed;
@@ -315,6 +321,7 @@ public class MatchSideBarViewModel : ObservableBase
             OpponentClock = matchDataStore.PlayerDatas[opponentSide].Time;
 
             UsersInfosLoader();
+            ProfilePictureStyleSetter();
         });
     }
 
@@ -355,4 +362,17 @@ public class MatchSideBarViewModel : ObservableBase
             ? ImageConverters.LoadProfilePicture(opponentProfilePictureString)
             : AppResources.Get<ImageSource>("DefaultProfilePictureImage");
     }
+
+    void ProfilePictureStyleSetter()
+    {
+        OpponentProfilePictureStyle =
+            GetStyle(matchDataStore.PlayerDatas[opponentSide].UserData!.ProfilePicture!);
+        PlayerProfilePictureStyle =
+            GetStyle(matchDataStore.PlayerDatas[playerSide].UserData!.ProfilePicture!);
+    }
+
+    static Style GetStyle(string profilePicture) =>
+        AppResources.Get<Style>(profilePicture is "Unknown"
+            ? "DefaultProfilePictureStyle"
+            : "ProfilePictureStyle");
 }
