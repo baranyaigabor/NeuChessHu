@@ -14,6 +14,7 @@ internal static class Triggers
     internal static void MergeTriggers()
     {
         ButtonBaseMenuHoverTriggerBuilder();
+        ButtonOverlayHoverTriggerBuilder();
     }
     
     static void ButtonBaseMenuHoverTriggerBuilder()
@@ -31,4 +32,19 @@ internal static class Triggers
         resources.Add("ButtonTriggerBaseMenuHoverTrigger", buttonBaseMenuHoverTrigger);
     }
 
+    static void ButtonOverlayHoverTriggerBuilder()
+    {
+        Trigger buttonTriggerOverlayHoverTrigger = new()
+        {
+            Property = UIElement.IsMouseOverProperty,
+            Value = true,
+            Setters =
+            {
+                new Setter(UIElement.RenderTransformProperty, new ScaleTransform(1.129, 1.129)),
+                new Setter(UIElement.RenderTransformOriginProperty, new Point(0.5, 0.5)), 
+            }            
+        };
+
+        resources.Add("ButtonTriggerOverlayHoverTrigger", buttonTriggerOverlayHoverTrigger);
+    }
 }
