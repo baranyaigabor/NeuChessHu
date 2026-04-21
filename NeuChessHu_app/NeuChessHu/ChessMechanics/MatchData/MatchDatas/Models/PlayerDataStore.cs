@@ -30,7 +30,7 @@ public class PlayerDataStore(int? id, UserData? userData, ObservableCollection<P
     public string Time
     {
         get => time!;
-        internal set { time = value; RaisePropertyChanged(); }
+        set { time = value; RaisePropertyChanged(); }
     }
 
     internal static PlayerDataStore CreatePlayerDataStore() =>
