@@ -20,6 +20,8 @@ internal static class Triggers
 
         SendMessageHoverTriggerBuilder();
         SendMessageTextBoxFocusTriggerBuilder();
+
+        SendButtonHoverTriggerBuilder();
     }
     
     static void ButtonBaseMenuHoverTriggerBuilder()
@@ -96,5 +98,20 @@ internal static class Triggers
         };
 
         resources.Add("SendMessageTextBoxFocusTrigger", sendMessageTextBoxFocusTrigger);
+    }
+
+    static void SendButtonHoverTriggerBuilder()
+    {
+        Trigger sendButtonHoverTrigger = new()
+        {
+            Property = UIElement.IsMouseOverProperty,
+            Value = true,
+            Setters =
+            {
+                new Setter(Border.BorderThicknessProperty, new Thickness(1.8)),
+            }
+        };
+
+        resources.Add("SendButtonHoverTrigger", sendButtonHoverTrigger);
     }
 }
