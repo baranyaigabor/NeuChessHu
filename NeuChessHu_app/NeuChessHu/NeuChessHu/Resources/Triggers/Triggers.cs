@@ -19,6 +19,7 @@ internal static class Triggers
         CloseEllipseButtonHoverTriggerBuilder();
 
         SendMessageHoverTriggerBuilder();
+        SendMessageTextBoxFocusTriggerBuilder();
     }
     
     static void ButtonBaseMenuHoverTriggerBuilder()
@@ -80,5 +81,20 @@ internal static class Triggers
         };
 
         resources.Add("SendMessageHoverTrigger", sendMessageHoverTrigger);
+    }
+
+    static void SendMessageTextBoxFocusTriggerBuilder()
+    {
+        Trigger sendMessageTextBoxFocusTrigger = new()
+        {
+            Property = UIElement.IsFocusedProperty,
+            Value = true,
+            Setters =
+            {
+                new Setter(TextBox.BorderThicknessProperty, new Thickness(2)),
+            }
+        };
+
+        resources.Add("SendMessageTextBoxFocusTrigger", sendMessageTextBoxFocusTrigger);
     }
 }
