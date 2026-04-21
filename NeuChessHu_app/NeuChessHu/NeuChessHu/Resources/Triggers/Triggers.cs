@@ -15,6 +15,8 @@ internal static class Triggers
     {
         ButtonBaseMenuHoverTriggerBuilder();
         ButtonOverlayHoverTriggerBuilder();
+
+        CloseEllipseButtonHoverTriggerBuilder();
     }
     
     static void ButtonBaseMenuHoverTriggerBuilder()
@@ -46,5 +48,20 @@ internal static class Triggers
         };
 
         resources.Add("ButtonTriggerOverlayHoverTrigger", buttonTriggerOverlayHoverTrigger);
+    }
+
+    static void CloseEllipseButtonHoverTriggerBuilder()
+    {
+        Trigger closeEllipseButtonHoverTriggerBuilder = new()
+        {
+            Property = UIElement.IsMouseOverProperty,
+            Value = true,
+            Setters =
+            {
+                new Setter(Ellipse.StrokeThicknessProperty, 2.3),
+            }
+        };
+
+        resources.Add("CloseEllipseButtonHoverTrigger", closeEllipseButtonHoverTriggerBuilder);
     }
 }
