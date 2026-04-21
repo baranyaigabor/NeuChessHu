@@ -1,13 +1,18 @@
 ﻿using ChessMechanics.Authentication;
 using ChessMechanics.Authentication.Session;
 using ChessMechanics.Common;
+using ChessMechanics.MatchData.MatchDatas;
 using ChessMechanics.WebSockets.Pusher;
+using Microsoft.Extensions.DependencyInjection;
 using NeuChessHu.Collections.Contexts;
+using NeuChessHu.Controllers;
 using NeuChessHu.Resources;
 using NeuChessHu.Services.MatchServices;
+using NeuChessHu.Services.SoundServices;
 using NeuChessHu.UserSettings;
 using NeuChessHu.ViewModels.NavBar;
 using NeuChessHu.ViewModels.Overlays.MenuOverlays.MenuWindows;
+using NeuChessHu.ViewModels.SideBars.MatchSideBar;
 using System.Windows;
 
 namespace NeuChessHu.ViewModels.MainWindow;
@@ -49,6 +54,7 @@ public class MainWindowViewModel : ObservableBase
         private set
         {
             mainOverlay = value;
+            WindowStyleOnMainOverlayInteraction();
             RaisePropertyChanged();
         }
     }
@@ -58,6 +64,7 @@ public class MainWindowViewModel : ObservableBase
         private set
         {
             boardOverlay = value;
+            WindowStyleOnBoardOverlayInteraction();
             RaisePropertyChanged();
         }
     }
@@ -90,6 +97,8 @@ public class MainWindowViewModel : ObservableBase
         this.lookingForMatchService = lookingForMatchService;
         this.pusher = pusher;
 
+        lookingForMatchService.OnSwitchToMatch = SwitchToMatch;
+
         SwitchToMenu();
     }
 
@@ -97,6 +106,8 @@ public class MainWindowViewModel : ObservableBase
     {
         if (MainOverlay is not null)
             MainOverlay = null;
+
+        WindowStyleOnMainOverlayInteraction();
 
         navBar.ProfilePictureVisibility = Visibility.Visible;
         navBar.FlagVisibility = Visibility.Visible;
@@ -149,10 +160,89 @@ public class MainWindowViewModel : ObservableBase
         };
     }
 
+    void SwitchToMatch()
+    {
+        MainOverlay = null;
+
+        matchContext = lookingForMatchService.MatchScope?.ServiceProvider
+            .GetRequiredService<MatchContext>()
+            ?? throw new Exception("MatchContext not found");
+
+        MatchController matchController = lookingForMatchService.MatchScope?.ServiceProvider
+            .GetRequiredService<MatchController>()
+            ?? throw new Exception("MatchController not found");
+
+        matchController.OnPlayAgain = PlayAgain;
+
+        MatchDataStore matchDataStore = lookingForMatchService.MatchScope!.ServiceProvider
+            .GetRequiredService<MatchDataStore>();
+
+        matchDataStore.MatchPoints.OnMatchEnd = MatchEnd;
+
+        navBar.ProfilePictureVisibility = Visibility.Hidden;
+        navBar.FlagVisibility = Visibility.Hidden;
+
+        CurrentBoard = matchContext.Board;
+        CurrentSidebar = matchContext.MatchSideBar;
+
+        matchContext.MatchSideBar.OnOpenOptions = () =>
+        {
+            MainOverlay = matchContext.MatchPopUpPanels.OptionsPopUp;
+        };
+
+        matchContext.MatchPopUpPanels.OptionsPopUp.OnOpenInGameSettings = () =>
+        {
+            MainOverlay = matchContext.MatchPopUpPanels.SettingsPopUp;
+        };
+
+        matchContext.Board.InteractionHandler.OnOpenPromotionWindow = () =>
+        {
+            BoardOverlay = matchContext.Board.InteractionHandler.PromotionWindow;
+        };
+
+        matchContext.MatchPopUpPanels.OptionsPopUp.OnCloseOverlay = CloseMainOverlay;
+        matchContext.MatchPopUpPanels.SettingsPopUp.OnCloseOverlay = CloseMainOverlay;
+        matchContext.MatchWindows.PromotionWindow.OnClosePromotionWindow = CloseBoardOverlay;
+        matchContext!.MatchWindows.MatchEndWindow.OnCloseOverlay = CloseMainOverlay;
+
+        matchContext!.MatchWindows.MatchEndWindow.OnSwitchMenu = SwitchToMenu;
+        matchContext!.MatchWindows.MatchEndWindow.OnPlayAgain = PlayAgain;
+
+        matchContext.MatchPopUpPanels.OptionsPopUp.OnQuit = SwitchToMenu;
+
+        matchContext.MatchPopUpPanels.OptionsPopUp.OnShowConfirmationPanel = ShowConfirmationPanel;
+    }
+
+    void ShowConfirmationPanel(string confirming)
+    {
+        MatchSideBarViewModel matchSideBar = matchContext!.MatchSideBar;
+
+        matchSideBar.ResignDrawConfirmationText = confirming is "Resign"
+            ? AppResources.Get<string>("ResignConfirmationText")
+            : AppResources.Get<string>("DrawConfirmationText");
+
+        matchSideBar.ResignDrawConfirmationPanelVisibility = Visibility.Visible;
+        matchSideBar.ShouldResignDrawConfirmationPanelBeVisible = true;
+
+        if (matchSideBar.NotationsVisibility is not Visibility.Visible)
+            matchSideBar.SwapNotationsChatPanel();
+    }
+
     void ShouldLogin()
     {
         MainOverlay = menu.MenuPopUpPanels.LoginPopUp;
         menu.MenuPopUpPanels.LoginPopUp.ShouldNotify = true;
+    }
+
+    async Task PlayAgain()
+    {
+        pusher.ResetMatchChannel();
+
+        MainOverlay = null;
+        CurrentBoard = menu.Board;
+        CurrentSidebar = menu.MenuSideBar;
+
+        await StartLookingForMatchAsync();
     }
 
     async Task StartLookingForMatchAsync()
@@ -171,6 +261,49 @@ public class MainWindowViewModel : ObservableBase
 
         await lookingForMatchService.LookingForMatchAsync();
     }
+
+    async Task MatchEnd()
+    {
+        await lookingForMatchService.DisposeMatchAsync();
+
+        await Application.Current.Dispatcher.InvokeAsync(() =>
+        {
+            Sounds.Play("MatchEnd");
+
+            if (BoardOverlay is not null)
+                BoardOverlay = null;
+
+            matchContext!.MatchSideBar.InputRowVisibility = Visibility.Collapsed;
+
+            MainOverlay = matchContext!.MatchWindows.MatchEndWindow;
+        });
+    }
+
+    void WindowStyleOnBoardOverlayInteraction()
+    {
+        if (BoardOverlay is null)
+            MainOverlayStyle = AppResources.Get<Style>("ClosedPromotionWindowStyle");
+
+        else BoardOverlayStyle = AppResources.Get<Style>("OpenPromotionWindowStyle");
+    }
+
+    void WindowStyleOnMainOverlayInteraction()
+    {
+        if (MainOverlay is null)
+        {
+            MainWindowStyle = AppResources.Get<Style>("MainWindowStyle");
+            MainOverlayStyle = AppResources.Get<Style>("MainOverlayStyle");
+        }
+        else
+        {
+            MainWindowStyle = AppResources.Get<Style>("MainWindowOpenOverlayStyle");
+            MainOverlayStyle = AppResources.Get<Style>("MainOpenOverlayStyle");
+        }
+    }
+
+    void CloseBoardOverlay() =>
+        BoardOverlay = null;
+
     internal void CloseMainOverlay() =>
         MainOverlay = null;
 }

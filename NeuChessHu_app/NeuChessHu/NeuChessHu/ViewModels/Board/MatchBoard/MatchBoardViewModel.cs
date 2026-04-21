@@ -8,9 +8,11 @@ using NeuChessHu.Resources;
 using NeuChessHu.Services.SoundServices;
 using NeuChessHu.UserSettings;
 using NeuChessHu.UserSettings.SettingManagers;
+using NeuChessHu.ViewModels.Board.MatchBoard.BoardInteractions;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -29,10 +31,11 @@ public class MatchBoardViewModel : ObservableBase, IDisposable
 
     Thickness borderThickness;
     Brush borderBrush;
-    private Cursor cursorOnInteract;
+    Cursor cursorOnInteract;
 
-    public List<char> TileListLetters { get; }
-    public List<char> TileListNumbers { get; }
+    public BoardInteractionHandler InteractionHandler { get; }
+    public List<char> TileListLetters { get; private set; }
+    public List<char> TileListNumbers { get; private set; }
     public ObservableCollection<ImageSource> PieceImages { get; }
 
     public Cursor CursorOnInteract
@@ -73,16 +76,18 @@ public class MatchBoardViewModel : ObservableBase, IDisposable
     }
 
     public ICommand PieceImageSetterCommand { get; }
+    public ICommand InteractionWithPiecesCommand { get; }
 
-    public MatchBoardViewModel(BindableSettings settings, MatchDataStore matchDataStore)
+    public MatchBoardViewModel(BindableSettings settings, MatchDataStore matchDataStore, BoardInteractionHandler interactionHandler)
     {
         this.settings = settings;
         this.matchDataStore = matchDataStore;
+        InteractionHandler = interactionHandler;
 
         CursorOnInteract = AppResources.Get<Cursor>("CursorOnButtons");
 
         TileListLetters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-        TileListNumbers = ['1', '2', '3', '4', '5', '6', '7', '8'];
+        TileListNumbers = ['8', '7', '6', '5', '4', '3', '2', '1'];
 
         LightTileBrush = AppResources.Get<Brush>("LightSquareBrush");
         DarkTileBrush = AppResources.Get<Brush>("DarkSquareBrush");
@@ -99,6 +104,9 @@ public class MatchBoardViewModel : ObservableBase, IDisposable
 
         settings.PropertyChanged += OnSettingsChaged;
         matchDataStore.MatchState.PropertyChanged += OnMatchStateChanged;
+
+        InteractionWithPiecesCommand = new CommandExecuter<(Grid board, Border tile)>
+            (async args => await interactionHandler.InteractionWithPieces(args));
 
         PieceImages = new ObservableCollection<ImageSource>(Enumerable.Repeat<ImageSource>(null!, 64));
         PieceImageSetterCommand = new CommandExecuter<(int r, int c)?>(PieceImagesSetter);
@@ -170,12 +178,12 @@ public class MatchBoardViewModel : ObservableBase, IDisposable
 
     void SquareIdentifiersSetter()
     {
-        if (matchDataStore.PlayingSide is Side.White && TileListLetters[0] == 'h')
+        if (matchDataStore.PlayingSide is Side.White && TileListLetters[0] is 'h')
         {
             TileListLetters.Reverse();
             TileListNumbers.Reverse();
         }
-        else if (matchDataStore.PlayingSide is Side.Black && TileListLetters[0] == 'a')
+        else if (matchDataStore.PlayingSide is Side.Black && TileListLetters[0] is 'a')
         {
             TileListLetters.Reverse();
             TileListNumbers.Reverse();
