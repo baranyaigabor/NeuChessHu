@@ -24,6 +24,7 @@ internal static class Triggers
         SendButtonHoverTriggerBuilder();
         SendButtonImageHoverTriggerBuilder();
 
+        ConfirmCancelButtonsHoverTriggerBuilder();
     }
     
     static void ButtonBaseMenuHoverTriggerBuilder()
@@ -131,5 +132,20 @@ internal static class Triggers
         };
 
         resources.Add("SendButtonImageHoverTrigger", sendButtonImageHoverTrigger);
+    }
+
+    static void ConfirmCancelButtonsHoverTriggerBuilder()
+    {
+        Trigger confirmCancelButtonsHoverTrigger = new()
+        {
+            Property = UIElement.IsMouseOverProperty,
+            Value = true,
+            Setters =
+            {
+                new Setter(Border.BorderThicknessProperty, new Thickness(2)),
+            }
+        };
+
+        resources.Add("ConfirmCancelButtonsHoverTrigger", confirmCancelButtonsHoverTrigger);
     }
 }
