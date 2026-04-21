@@ -2,12 +2,18 @@ using ChessMechanics.Authentication.Session;
 using ChessMechanics.ChessBoard.Definitions;
 using ChessMechanics.Common;
 using ChessMechanics.MatchData.MatchDatas;
+using ChessMechanics.MatchData.MatchDatas.Models;
 using ChessMechanics.MatchData.MatchDatas.Models.DomainModels;
 using ChessMechanics.WebSockets.ChessEngine.Requests;
+using NeuChessHu.CommandUtils;
+using NeuChessHu.Converters;
+using NeuChessHu.Resources;
 using NeuChessHu.Resources.Types;
 using NeuChessHu.UserSettings;
 using NeuChessHu.ViewModels.SideBars.MatchSideBar.Displays;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -280,6 +286,20 @@ public class MatchSideBarViewModel : ObservableBase
         this.matchDataStore = matchDataStore;
         this.requests = requests;
 
+        settings.PropertyChanged += OnSettingsChanged;
+
+        matchDataStore.MatchPoints.PropertyChanged += OnMatchPointsChanged;
+
+        foreach (Side side in new[] { Side.White, Side.Black })
+        {
+            matchDataStore.PlayerDatas[side].PropertyChanged += OnPlayerDataChanged;
+            matchDataStore.PlayerDatas[side].CapturedPieces.CollectionChanged += OnCapturedPiecesChanged;
+        }
+
+        Notations.CollectionChanged += OnNotationsChanged;
+
+        matchDataStore.ChatMessageList.ChatMessageList.CollectionChanged += OnChatMessagesChanged;
+
         ChatVisibility = Visibility.Collapsed;
         UnreadMessageNotificationVisibility = Visibility.Collapsed;
         ViolationNotificationVisibility = Visibility.Collapsed;
@@ -289,6 +309,262 @@ public class MatchSideBarViewModel : ObservableBase
 
         ChatButtonThickness = new Thickness(0.5, 0.5, 0.5, 1);
 
+        OpenCloseChatCommand = new CommandExecuter<object?>(_ => SwapNotationsChatPanel());
+        SendChatMessageCommand = new CommandExecuter<string>(async x => await SendMessage());
+        ConfirmOrCancelCommand = new CommandExecuter<bool>(async args => await OnConfirmOrCancel(args));
+        OpenOptionsCommand = new CommandExecuter<object?>(_ => OnOpenOptions?.Invoke());
+
+        _ = InitializeAsync();
     }
 
+    async Task InitializeAsync()
+    {
+        await matchDataStore.Initialize;
+
+        await Application.Current.Dispatcher.InvokeAsync(async () =>
+        {
+            playerSide = matchDataStore.PlayingSide;
+            opponentSide = playerSide is Side.White ? Side.Black : Side.White;
+
+            PlayerClock = matchDataStore.PlayerDatas[playerSide].Time;
+            OpponentClock = matchDataStore.PlayerDatas[opponentSide].Time;
+
+            UsersInfosLoader();
+            ProfilePictureStyleSetter();
+        });
+    }
+
+    void OnSettingsChanged(object? s, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(BindableSettings.DarkMode))
+            UsersInfosLoader();
+
+        else if (e.PropertyName is nameof(BindableSettings.Language))
+            ResignDrawConfirmationText = ResignDrawConfirmationText.StartsWith('D')
+                ? AppResources.Get<string>("DrawConfirmationText")
+                : AppResources.Get<string>("ResignConfirmationText");
+    }
+
+    void OnPlayerDataChanged(object? s, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is not nameof(PlayerDataStore.Time))
+            return;
+
+        if (s == matchDataStore.PlayerDatas[playerSide])
+            PlayerClock = matchDataStore.PlayerDatas[playerSide].Time;
+        else OpponentClock = matchDataStore.PlayerDatas[opponentSide].Time;
+    }
+
+    void OnNotationsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        NotationsScrollDirection = ScrollTo.Top;
+        NotationsScrollDirection = ScrollTo.Bottom;
+    }
+
+    void OnMatchPointsChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(MatchPoints.ClaimForDraw) && matchDataStore.MatchPoints.ClaimForDraw
+            && !isDrawOfferPending)
+        {
+            isDrawOfferPending = true;
+
+            if (NotationsVisibility is not Visibility.Visible)
+                SwapNotationsChatPanel();
+
+            ResignDrawConfirmationText = AppResources.Get<string>("DrawConfirmationText");
+            ResignDrawConfirmationPanelVisibility = Visibility.Visible;
+            ShouldResignDrawConfirmationPanelBeVisible = true;
+        }
+
+        else if (e.PropertyName is nameof(MatchPoints.ClaimForDraw) && !matchDataStore.MatchPoints.ClaimForDraw)
+            isDrawOfferPending = false;
+    }
+
+    void OnCapturedPiecesChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        Side capturingSide = sender == matchDataStore.PlayerDatas[Side.White].CapturedPieces
+            ? Side.White
+            : Side.Black;
+
+        UpdateCapturedPieces(capturingSide);
+    }
+
+    void UpdateCapturedPieces(Side capturingSide)
+    {
+        int opponentPoints = matchDataStore.PlayerDatas[opponentSide].Points;
+        int playerPoints = matchDataStore.PlayerDatas[matchDataStore.PlayingSide].Points;
+
+        if (opponentPoints > playerPoints)
+        {
+            opponentPoints -= playerPoints;
+            playerPoints = 0;
+        }
+        else if (playerPoints > opponentPoints)
+        {
+            playerPoints -= opponentPoints;
+            opponentPoints = 0;
+        }
+        else
+        {
+            opponentPoints = 0;
+            playerPoints = 0;
+        }
+
+        OpponentPoints = opponentPoints > 0 ? "+" + opponentPoints : string.Empty;
+        PlayerPoints = playerPoints > 0 ? "+" + playerPoints : string.Empty;
+
+        RefreshCapturedImagesOrder(capturingSide);
+    }
+
+    void RefreshCapturedImagesOrder(Side capturingSide)
+    {
+        if (capturingSide == Side.White)
+        {
+            if (playerSide is Side.White)
+                CapturedPiecesDisplay.Add(PlayerPieces, matchDataStore.PlayerDatas[Side.White].CapturedPieces, opponentSide, settings);
+            else CapturedPiecesDisplay.Add(OpponentPieces, matchDataStore.PlayerDatas[Side.White].CapturedPieces, playerSide, settings);
+        }
+        else if (capturingSide == Side.Black)
+        {
+            if (playerSide is Side.Black)
+                CapturedPiecesDisplay.Add(PlayerPieces, matchDataStore.PlayerDatas[Side.Black].CapturedPieces, opponentSide, settings);
+            else CapturedPiecesDisplay.Add(OpponentPieces, matchDataStore.PlayerDatas[Side.Black].CapturedPieces, playerSide, settings);
+        }
+    }
+
+    internal void SwapNotationsChatPanel()
+    {
+        if (NotationsVisibility is Visibility.Visible)
+        {
+            NotationsVisibility = Visibility.Collapsed;
+
+            ChatVisibility = Visibility.Visible;
+            ChatScrollDirection = ScrollTo.Top;
+            ChatScrollDirection = ScrollTo.Bottom;
+
+            ChatButtonThickness = new Thickness(0.5, 0.5, 0.5, 0);
+
+            if (UnreadMessageNotificationVisibility is Visibility.Visible)
+                UnreadMessageNotificationVisibility = Visibility.Collapsed;
+
+            if (ResignDrawConfirmationPanelVisibility is Visibility.Visible)
+                ResignDrawConfirmationPanelVisibility = Visibility.Collapsed;
+        }
+        else
+        {
+            ChatVisibility = Visibility.Collapsed;
+
+            NotationsVisibility = Visibility.Visible;
+            NotationsScrollDirection = ScrollTo.Top;
+            NotationsScrollDirection = ScrollTo.Bottom;
+
+            ChatButtonThickness = new Thickness(0.5, 0.5, 0.5, 1);
+
+            if (ShouldResignDrawConfirmationPanelBeVisible)
+                ResignDrawConfirmationPanelVisibility = Visibility.Visible;
+        }
+    }
+
+    void OnChatMessagesChanged(object? s, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.NewItems is not null)
+        {
+            foreach (ChatMessageRow messageRow in e.NewItems)
+                ChatMessageDisplay.Add(ChatMessageDisplays, messageRow, (int)session.UserID!, playerSide);
+
+            if (ChatVisibility is Visibility.Collapsed)
+                UnreadMessageNotificationVisibility = Visibility.Visible;
+
+            ChatScrollDirection = ScrollTo.Top;
+            ChatScrollDirection = ScrollTo.Bottom;
+        }
+    }
+
+    void UsersInfosLoader()
+    {
+        PlayerNickname = matchDataStore.PlayerDatas[playerSide].UserData!.Nickname;
+        OpponentNickname = matchDataStore.PlayerDatas[opponentSide].UserData!.Nickname;
+
+        string playerProfilePictureString = matchDataStore.PlayerDatas[playerSide].UserData!.ProfilePicture!;
+        string opponentProfilePictureString = matchDataStore.PlayerDatas[opponentSide].UserData!.ProfilePicture!;
+
+        PlayerProfilePicture = playerProfilePictureString is not "Unknown"
+            ? ImageConverters.LoadProfilePicture(playerProfilePictureString)
+            : AppResources.Get<ImageSource>("DefaultProfilePictureImage");
+
+        OpponentProfilePicture = opponentProfilePictureString is not "Unknown"
+            ? ImageConverters.LoadProfilePicture(opponentProfilePictureString)
+            : AppResources.Get<ImageSource>("DefaultProfilePictureImage");
+    }
+
+    void ProfilePictureStyleSetter()
+    {
+        OpponentProfilePictureStyle =
+            GetStyle(matchDataStore.PlayerDatas[opponentSide].UserData!.ProfilePicture!);
+        PlayerProfilePictureStyle =
+            GetStyle(matchDataStore.PlayerDatas[playerSide].UserData!.ProfilePicture!);
+    }
+
+    static Style GetStyle(string profilePicture) =>
+        AppResources.Get<Style>(profilePicture is "Unknown"
+            ? "DefaultProfilePictureStyle"
+            : "ProfilePictureStyle");
+
+    async Task SendMessage()
+    {
+        if (string.IsNullOrWhiteSpace(MessageInput))
+            return;
+
+        string response = await requests.ChatMessageRequestAsync(matchDataStore.MatchChannel!,
+            MessageInput, (int)session.UserID!);
+
+        MessageInput = string.Empty;
+
+        if (response is "Violation")
+            ShowViolationNotification();
+    }
+
+    void ShowViolationNotification()
+    {
+        ViolationNotificationVisibility = Visibility.Visible;
+
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(5000);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ViolationNotificationVisibility = Visibility.Collapsed;
+            });
+        });
+    }
+
+    async Task OnConfirmOrCancel(bool isConfirmed)
+    {
+        ResignDrawConfirmationPanelVisibility = Visibility.Collapsed;
+        ShouldResignDrawConfirmationPanelBeVisible = false;
+
+        if (ResignDrawConfirmationText == AppResources.Get<string>("ResignConfirmationText"))
+        {
+            if (isConfirmed)
+                await requests.MatchPointRequestAsync(matchDataStore.MatchChannel!, (int)session.UserID!, "Resign");
+            else return;
+        }
+
+        else await requests.DrawResponseRequestAsync(matchDataStore.MatchChannel!, (int)session.UserID!, isConfirmed);
+    }
+
+    public void Dispose()
+    {
+        settings.PropertyChanged -= OnSettingsChanged;
+
+        foreach (Side side in new[] { Side.White, Side.Black })
+        {
+            matchDataStore.PlayerDatas[side].PropertyChanged -= OnPlayerDataChanged;
+            matchDataStore.PlayerDatas[side].CapturedPieces.CollectionChanged -= OnCapturedPiecesChanged;
+        }
+
+        matchDataStore.MatchPoints.PropertyChanged -= OnMatchPointsChanged;
+        Notations.CollectionChanged -= OnNotationsChanged;
+        matchDataStore.ChatMessageList.ChatMessageList.CollectionChanged -= OnChatMessagesChanged;
+    }
 }

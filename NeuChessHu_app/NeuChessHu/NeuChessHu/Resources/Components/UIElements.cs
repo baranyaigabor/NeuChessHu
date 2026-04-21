@@ -32,4 +32,13 @@ internal static class UIElements
         HorizontalAlignment = HorizontalAlignment.Center,
         Margin = new Thickness(10, 0, 5, 0)
     };
+
+    internal static Rectangle MatchEndVerticalSeparatorFactory() => new()
+    {
+        Height = 50,
+        Width = 2,
+        Fill = Brushes.Black,
+        VerticalAlignment = VerticalAlignment.Center,
+        HorizontalAlignment = HorizontalAlignment.Center
+    };
 }
