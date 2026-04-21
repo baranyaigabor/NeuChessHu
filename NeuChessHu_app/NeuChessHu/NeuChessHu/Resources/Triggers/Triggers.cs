@@ -17,6 +17,8 @@ internal static class Triggers
         ButtonOverlayHoverTriggerBuilder();
 
         CloseEllipseButtonHoverTriggerBuilder();
+
+        SendMessageHoverTriggerBuilder();
     }
     
     static void ButtonBaseMenuHoverTriggerBuilder()
@@ -63,5 +65,20 @@ internal static class Triggers
         };
 
         resources.Add("CloseEllipseButtonHoverTrigger", closeEllipseButtonHoverTriggerBuilder);
+    }
+
+    static void SendMessageHoverTriggerBuilder()
+    {
+        Trigger sendMessageHoverTrigger = new()
+        {
+            Property = UIElement.IsMouseOverProperty,
+            Value = true,
+            Setters =
+            {
+                new Setter(TextBox.BorderThicknessProperty, new Thickness(0.8)),
+            }
+        };
+
+        resources.Add("SendMessageHoverTrigger", sendMessageHoverTrigger);
     }
 }
