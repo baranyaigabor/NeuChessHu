@@ -51,4 +51,15 @@ class Base64ImageRuleTest extends TestCase
         $errors = $this->validate('data:image/png;base64,!!!NOTVALIDBASE64!!!');
         $this->assertNotEmpty($errors);
     }
+
+    public function testOversizedImageFails(): void
+    {
+        $bigData = str_repeat('A', 2 * 1024 * 1024 + 1);
+        $value = 'data:image/png;base64,' . base64_encode($bigData);
+
+        $errors = $this->validate($value);
+
+        $this->assertNotEmpty($errors);
+        $this->assertStringContainsString('2MB', $errors[0]);
+    }
 }
