@@ -24,6 +24,8 @@ internal static class Styles
         ButtonStyleOverlayStyle();
         ButtonStyleBaseMenuStyle();
         TextStyle();
+
+        MainWindowStyle();
     }
 
     static void SetCursorOnButtons()
@@ -135,5 +137,20 @@ internal static class Styles
         };
 
         resources.Add("TextStyle", textStyle);
+    }
+
+    static void MainWindowStyle()
+    {
+        Style mainWindowStyle = new()
+        {
+            Setters =
+            {
+                new Setter(Grid.BackgroundProperty, new DynamicResourceExtension("WindowBrush")),
+                new Setter(Grid.EffectProperty, new BlurEffect { Radius = 0 }),
+                new Setter(Grid.IsHitTestVisibleProperty, true)
+            }
+        };
+
+        resources.Add("MainWindowStyle", mainWindowStyle);
     }
 }
