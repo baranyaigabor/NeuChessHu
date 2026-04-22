@@ -17,6 +17,8 @@ internal static class Styles
     {
         SetCursorOnButtons();
         SetCursorOnTextBoxes();
+
+        WindowsHeaderStyle();
     }
 
     static void SetCursorOnButtons()
@@ -29,5 +31,22 @@ internal static class Styles
     {
         Cursor cursorOnTextBoxes = Cursors.IBeam;
         resources.Add("CursorOnTextBoxes", cursorOnTextBoxes);
+    }
+
+    static void WindowsHeaderStyle()
+    {
+        Style windowsHeaderStyle = new()
+        {
+            Setters =
+            {
+                new Setter(Border.CornerRadiusProperty, new CornerRadius(15, 15, 0, 0)),
+                new Setter(Border.BorderThicknessProperty, new Thickness(0, 0, 0, 2)),
+                new Setter(Border.BorderBrushProperty, new DynamicResourceExtension("BorderBrush")),
+                new Setter(Border.BackgroundProperty, new DynamicResourceExtension("NavBarBrush")),
+                new Setter(Border.HorizontalAlignmentProperty, HorizontalAlignment.Stretch)
+            }
+        };
+
+        resources.Add("WindowsHeaderStyle", windowsHeaderStyle);
     }
 }
