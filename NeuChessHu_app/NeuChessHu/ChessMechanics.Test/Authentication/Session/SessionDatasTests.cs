@@ -2,7 +2,7 @@ using ChessMechanics.Authentication.Session;
 using ChessMechanics.Authentication.User;
 using NUnit.Framework;
 
-namespace ChessMechanics.Tests.Authentication.Session;
+namespace ChessMechanics.Test.Authentication.Session;
 
 [TestFixture]
 public class SessionDatasTests

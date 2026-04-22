@@ -2,7 +2,7 @@ using ChessMechanics.ChessBoard.ChessPieces;
 using ChessMechanics.ChessBoard.Definitions;
 using NUnit.Framework;
 
-namespace ChessMechanics.Tests.ChessBoard.ChessPieces;
+namespace ChessMechanics.Test.ChessBoard.ChessPieces;
 
 [TestFixture]
 public class ChessPieceTests

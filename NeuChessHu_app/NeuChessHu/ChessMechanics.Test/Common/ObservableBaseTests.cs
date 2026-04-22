@@ -1,7 +1,7 @@
 using ChessMechanics.Common;
 using NUnit.Framework;
 
-namespace ChessMechanics.Tests.Common;
+namespace ChessMechanics.Test.Common;
 
 [TestFixture]
 public class ObservableBaseTests

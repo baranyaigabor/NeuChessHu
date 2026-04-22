@@ -2,7 +2,7 @@ using System.Text;
 using ChessMechanics.Authentication.Redirect;
 using NUnit.Framework;
 
-namespace ChessMechanics.Tests.Authentication.Redirect;
+namespace ChessMechanics.Test.Authentication.Redirect;
 
 [TestFixture]
 public class LoginDataTests
