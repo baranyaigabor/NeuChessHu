@@ -1,20 +1,22 @@
 ﻿using ChessMechanics.Authentication;
 using ChessMechanics.Authentication.Session;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using NeuChessHu.Bootstrap.Dependencies;
 using NeuChessHu.Bootstrap.Protocols;
 using NeuChessHu.Callback;
 using NeuChessHu.Configs;
 using NeuChessHu.Resources;
 using NeuChessHu.Resources.Images.Register.Icons;
 using NeuChessHu.Resources.Images.Register.Images.Statics;
+using NeuChessHu.Resources.Styles;
+using NeuChessHu.Resources.Triggers;
 using NeuChessHu.Services.SoundServices;
 using NeuChessHu.Templates;
 using NeuChessHu.UserSettings.SettingManagers;
 using NeuChessHu.ViewModels.MainWindow;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Microsoft.Extensions.Hosting;
+using NeuChessHu.Bootstrap.Dependencies;
 
 namespace NeuChessHu;
 
@@ -57,6 +59,9 @@ public partial class App : Application
         BoardThemeManager.ApplyTheme(BoardThemeManager.Decode());
 
         UITemplates.MergeTemplates();
+
+        Triggers.MergeTriggers();
+        Styles.MergeStyles();
 
         StaticImages.Register();
 
