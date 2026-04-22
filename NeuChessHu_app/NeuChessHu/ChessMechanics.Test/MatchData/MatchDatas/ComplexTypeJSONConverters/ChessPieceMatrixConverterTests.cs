@@ -4,7 +4,7 @@ using ChessMechanics.MatchData.MatchDatas.ComplexTypeJSONConverters;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace ChessMechanics.Tests.MatchData.MatchDatas.ComplexTypeJSONConverters;
+namespace ChessMechanics.Test.MatchData.MatchDatas.ComplexTypeJSONConverters;
 
 [TestFixture]
 public class ChessPieceMatrixConverterTests
