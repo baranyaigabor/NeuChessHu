@@ -39,6 +39,8 @@ internal static class Styles
         DefaultProfilePictureStyle();
         DefaultProfilePictureOnMatchEndWindowStyle();
         ProfilePictureStyle();
+
+        SendMessageBorderStyle();
     }
 
     static void SetCursorOnButtons()
@@ -304,5 +306,25 @@ internal static class Styles
         };
 
         resources.Add("ProfilePictureStyle", profilePictureStyle);
+    }
+
+    static void SendMessageBorderStyle()
+    {
+        Style sendMessageBorderStyle = new()
+        {
+            Setters =             {
+                new Setter(Border.MarginProperty, new Thickness(5, 0, 5, 0)),
+                new Setter(Border.CornerRadiusProperty, new CornerRadius(3)),
+                new Setter(Border.BorderThicknessProperty, new Thickness(1)),
+                new Setter(Border.BorderBrushProperty, new DynamicResourceExtension("BorderBrush")),
+                new Setter(Border.HeightProperty, 32.0)
+            },
+            Triggers =
+            {
+                AppResources.Get<Trigger>("SendMessageHoverTrigger"),
+            }
+        };
+
+        resources.Add("SendMessageBorderStyle", sendMessageBorderStyle);
     }
 }
