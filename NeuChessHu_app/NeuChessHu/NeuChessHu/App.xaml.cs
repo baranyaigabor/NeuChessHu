@@ -2,6 +2,7 @@
 using ChessMechanics.Authentication.Session;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NeuChessHu.Bootstrap.Protocols;
 using NeuChessHu.Callback;
 using NeuChessHu.Configs;
 using NeuChessHu.Resources;
@@ -59,6 +60,8 @@ public partial class App : Application
         StaticImages.Register();
 
         Sounds.LoadToMemory();
+
+        Protocols.RegisterAppURL();
 
         AppIcon.Register();
     }
