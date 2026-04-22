@@ -27,6 +27,8 @@ internal static class Styles
 
         MainWindowStyle();
         MainWindowOpenOverlayStyle();
+
+        MainOverlayStyle();
     }
 
     static void SetCursorOnButtons()
@@ -168,5 +170,19 @@ internal static class Styles
         };
 
         resources.Add("MainWindowOpenOverlayStyle", mainWindowOpenOverlayStyle);
+    }
+
+    static void MainOverlayStyle()
+    {
+        Style mainOverlayStyle = new()
+        {
+            Setters =
+            {
+                new Setter(Grid.IsHitTestVisibleProperty, false),
+                new Setter(Panel.ZIndexProperty, 1),
+            }
+        };
+
+        resources.Add("MainOverlayStyle", mainOverlayStyle);
     }
 }
