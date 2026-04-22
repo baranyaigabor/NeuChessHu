@@ -55,8 +55,8 @@ public class NavBarViewModel : ObservableBase, IDisposable
 
         ProfilePictureLoader();
 
-        SwitchLanguageCommand = new CommandExecuter<object?>( => SwitchLanguage(settings));
-        ShowMenuPopUpCommand = new CommandExecuter<object?>( => OnShowMenuPopUpCommand?.Invoke());
+        SwitchLanguageCommand = new CommandExecuter<object?>( _ => SwitchLanguage(settings));
+        ShowMenuPopUpCommand = new CommandExecuter<object?>( _ => OnShowMenuPopUpCommand?.Invoke());
     }
 
     void OnSessionChanged(object? sender, PropertyChangedEventArgs e)

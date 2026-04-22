@@ -45,6 +45,7 @@ public partial class MainWindow
                 Dispatcher.InvokeAsync(async () =>
                 {
                     await sessionManager.OnAuthenticated(callbackUrl);
+                    (DataContext as MainWindowViewModel)?.CloseMainOverlay();
                 });
 
                 Activate();

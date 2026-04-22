@@ -22,7 +22,7 @@ public class MenuSideBarViewModel : ObservableBase, IDisposable
     Visibility playStockfishButtonVisibility = Visibility.Collapsed;
 
     public BindableSettings Settings
-    {   
+    {
         get => settings;
         private set { settings = value; RaisePropertyChanged(); }
     }

@@ -14,10 +14,10 @@ namespace NeuChessHu.Views.SideBars.MenuSideBar;
 public partial class MenuSideBarView : UserControl
 {
     public MenuSideBarView() =>
-        Loaded += (s, e) =>
-        {
-            Content ??= MenuSideBarBuilder();
-        };
+         Loaded += (s, e) =>
+         {
+             Content ??= MenuSideBarBuilder();
+         };
 
     static Border MenuSideBarBuilder()
     {
@@ -95,30 +95,10 @@ public partial class MenuSideBarView : UserControl
             Margin = new Thickness(-18, 0, 0, 0),
         };
 
-        Border joinTournamentButton = new()
-        {
-            Style = buttonStyle,
-            Margin = new Thickness(0, 0, 0, 22),
-            Child = new Label
-            {
-                Style = textStyle
-            }
-        };
-
         Border playStockfishButton = new()
         {
             Style = buttonStyle,
             Margin = new Thickness(0, 0, 0, 20),
-            Child = new Label
-            {
-                Style = textStyle
-            }
-        };
-
-        Border customGameButton = new()
-        {
-            Style = buttonStyle,
-            Margin = new Thickness(0, 0, 0, 22),
             Child = new Label
             {
                 Style = textStyle
@@ -132,9 +112,7 @@ public partial class MenuSideBarView : UserControl
 
         (startButton.Child as Label)!.SetResourceReference(ContentProperty, "StartGameText");
         moreLabel.SetResourceReference(ContentProperty, "MoreOptionsText");
-        (joinTournamentButton.Child as Label)!.SetResourceReference(ContentProperty, "JoinTournamentText");
         (playStockfishButton.Child as Label)!.SetResourceReference(ContentProperty, "PlayStockfishText");
-        (customGameButton.Child as Label)!.SetResourceReference(ContentProperty, "CustomGameText");
 
         Binding timeSetterButtonBinding = new("TimeSetterButtonContent") { Mode = BindingMode.OneWay };
         (timeSetterButton.Child as Label)!.SetBinding(ContentProperty, timeSetterButtonBinding);
@@ -142,14 +120,8 @@ public partial class MenuSideBarView : UserControl
         Binding moreIconImageBinding = new("MoreIconSource") { Mode = BindingMode.OneWay };
         moreIcon.SetBinding(Image.SourceProperty, moreIconImageBinding);
 
-        Binding joinTournamentButtonBinding = new("JoinTournamentButtonVisibility") { Mode = BindingMode.OneWay };
-        joinTournamentButton.SetBinding(VisibilityProperty, joinTournamentButtonBinding);
-
         Binding playStockfishButtonBinding = new("PlayStockfishButtonVisibility") { Mode = BindingMode.OneWay };
         playStockfishButton.SetBinding(VisibilityProperty, playStockfishButtonBinding);
-
-        Binding customGameButtonBinding = new("CustomGameButtonVisibility") { Mode = BindingMode.OneWay };
-        customGameButton.SetBinding(VisibilityProperty, customGameButtonBinding);
 
         ScrollViewerBehaviours behaviour = new();
         Binding scrollViewerBehaviourBinding = new("ScrollDirection") { Mode = BindingMode.OneWay };
@@ -159,12 +131,12 @@ public partial class MenuSideBarView : UserControl
         CommandAttachers.OnClickEvent(timeSetterButton, "OpenTimeSetterCommand");
         CommandAttachers.OnClickEvent(startButton, "StartMatchCommand");
         CommandAttachers.OnClickEvent(moreButton, "MoreIconToggleCommand");
-        CommandAttachers.OnClickEvent(customGameButton, "CustomGameCommand");
 
         foreach (UIElement element in new UIElement[] { moreLabel, moreIcon })
             moreButton.Children.Add(element);
 
-        foreach (UIElement element in new UIElement[] { handMovesPiece, timeSetterButton, startButton, moreButton, joinTournamentButton, playStockfishButton, customGameButton })
+        foreach (UIElement element in new UIElement[] { handMovesPiece, timeSetterButton,
+            startButton, moreButton, playStockfishButton })
             menuSideBar.Children.Add(element);
 
         return menuSideBarBorder;

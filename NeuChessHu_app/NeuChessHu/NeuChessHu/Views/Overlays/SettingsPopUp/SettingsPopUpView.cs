@@ -68,7 +68,6 @@ public partial class SettingsPopUpView : UserControl
             Style = buttonStyle,
             Child = new Label
             {
-                Content = "Go back",
                 Style = textStyle,
                 FontSize = 18,
                 Background = Brushes.Transparent,
@@ -79,6 +78,7 @@ public partial class SettingsPopUpView : UserControl
         settingsBackgroundEffect.SetResourceReference(Border.BackgroundProperty, "PopUpBackground");
 
         (goBackButton.Child as Label)!.SetResourceReference(ForegroundProperty, "TextPopUpBrush");
+        (goBackButton.Child as Label)!.SetResourceReference(ContentProperty, "GoBackText");
 
         foreach (UIElement item in new UIElement[] { SelectableSettings.Create("Board Theme"),
             UIElements.HorizontalBarFactory(settingsMenu), SelectableSettings.Create("Piece Theme"),
