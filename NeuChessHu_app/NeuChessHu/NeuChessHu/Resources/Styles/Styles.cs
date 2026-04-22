@@ -16,11 +16,18 @@ internal static class Styles
     internal static void MergeStyles()
     {
         SetCursorOnButtons();
+        SetCursorOnTextBoxes();
     }
 
     static void SetCursorOnButtons()
     {
         Cursor cursorOnButtons = Cursors.Hand;
         resources.Add("CursorOnButtons", cursorOnButtons);
+    }
+
+    static void SetCursorOnTextBoxes()
+    {
+        Cursor cursorOnTextBoxes = Cursors.IBeam;
+        resources.Add("CursorOnTextBoxes", cursorOnTextBoxes);
     }
 }
