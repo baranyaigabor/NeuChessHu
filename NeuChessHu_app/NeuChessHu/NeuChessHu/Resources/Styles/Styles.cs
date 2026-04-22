@@ -35,6 +35,8 @@ internal static class Styles
         ClosedPromotionWindowStyle();
 
         CloseEllipseButtonStyle();
+
+        DefaultProfilePictureStyle();
     }
 
     static void SetCursorOnButtons()
@@ -255,5 +257,20 @@ internal static class Styles
         };
 
         resources.Add("CloseEllipseButtonStyle", closeEllipseButtonStyle);
+    }
+
+    static void DefaultProfilePictureStyle()
+    {
+        Style defaultProfilePictureStyle = new()
+        {
+            Setters =
+            {
+                new Setter(FrameworkElement.MarginProperty, new Thickness(-12, -12, 0, 0)),
+                new Setter(FrameworkElement.WidthProperty, 83.0),
+                new Setter(FrameworkElement.HeightProperty, 83.0),
+            }
+        };
+
+        resources.Add("DefaultProfilePictureStyle", defaultProfilePictureStyle);
     }
 }
