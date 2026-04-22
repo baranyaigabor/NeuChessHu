@@ -2,18 +2,14 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     */
-    public function test_the_application_returns_a_successful_response(): void
+    public function testDesktopAuthorizeRedirectsGuestsToSignIn() : void
     {
-        $response = $this->get('/');
+        $response = $this->get('/desktop/authorize?redirect_uri=neuchesshu://callback');
 
-        $response->assertStatus(200);
+        $response->assertRedirect('http://frontend.vm2.test/signin?redirect_uri=neuchesshu%3A%2F%2Fcallback');
     }
 }
