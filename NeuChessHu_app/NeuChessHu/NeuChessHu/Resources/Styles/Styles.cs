@@ -38,6 +38,7 @@ internal static class Styles
 
         DefaultProfilePictureStyle();
         DefaultProfilePictureOnMatchEndWindowStyle();
+        ProfilePictureStyle();
     }
 
     static void SetCursorOnButtons()
@@ -288,5 +289,20 @@ internal static class Styles
         };
 
         resources.Add("DefaultProfilePictureOnMatchEndWindowStyle", defaultProfilePictureOnMatchEndWindowStyle);
+    }
+
+    static void ProfilePictureStyle()
+    {
+        Style profilePictureStyle = new()
+        {
+            Setters =
+            {
+                new Setter(FrameworkElement.VerticalAlignmentProperty, VerticalAlignment.Center),
+                new Setter(FrameworkElement.HorizontalAlignmentProperty, HorizontalAlignment.Center),
+                new Setter(Image.StretchProperty, Stretch.UniformToFill),
+            }
+        };
+
+        resources.Add("ProfilePictureStyle", profilePictureStyle);
     }
 }
