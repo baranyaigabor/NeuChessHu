@@ -22,6 +22,7 @@ internal static class Styles
         PopUpsBorderStyle();
 
         ButtonStyleOverlayStyle();
+        ButtonStyleBaseMenuStyle();
     }
 
     static void SetCursorOnButtons()
@@ -89,5 +90,31 @@ internal static class Styles
         };
 
         resources.Add("ButtonStyleOverlayStyle", buttonStyleOverlayStyle);
+    }
+
+    static void ButtonStyleBaseMenuStyle()
+    {
+        Style buttonStyleBaseMenu = new()
+        {
+            Setters =
+            {
+                new Setter(Border.HeightProperty, 65.0),
+                new Setter(Border.WidthProperty, 230.0),
+                new Setter(Border.CornerRadiusProperty, new CornerRadius(10)),
+                new Setter(Border.BackgroundProperty, new DynamicResourceExtension("ButtonBrush")),
+                new Setter(Border.BorderBrushProperty, new DynamicResourceExtension("BorderBrush")),
+                new Setter(Border.BorderThicknessProperty, new Thickness(1)),
+                new Setter(Border.VerticalAlignmentProperty, VerticalAlignment.Center),
+                new Setter(Border.HorizontalAlignmentProperty, HorizontalAlignment.Center),
+                new Setter(Border.CursorProperty, AppResources.Get<Cursor>("CursorOnButtons")),
+                new Setter(Border.ForceCursorProperty, true)
+            },
+            Triggers =
+            {
+                AppResources.Get<Trigger>("ButtonTriggerBaseMenuHoverTrigger")
+            }
+        };
+
+        resources.Add("ButtonStyleBaseMenuStyle", buttonStyleBaseMenu);
     }
 }
