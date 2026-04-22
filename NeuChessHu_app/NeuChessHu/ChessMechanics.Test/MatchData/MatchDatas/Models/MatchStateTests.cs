@@ -19,8 +19,8 @@ public class MatchStateTests
         MatchDataStore store = new(apiHandlers, new SessionDatas());
 
         MatchState state = new();
-        string? propertyName = null;
 
+        string? propertyName = null;
         state.PropertyChanged += (_, e) => propertyName = e.PropertyName;
 
         Patcher.PatchMatchState(new MatchStateDTO { MatchDuration = "Bullet" },
@@ -36,8 +36,8 @@ public class MatchStateTests
         MatchDataStore store = new(apiHandlers, new SessionDatas());
 
         MatchState state = new();
-        string? propertyName = null;
 
+        string? propertyName = null;
         state.PropertyChanged += (_, e) => propertyName = e.PropertyName;
 
         Patcher.PatchMatchState(new MatchStateDTO { CurrentSide = Side.Black },
