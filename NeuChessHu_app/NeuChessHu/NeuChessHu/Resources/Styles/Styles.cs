@@ -19,6 +19,7 @@ internal static class Styles
         SetCursorOnTextBoxes();
 
         WindowsHeaderStyle();
+        PopUpsBorderStyle();
     }
 
     static void SetCursorOnButtons()
@@ -48,5 +49,21 @@ internal static class Styles
         };
 
         resources.Add("WindowsHeaderStyle", windowsHeaderStyle);
+    }
+
+    static void PopUpsBorderStyle()
+    {
+        Style popUpsBorderStyle = new()
+        {
+            Setters =
+            {
+                new Setter(Border.BorderBrushProperty, new DynamicResourceExtension("BorderBrush")),
+                new Setter(Border.BorderThicknessProperty, new Thickness(2)),
+                new Setter(Border.BackgroundProperty, Brushes.Transparent),
+                new Setter(Border.CornerRadiusProperty, new CornerRadius(10))
+            }
+        };
+
+        resources.Add("PopUpsBorderStyle", popUpsBorderStyle);
     }
 }
