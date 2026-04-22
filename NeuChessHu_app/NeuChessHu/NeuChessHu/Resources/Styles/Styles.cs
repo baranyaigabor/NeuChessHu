@@ -41,6 +41,7 @@ internal static class Styles
         ProfilePictureStyle();
 
         SendMessageBorderStyle();
+        SendMessageTextBoxStyle();
     }
 
     static void SetCursorOnButtons()
@@ -326,5 +327,44 @@ internal static class Styles
         };
 
         resources.Add("SendMessageBorderStyle", sendMessageBorderStyle);
+    }
+
+    static void SendMessageTextBoxStyle()
+    {
+        ControlTemplate cleanTemplate = new(typeof(TextBox));
+        FrameworkElementFactory scrollViewerFactory = new(typeof(ScrollViewer));
+        scrollViewerFactory.Name = "PART_ContentHost";
+        scrollViewerFactory.SetValue(ScrollViewer.FocusVisualStyleProperty, null);
+        scrollViewerFactory.SetValue(ScrollViewer.MarginProperty, new Thickness(0));
+        cleanTemplate.VisualTree = scrollViewerFactory;
+
+        Style sendMessageTextBoxStyle = new()
+        {
+            Setters =
+            {
+                new Setter(TextBox.TemplateProperty, cleanTemplate),
+                new Setter(TextBox.BackgroundProperty, Brushes.Transparent),
+                new Setter(TextBox.BorderThicknessProperty, new Thickness(0.5)),
+                new Setter(TextBox.BorderBrushProperty, new DynamicResourceExtension("BorderBrush")),
+                new Setter(TextBox.ForegroundProperty, new DynamicResourceExtension("TextBrush")),
+                new Setter(TextBox.FontSizeProperty, 15.0),
+                new Setter(TextBox.FontWeightProperty, FontWeights.DemiBold),
+                new Setter(TextBox.FontFamilyProperty, new FontFamily("Aharoni")),
+                new Setter(TextBox.VerticalContentAlignmentProperty, VerticalAlignment.Center),
+                new Setter(TextBox.PaddingProperty, new Thickness(10, 0, 10, 0)),
+                new Setter(TextBox.CursorProperty, AppResources.Get<Cursor>("CursorOnTextBoxes")),
+                new Setter(TextBox.ForceCursorProperty, true),
+                new Setter(TextBox.AcceptsReturnProperty, true),
+                new Setter(TextBox.AcceptsTabProperty, true),
+                new Setter(TextBox.TextWrappingProperty, TextWrapping.Wrap),
+                new Setter(TextBox.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Auto),
+                new Setter(TextBox.FocusVisualStyleProperty, null)
+            },
+            Triggers =
+            {
+                AppResources.Get<Trigger>("SendMessageTextBoxFocusTrigger")
+            }
+        };
+        resources.Add("SendMessageTextBoxStyle", sendMessageTextBoxStyle);
     }
 }
