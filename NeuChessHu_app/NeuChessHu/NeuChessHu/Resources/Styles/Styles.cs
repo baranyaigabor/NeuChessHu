@@ -42,6 +42,8 @@ internal static class Styles
 
         SendMessageBorderStyle();
         SendMessageTextBoxStyle();
+
+        SendButtonStyle();
     }
 
     static void SetCursorOnButtons()
@@ -366,5 +368,30 @@ internal static class Styles
             }
         };
         resources.Add("SendMessageTextBoxStyle", sendMessageTextBoxStyle);
+    }
+
+    static void SendButtonStyle()
+    {
+        Style sendButtonStyle = new()
+        {
+            Setters =
+            {
+                new Setter(Border.WidthProperty, 32.0),
+                new Setter(Border.HeightProperty, 32.0),
+                new Setter(Border.MarginProperty, new Thickness(5, 0, 5, 0)),
+                new Setter(Border.CursorProperty, AppResources.Get<Cursor>("CursorOnButtons")),
+                new Setter(Border.ForceCursorProperty, true),
+                new Setter(Border.BorderThicknessProperty, new Thickness(1)),
+                new Setter(Border.CornerRadiusProperty,  new CornerRadius(16)),
+                new Setter(Border.BorderBrushProperty, new DynamicResourceExtension("BorderBrush")),
+                new Setter(Border.BackgroundProperty, new DynamicResourceExtension("ButtonBrush")),
+            },
+            Triggers =
+            {
+                AppResources.Get<Trigger>("SendButtonHoverTrigger"),
+                AppResources.Get<Trigger>("SendButtonImageHoverTrigger")
+            }
+        };
+        resources.Add("SendButtonStyle", sendButtonStyle);
     }
 }
