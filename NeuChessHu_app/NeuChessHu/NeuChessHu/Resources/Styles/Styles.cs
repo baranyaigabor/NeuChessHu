@@ -44,6 +44,7 @@ internal static class Styles
         SendMessageTextBoxStyle();
 
         SendButtonStyle();
+        SendButtonImageStyle();
     }
 
     static void SetCursorOnButtons()
@@ -393,5 +394,19 @@ internal static class Styles
             }
         };
         resources.Add("SendButtonStyle", sendButtonStyle);
+    }
+
+    static void SendButtonImageStyle()
+    {
+        Style sendButtonImageStyle = new()
+        {
+            Setters =
+            {
+                new Setter(FrameworkElement.WidthProperty, 16.0),
+                new Setter(FrameworkElement.HeightProperty, 16.0),
+                new Setter(Image.MarginProperty, new Thickness(-3, 0, 0, -3)),
+            }
+        };
+        resources.Add("SendButtonImageStyle", sendButtonImageStyle);
     }
 }
