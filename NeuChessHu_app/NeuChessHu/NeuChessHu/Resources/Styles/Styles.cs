@@ -26,6 +26,7 @@ internal static class Styles
         TextStyle();
 
         MainWindowStyle();
+        MainWindowOpenOverlayStyle();
     }
 
     static void SetCursorOnButtons()
@@ -152,5 +153,20 @@ internal static class Styles
         };
 
         resources.Add("MainWindowStyle", mainWindowStyle);
+    }
+
+    static void MainWindowOpenOverlayStyle()
+    {
+        Style mainWindowOpenOverlayStyle = new()
+        {
+            Setters =
+            {
+                new Setter(Grid.BackgroundProperty, new DynamicResourceExtension("WindowBrush")),
+                new Setter(Grid.EffectProperty, new BlurEffect { Radius = 15 }),
+                new Setter(Grid.IsHitTestVisibleProperty, false)
+            }
+        };
+
+        resources.Add("MainWindowOpenOverlayStyle", mainWindowOpenOverlayStyle);
     }
 }
