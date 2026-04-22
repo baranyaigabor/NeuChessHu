@@ -1,8 +1,8 @@
 ﻿namespace ChessMechanics.MatchData.Clock;
 
-internal static class ClockExtensions
+public static class ClockExtensions
 {
-    internal static void Start(this Timer timer, double seconds)
+    public static void Start(this Timer timer, double seconds)
     {
         int firstInterval = GetFirstInterval(seconds);
         int period = seconds <= 10 ? 100 : 1000;
@@ -10,7 +10,7 @@ internal static class ClockExtensions
         timer.Change(firstInterval, period);
     }
 
-    internal static void Stop(this Timer clock) =>
+    public static void Stop(this Timer clock) =>
         clock.Change(Timeout.Infinite, Timeout.Infinite);
 
     static int GetFirstInterval(double secondsLeft)
