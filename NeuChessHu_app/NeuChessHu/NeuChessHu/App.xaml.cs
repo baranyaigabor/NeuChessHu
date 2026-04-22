@@ -2,6 +2,7 @@
 using ChessMechanics.Authentication.Session;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NeuChessHu.Bootstrap.Dependencies;
 using NeuChessHu.Bootstrap.Protocols;
 using NeuChessHu.Callback;
 using NeuChessHu.Configs;
@@ -91,6 +92,7 @@ public partial class App : Application
     {
         HostApplicationBuilder builder = Host.CreateApplicationBuilder();
 
+        builder.Services.AddServiceCollections();
         AppHost = builder.Build();
 
         await AppHost.StartAsync();
