@@ -45,6 +45,8 @@ internal static class Styles
 
         SendButtonStyle();
         SendButtonImageStyle();
+
+        ConfirmCancelButtonsStyle();
     }
 
     static void SetCursorOnButtons()
@@ -408,5 +410,29 @@ internal static class Styles
             }
         };
         resources.Add("SendButtonImageStyle", sendButtonImageStyle);
+    }
+
+    static void ConfirmCancelButtonsStyle()
+    {
+        Style confirmCancelButtonsStyle = new() 
+        {
+            Setters =
+            {
+                new Setter(Border.BorderThicknessProperty, new Thickness(0.5)),
+                new Setter(Border.CornerRadiusProperty, new CornerRadius(10)),
+                new Setter(Border.MarginProperty, new Thickness(5, -3, 5, 8)),
+                new Setter(Border.ForceCursorProperty, true),
+                new Setter(Border.CursorProperty, AppResources.Get<Cursor>("CursorOnButtons")),
+                new Setter(Border.HeightProperty, 25.0),
+                new Setter(Border.BorderBrushProperty, new DynamicResourceExtension("BorderBrush")),
+                new Setter(Border.BackgroundProperty, new DynamicResourceExtension("ButtonBrush")),
+            },
+            Triggers =
+            {
+                AppResources.Get<Trigger>("ConfirmCancelButtonsHoverTrigger")
+            }
+        };
+
+        resources.Add("ConfirmCancelButtonsStyle", confirmCancelButtonsStyle);
     }
 }
