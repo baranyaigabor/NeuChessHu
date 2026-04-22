@@ -23,4 +23,12 @@ class Base64ImageRuleTest extends TestCase
         $this->rule->validate('profile_picture', $value, $fail);
         return $errors;
     }
+
+    public function testValidPngPasses(): void
+    {
+        $pngData = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/p9sAAAAASUVORK5CYII=';
+        $value = 'data:image/png;base64,' . $pngData;
+        $errors = $this->validate($value);
+        $this->assertEmpty($errors);
+    }
 }
