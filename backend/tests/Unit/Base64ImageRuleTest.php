@@ -38,4 +38,11 @@ class Base64ImageRuleTest extends TestCase
         $this->assertNotEmpty($errors);
         $this->assertStringContainsString('JPEG or PNG', $errors[0]);
     }
+
+    public function testGifPrefixFails(): void
+    {
+        $errors = $this->validate('data:image/gif;base64,' . base64_encode('gif-data'));
+        $this->assertNotEmpty($errors);
+        $this->assertStringContainsString('JPEG or PNG', $errors[0]);
+    }
 }
