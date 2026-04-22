@@ -37,6 +37,7 @@ internal static class Styles
         CloseEllipseButtonStyle();
 
         DefaultProfilePictureStyle();
+        DefaultProfilePictureOnMatchEndWindowStyle();
     }
 
     static void SetCursorOnButtons()
@@ -272,5 +273,20 @@ internal static class Styles
         };
 
         resources.Add("DefaultProfilePictureStyle", defaultProfilePictureStyle);
+    }
+
+    static void DefaultProfilePictureOnMatchEndWindowStyle()
+    {
+        Style defaultProfilePictureOnMatchEndWindowStyle = new()
+        {
+            Setters =
+            {
+                new Setter(FrameworkElement.MarginProperty, new Thickness(-12, -12, 0, 0)),
+                new Setter(FrameworkElement.WidthProperty, 78.0),
+                new Setter(FrameworkElement.HeightProperty, 78.0),
+            }
+        };
+
+        resources.Add("DefaultProfilePictureOnMatchEndWindowStyle", defaultProfilePictureOnMatchEndWindowStyle);
     }
 }
