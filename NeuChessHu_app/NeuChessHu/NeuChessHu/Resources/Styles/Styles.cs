@@ -30,6 +30,8 @@ internal static class Styles
 
         MainOverlayStyle();
         MainOpenOverlayStyle();
+
+        OpenPromotionWindowStyle();
     }
 
     static void SetCursorOnButtons()
@@ -198,5 +200,19 @@ internal static class Styles
         };
 
         resources.Add("MainOpenOverlayStyle", mainOpenOverlayStyle);
+    }
+
+    static void OpenPromotionWindowStyle()
+    {
+        Style openPromotionWindowStyle = new()
+        {
+            Setters =
+            {
+                new Setter(Grid.IsHitTestVisibleProperty, true),
+                new Setter(Panel.ZIndexProperty, 1),
+            }
+        };
+
+        resources.Add("OpenPromotionWindowStyle", openPromotionWindowStyle);
     }
 }
