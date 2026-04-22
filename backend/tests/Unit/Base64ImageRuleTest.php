@@ -31,4 +31,11 @@ class Base64ImageRuleTest extends TestCase
         $errors = $this->validate($value);
         $this->assertEmpty($errors);
     }
+
+    public function testMissingPrefixFails(): void
+    {
+        $errors = $this->validate(base64_encode('not-a-real-image'));
+        $this->assertNotEmpty($errors);
+        $this->assertStringContainsString('JPEG or PNG', $errors[0]);
+    }
 }
