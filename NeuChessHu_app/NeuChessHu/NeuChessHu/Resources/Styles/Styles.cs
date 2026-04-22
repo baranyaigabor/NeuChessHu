@@ -33,6 +33,8 @@ internal static class Styles
 
         OpenPromotionWindowStyle();
         ClosedPromotionWindowStyle();
+
+        CloseEllipseButtonStyle();
     }
 
     static void SetCursorOnButtons()
@@ -228,5 +230,30 @@ internal static class Styles
         };
 
         resources.Add("ClosedPromotionWindowStyle", closedPromotionWindowStyle);
+    }
+
+    static void CloseEllipseButtonStyle()
+    {
+        Style closeEllipseButtonStyle = new()
+        {
+            Setters =
+            {
+                new Setter(Ellipse.WidthProperty, 10.0),
+                new Setter(Ellipse.HeightProperty, 10.0),
+                new Setter(Ellipse.FillProperty, Brushes.Red),
+                new Setter(Ellipse.StrokeProperty, Brushes.DarkRed),
+                new Setter(Ellipse.StrokeThicknessProperty, 1.5),
+                new Setter(Ellipse.HorizontalAlignmentProperty, HorizontalAlignment.Right),
+                new Setter(Ellipse.VerticalAlignmentProperty, VerticalAlignment.Top),
+                new Setter(Border.CursorProperty, AppResources.Get<Cursor>("CursorOnButtons")),
+                new Setter(Border.ForceCursorProperty, true)
+            },
+            Triggers =
+            {
+                AppResources.Get<Trigger>("CloseEllipseButtonHoverTrigger")
+            }
+        };
+
+        resources.Add("CloseEllipseButtonStyle", closeEllipseButtonStyle);
     }
 }
