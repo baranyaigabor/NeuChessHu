@@ -1,7 +1,7 @@
 using ChessMechanics.MatchData.MatchDatas.DataTransferObjects;
 using NUnit.Framework;
 
-namespace ChessMechanics.Tests.MatchData.MatchDatas.DataTransferObjects;
+namespace ChessMechanics.Test.MatchData.MatchDatas.DataTransferObjects;
 
 [TestFixture]
 public class ChannelAssignmentDTOTests
