@@ -20,6 +20,8 @@ internal static class Styles
 
         WindowsHeaderStyle();
         PopUpsBorderStyle();
+
+        ButtonStyleOverlayStyle();
     }
 
     static void SetCursorOnButtons()
@@ -65,5 +67,27 @@ internal static class Styles
         };
 
         resources.Add("PopUpsBorderStyle", popUpsBorderStyle);
+    }
+
+    static void ButtonStyleOverlayStyle()
+    {
+        Style buttonStyleOverlayStyle = new()
+        {
+            Setters =
+            {
+                new Setter(Border.BorderBrushProperty, new DynamicResourceExtension("BorderBrush")),
+                new Setter(Border.BackgroundProperty, Brushes.Transparent),
+                new Setter(Border.VerticalAlignmentProperty, VerticalAlignment.Center),
+                new Setter(Border.HorizontalAlignmentProperty, HorizontalAlignment.Center),
+                new Setter(Border.CursorProperty, AppResources.Get<Cursor>("CursorOnButtons")),
+                new Setter(Border.ForceCursorProperty, true)
+            },
+            Triggers =
+            {
+                AppResources.Get<Trigger>("ButtonTriggerOverlayHoverTrigger")
+            }
+        };
+
+        resources.Add("ButtonStyleOverlayStyle", buttonStyleOverlayStyle);
     }
 }
