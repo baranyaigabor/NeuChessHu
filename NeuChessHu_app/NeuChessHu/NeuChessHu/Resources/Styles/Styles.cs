@@ -23,6 +23,7 @@ internal static class Styles
 
         ButtonStyleOverlayStyle();
         ButtonStyleBaseMenuStyle();
+        TextStyle();
     }
 
     static void SetCursorOnButtons()
@@ -116,5 +117,23 @@ internal static class Styles
         };
 
         resources.Add("ButtonStyleBaseMenuStyle", buttonStyleBaseMenu);
+    }
+
+    static void TextStyle()
+    {
+        Style textStyle = new()
+        {
+            Setters =
+            {
+                new Setter(Label.HorizontalAlignmentProperty, HorizontalAlignment.Center),
+                new Setter(Label.VerticalAlignmentProperty, VerticalAlignment.Center),
+                new Setter(Label.FontSizeProperty, 14.0),
+                new Setter(Label.FontWeightProperty, FontWeights.Bold),
+                new Setter(Label.FontFamilyProperty, new FontFamily("Aharoni")),
+                new Setter(Label.ForegroundProperty, new DynamicResourceExtension("TextBrush"))
+            }
+        };
+
+        resources.Add("TextStyle", textStyle);
     }
 }
