@@ -45,4 +45,10 @@ class Base64ImageRuleTest extends TestCase
         $this->assertNotEmpty($errors);
         $this->assertStringContainsString('JPEG or PNG', $errors[0]);
     }
+
+    public function testInvalidBase64Fails(): void
+    {
+        $errors = $this->validate('data:image/png;base64,!!!NOTVALIDBASE64!!!');
+        $this->assertNotEmpty($errors);
+    }
 }
