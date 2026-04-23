@@ -20,6 +20,3 @@ function onEmailChange(event) {
                type="text">
     </div>
 </template>
-
-<style lang="css">
-</style>
