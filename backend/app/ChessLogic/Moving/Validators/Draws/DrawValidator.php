@@ -2,7 +2,6 @@
 
 namespace ChessLogic\Moving\Validators\Draws;
 
-use ChessLogic\ChessBoard\ChessPieces\Definitions\Side;
 use ChessLogic\ChessBoard\ChessPieces\Pieces\ChessPiece;
 use ChessLogic\MatchDatas\MatchDataStore;
 use ChessLogic\Moving\Validators\Draws\ConsecutiveMoves\ConsecutiveMovesTracker;
