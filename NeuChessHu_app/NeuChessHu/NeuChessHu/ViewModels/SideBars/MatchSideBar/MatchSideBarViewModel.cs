@@ -292,7 +292,7 @@ public class MatchSideBarViewModel : ObservableBase
 
         foreach (Side side in new[] { Side.White, Side.Black })
         {
-            matchDataStore.PlayerDatas[side].PropertyChanged += OnPlayerDataChanged;
+            matchDataStore.PlayerDatas[side].PropertyChanged += OnPlayerDatasChanged;
             matchDataStore.PlayerDatas[side].CapturedPieces.CollectionChanged += OnCapturedPiecesChanged;
         }
 
@@ -345,7 +345,7 @@ public class MatchSideBarViewModel : ObservableBase
                 : AppResources.Get<string>("ResignConfirmationText");
     }
 
-    void OnPlayerDataChanged(object? s, PropertyChangedEventArgs e)
+    void OnPlayerDatasChanged(object? s, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is not nameof(PlayerDataStore.Time))
             return;
@@ -559,7 +559,7 @@ public class MatchSideBarViewModel : ObservableBase
 
         foreach (Side side in new[] { Side.White, Side.Black })
         {
-            matchDataStore.PlayerDatas[side].PropertyChanged -= OnPlayerDataChanged;
+            matchDataStore.PlayerDatas[side].PropertyChanged -= OnPlayerDatasChanged;
             matchDataStore.PlayerDatas[side].CapturedPieces.CollectionChanged -= OnCapturedPiecesChanged;
         }
 

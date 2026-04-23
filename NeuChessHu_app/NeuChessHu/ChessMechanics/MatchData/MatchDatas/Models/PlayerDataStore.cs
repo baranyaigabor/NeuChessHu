@@ -8,9 +8,19 @@ namespace ChessMechanics.MatchData.MatchDatas.Models;
 public class PlayerDataStore(int? id, UserData? userData, ObservableCollection<Piece> capturedPieces,
     int points, string time) : ObservableBase
 {
+    private UserData? userData = userData;
+
     public int? ID { get; internal set; } = id;
-    
-    public UserData? UserData { get; internal set; } = userData;
+
+    public UserData? UserData 
+    { 
+        get => userData;
+        internal set
+        {
+            userData = value;
+            RaisePropertyChanged();
+        }
+    }
 
     public ObservableCollection<Piece> CapturedPieces 
     { 

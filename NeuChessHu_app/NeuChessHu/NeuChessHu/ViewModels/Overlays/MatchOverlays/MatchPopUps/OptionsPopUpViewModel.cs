@@ -1,6 +1,9 @@
 using ChessMechanics.Authentication.Session;
+using ChessMechanics.Authentication.User;
+using ChessMechanics.ChessBoard.Definitions;
 using ChessMechanics.Common;
 using ChessMechanics.MatchData.MatchDatas;
+using ChessMechanics.MatchData.MatchDatas.Models;
 using ChessMechanics.MatchData.MatchDatas.Models.DomainModels;
 using ChessMechanics.WebSockets.ChessEngine.Requests;
 using NeuChessHu.CommandUtils;
@@ -22,8 +25,8 @@ public class OptionsPopUpViewModel : ObservableBase, IDisposable
     bool canAbort;
 
     string abortResignQuitButtonContent;
-    private Visibility offerDrawButtonVisibility;
-    private int optionsMenuHeight;
+    Visibility offerDrawButtonVisibility;
+    int optionsMenuHeight;
 
     public string AbortResignQuitButtonContent
     {
@@ -59,6 +62,9 @@ public class OptionsPopUpViewModel : ObservableBase, IDisposable
         this.requests = requests;
         this.session = session;
 
+        foreach (Side side in new[] { Side.White, Side.Black })
+            matchDataStore.PlayerDatas[side].PropertyChanged += OnPlayerDatasChanged;
+
         matchDataStore.MatchState.Notations.CollectionChanged += OnNotationsCollectionChanged;
         matchDataStore.MatchPoints.PropertyChanged += OnMatchPointsChanged;
 
@@ -71,6 +77,12 @@ public class OptionsPopUpViewModel : ObservableBase, IDisposable
         OffersDrawCommand = new CommandExecuter<object?>(async x => await OffersDraw());
         OpenInGameSettignsCommand = new CommandExecuter<object?>(_ => OnOpenInGameSettings?.Invoke());
         GoBackCommand = new CommandExecuter<object?>(_ => OnCloseOverlay?.Invoke());
+    }
+
+    void OnPlayerDatasChanged(object? s, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(PlayerDataStore.UserData))
+            DrawButtonVisibilityOnStockfish();
     }
 
     void OnMatchPointsChanged(object? s, PropertyChangedEventArgs e)
@@ -105,6 +117,20 @@ public class OptionsPopUpViewModel : ObservableBase, IDisposable
         else AbortResignQuitButtonContent = AppResources.Get<string>("QuitToMenuButtonText");
     }
 
+    void DrawButtonVisibilityOnStockfish()
+    {
+        string?[] nicknames = [
+            matchDataStore.PlayerDatas[Side.White].UserData?.Nickname,
+            matchDataStore.PlayerDatas[Side.Black].UserData?.Nickname
+        ];
+
+        if (nicknames.Any(x => x is "Stockfish"))
+        {
+            OptionsMenuHeight = 118;
+            OfferDrawButtonVisibility = Visibility.Collapsed;
+        }
+    }
+
     async Task AbortResignQuitButtonAction()
     {
         if (canAbort)
@@ -128,6 +154,9 @@ public class OptionsPopUpViewModel : ObservableBase, IDisposable
 
     public void Dispose()
     {
+        foreach (Side side in new[] { Side.White, Side.Black })
+            matchDataStore.PlayerDatas[side].PropertyChanged -= OnPlayerDatasChanged;
+
         matchDataStore.MatchState.Notations.CollectionChanged -= OnNotationsCollectionChanged;
         matchDataStore.MatchPoints.PropertyChanged += OnMatchPointsChanged;
     }
