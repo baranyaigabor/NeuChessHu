@@ -2,18 +2,24 @@
 
 namespace App\Services;
 
-use App\Events\ChannelAssignment;
 use App\Events\MatchPointsUpdated;
 use App\Events\MatchStarted;
 use App\Events\PlayerDatasUpdated;
+use App\Events\ChannelAssignment;
 use App\Http\Controllers\QueueController;
 use App\Models\Matches;
-use ChessLogic\ChessBoard\ChessPieces\Definitions\Side;
+use App\Models\User;
 use ChessLogic\MatchDatas\MatchDataStore;
+use ChessLogic\ChessBoard\ChessPieces\Definitions\Side;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class MatchService 
 {
+    private const STOCKFISH_EMAIL = 'stockfish@neuchess.local';
+    private const STOCKFISH_NICKNAME = 'Stockfish';
+
     public function tryStartMatch(string $match_duration) : ?string
     {
         $matchedPlayers = app(QueueController::class)->matchPlayersFromDB($match_duration);
@@ -31,6 +37,22 @@ class MatchService
         return $channel;
     }
 
+    public function startStockfishMatch(int $player, string $matchDuration, int $stockfishDepth) : string
+    {
+        $stockfish = $this->stockfishUser();
+        $channel = $this->createChannel($player, $stockfish->id);
+
+        $this->createMatch($player, $stockfish->id, $matchDuration, $channel, [
+            'stockfish' => [
+                'enabled' => true,
+                'player_id' => $stockfish->id,
+                'depth' => $stockfishDepth,
+            ],
+        ], Side::White, $player);
+
+        return $channel;
+    }
+
     public static function startMatch(string $channel) : void
     {
         $cacheKey = str_replace('private-', '', $channel);
@@ -39,6 +61,9 @@ class MatchService
         if (!$data) {
             return;
         }
+
+        Cache::forget("pending_channel:{$data['white_id']}");
+        Cache::forget("pending_channel:{$data['black_id']}");
     
         broadcast(new MatchStarted($cacheKey, [
             'WhiteID' => $data['white_id'],
@@ -56,14 +81,20 @@ class MatchService
         $timestamp = now()->format('YmdHis');
         return "{$player1}-{$player2}-{$timestamp}";
     }
-    
-    private function createMatch(int $player1, int $player2, string $match_duration,
-        string $channel) : void
-    {
-        $matchDataStore = MatchDataStore::createDataStore($player1, $player2, $match_duration, $channel);
 
-        Cache::put("game:{$channel}", 
-        [
+    private function createMatch(int $player1, int $player2, string $match_duration,
+        string $channel, array $metadata = [], ?Side $firstPlayerSide = null,
+        ?int $assignmentPlayer = null) : void
+    {
+        $matchDataStore = MatchDataStore::createDataStore(
+            (string)$player1,
+            (string)$player2,
+            $match_duration,
+            $channel,
+            $firstPlayerSide
+        );
+
+        Cache::put("game:{$channel}", array_merge([
             'match_id' => $matchDataStore->MatchID,
             'white_id' => $matchDataStore->PlayerDatas[Side::White->value]->ID,
             'black_id' => $matchDataStore->PlayerDatas[Side::Black->value]->ID,
@@ -75,9 +106,9 @@ class MatchService
             'chat_messages' => $matchDataStore->ChatMessages->jsonSerialize(),
             'played_at' => $matchDataStore->PlayedAt->format('Y-m-d H:i:s'),
             'match_duration' => $match_duration
-        ], now()->addMinutes(30));
+        ], $metadata), now()->addMinutes(30));
 
-        $this->broadcastMatch($player1, $player2, $channel);
+        $this->broadcastMatch($player1, $player2, $channel, $assignmentPlayer);
     }
 
     public static function getMatchFromCache(string $channel) : ?array
@@ -148,9 +179,35 @@ class MatchService
         return 'Rapid';
     }
 
-    private function broadcastMatch(int $player1, int $player2, string $channel) : void
+    private function stockfishUser(): User
     {
-        broadcast(new ChannelAssignment($channel, $player1));
-        broadcast(new ChannelAssignment($channel, $player2));
+        $user = User::query()
+            ->where('email', self::STOCKFISH_EMAIL)
+            ->orWhere('nickname', self::STOCKFISH_NICKNAME)
+            ->first();
+
+        if ($user) {
+            return $user;
+        }
+
+        return User::create([
+            'nickname' => self::STOCKFISH_NICKNAME,
+            'email' => self::STOCKFISH_EMAIL,
+            'password' => Hash::make(Str::random(32)),
+            'first_name' => 'Stockfish',
+            'last_name' => 'Engine',
+            'is_active' => true,
+        ]);
+    }
+
+    private function broadcastMatch(int $player1, int $player2, string $channel,
+        ?int $assignmentPlayer = null) : void
+    {
+        $players = $assignmentPlayer ? [$assignmentPlayer] : [$player1, $player2];
+
+        foreach ($players as $player) {
+            Cache::put("pending_channel:{$player}", "private-{$channel}", now()->addMinutes(5));
+            broadcast(new ChannelAssignment($channel, $player));
+        }
     }
 }

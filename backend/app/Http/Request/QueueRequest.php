@@ -15,7 +15,8 @@ class QueueRequest extends FormRequest
     {
         return [
             "playerID" => ["required", "integer", "exists:users,id"],
-            "matchDuration" => ["required", "string"]
+            "matchDuration" => ["required", "string"],
+            "StockfishDepth" => ["nullable", "integer", "min:1", "max:20"],
         ];
     }
 }

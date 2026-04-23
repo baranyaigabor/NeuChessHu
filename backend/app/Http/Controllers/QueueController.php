@@ -13,8 +13,26 @@ class QueueController
 
     public function join(QueueRequest $request)
     {
+        $stockfishDepth = $request->input('stockfishDepth', $request->input('StockfishDepth'));
+
+        if ($stockfishDepth !== null) {
+            MatchmakingQueue::where('player_id', $request->playerID)->delete();
+
+            $channel = $this->matchMaker->startStockfishMatch(
+                $request->playerID,
+                $request->matchDuration,
+                (int)$stockfishDepth
+            );
+
+            return response()->json([
+                'status' => 'match-found',
+                'channel' => $channel,
+                'stockfish' => true,
+            ]);
+        }
+
         $this->enqueuePlayer($request->playerID, $request->matchDuration);
-                        
+                
         $channel = $this->matchMaker->tryStartMatch($request->matchDuration);
      
         return response()->json([
@@ -23,22 +41,13 @@ class QueueController
         ]);
     }
 
-    public function enqueuePlayer(int $playerID, string $match_duration) : void
-    {
-        MatchmakingQueue::updateOrCreate(
-            ['player_id' => $playerID],
-            ['match_duration' => $match_duration, 'joined_at' => now()]
-        );
-    }
-
     public function leave(QueueRequest $request)
     {
         $playerId = $request->playerID;
 
         $player = MatchmakingQueue::where('player_id', $playerId)->first();
 
-        if (!$player) 
-        {
+        if (!$player) {
             return response()->json([
                 'status' => 'not-in-queue',
                 'message' => 'Player is not currently in the matchmaking queue.'
@@ -51,6 +60,14 @@ class QueueController
             'status' => 'left',
             'message' => 'Player successfully removed from the matchmaking queue.'
         ]);
+    }
+
+    public function enqueuePlayer(int $playerID, string $match_duration) : void
+    {
+        MatchmakingQueue::updateOrCreate(
+            ['player_id' => $playerID],
+            ['match_duration' => $match_duration, 'joined_at' => now()]
+        );
     }
 
     public function matchPlayersFromDB(string $match_duration) : ?array

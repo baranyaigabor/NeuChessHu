@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'stockfish' => [
+        'url' => env('STOCKFISH_URL') ?: 'http://stockfish:8001',
+    ],
 ];

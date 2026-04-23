@@ -13,7 +13,6 @@ use ChessLogic\MatchDatas\DataStores\MatchState;
 use ChessLogic\MatchDatas\DataStores\PlayerDatas;
 use ChessLogic\MatchDatas\Initializers\MatchInitializer;
 use InvalidArgumentException;
-use React\Http\Io\Clock;
 
 class MatchDataStore
 {
@@ -31,7 +30,7 @@ class MatchDataStore
     public ChatMessages $ChatMessages;
 
     public static function createDataStore(string $ID1, string $ID2, string $matchDuration,
-        string $channel) 
+        string $channel, ?Side $firstPlayerSide = null)
     {
         $store = new self();
 
@@ -42,7 +41,7 @@ class MatchDataStore
 
         $store->MatchPoints = new MatchPoints();
         $store->MatchState = new MatchState();
-        $store->PlayerDatas = MatchInitializer::initializePlayers($ID1, $ID2);
+        $store->PlayerDatas = MatchInitializer::initializePlayers($ID1, $ID2, $firstPlayerSide);
         $store->DrawTrackers = new DrawTrackers();
         $store->Clocks = Clocks::fromMatchDuration($matchDuration);
         $store->ChatMessages = new ChatMessages();
@@ -100,7 +99,8 @@ class MatchDataStore
     {
         $matchPoints = $store->MatchPoints;
 
-        if (!$matchPoints->shouldEndMatch()) {
+        if (!$matchPoints->shouldEndMatch()) 
+        {
             return;
         }
 
@@ -150,8 +150,10 @@ class MatchDataStore
         else if($reason === 'Resign' || $reason === 'Timeout')
         {
             if ($reason === 'Timeout' && !Clocks::isTimeoutValid($store))
+            {
                 return;
-        
+            }
+
             $matchPoints->markMatchEnded();
             $matchPoints->setMatchPointsReason($reason, isForcedDraw: false);
 
@@ -214,7 +216,7 @@ class MatchDataStore
      * @param array{0:int,1:int} $from
      * @param array{0:int,1:int} $to
      */
-    public function swapPieces(array $from, array $to): void
+    public function swapPieces(array $from, array $to) : void
     {
         $temp = $this->MatchState->PieceMatrix[$from[0]][$from[1]];
 
@@ -224,16 +226,17 @@ class MatchDataStore
         $this->MatchState->PieceMatrix[$to[0]][$to[1]] = $temp;
     }
 
-    public function setEnPassantTarget(?array $target): void
+    public function setEnPassantTarget(?array $target) : void
     {
         $this->MatchState->EnPassantTarget = $target;
     }
 
-    public function serializePlayerDatas(): array
+    public function serializePlayerDatas() : array
     {
         $result = [];
 
-        foreach ($this->PlayerDatas as $side => $player) {
+        foreach ($this->PlayerDatas as $side => $player) 
+        {
             $result[(string)$side] = $player->jsonSerialize();
         }
 
