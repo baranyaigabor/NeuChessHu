@@ -221,16 +221,17 @@ class ChessEngine
             return;
         }
 
-        sleep(1);
-
-        try {
+        try 
+        {
             $stockfishMove = $this->stockfishService->bestMove($matchDataStore, (int)$config['depth']);
+
             $legalMoves = $validator->currentLegalMovesWithSelectedPiece(
                 $matchDataStore->MatchState->PieceMatrix,
                 $stockfishMove['from']
             );
 
-            if (!$legalMoves[$stockfishMove['to'][0]][$stockfishMove['to'][1]]) {
+            if (!$legalMoves[$stockfishMove['to'][0]][$stockfishMove['to'][1]]) 
+            {
                 throw new RuntimeException("Stockfish returned illegal move {$stockfishMove['uci']}");
             }
 
@@ -245,7 +246,7 @@ class ChessEngine
         } 
         catch (Throwable $e) 
         {
-            Log::warning("Stockfish move failed for channel {$channel}: {$e->getMessage()}");
+
         }
     }
 

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bootstrap\LoadConfiguration;
 use Illuminate\Foundation\Bootstrap\RegisterFacades;
 use Illuminate\Foundation\Bootstrap\RegisterProviders;
 use Illuminate\Foundation\Bootstrap\BootProviders;
+use App\Services\StockfishService;
 
 $app->bootstrapWith([
     LoadEnvironmentVariables::class,
@@ -36,7 +37,6 @@ use React\EventLoop\Loop;
 use React\Socket\SocketServer;
 use React\Socket\ConnectionInterface;
 use App\WebSocket\Engine\ChessEngine;
-use App\Services\StockfishService;
 use ChessLogic\Messaging\ChatMessagesHandlerFactory;
 use ChessLogic\Moving\Factories\MoveFactory;
 use ChessLogic\Moving\Factories\MoveValidatorFactory;
