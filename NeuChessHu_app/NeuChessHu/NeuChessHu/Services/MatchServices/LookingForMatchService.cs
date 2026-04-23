@@ -62,7 +62,8 @@ public record LookingForMatchService(IServiceProvider Provider, SessionDatas Ses
         onConnectedHandler = async () =>
         {
             if (isLookingForMatch)
-                await HttpClients.HttpJoinMatchmakingQueueAsync(Settings.LastMatchDuration);
+                await HttpClients.HttpJoinMatchmakingQueueAsync(Settings.LastMatchDuration,
+                    Settings.LastMatchStockfish ? 12 : null);
         };
         Pusher.OnConnected += onConnectedHandler;
 

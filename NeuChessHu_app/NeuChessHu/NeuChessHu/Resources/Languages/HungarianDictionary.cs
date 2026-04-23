@@ -75,6 +75,7 @@ internal class HungarianDictionary
     static void SetLookingForMatchWindowTexts()
     {
         resources["LookingForMatchText"] = "Meccs keresése";
+        resources["AgainstStockfishText"] = "Stockfish ellen";
         resources["SearchingNotes"] = new List<string>
         {
             "Méltó ellenfélre várakozás",

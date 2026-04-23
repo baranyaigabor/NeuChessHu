@@ -129,8 +129,9 @@ public partial class MenuSideBarView : UserControl
         Interaction.GetBehaviors(menuSideBarBorder.Child).Add(behaviour);
 
         CommandAttachers.OnClickEvent(timeSetterButton, "OpenTimeSetterCommand");
-        CommandAttachers.OnClickEvent(startButton, "StartMatchCommand");
+        CommandAttachers.OnClickEvent(startButton, "StartMatchAgainstPlayersCommand");
         CommandAttachers.OnClickEvent(moreButton, "MoreIconToggleCommand");
+        CommandAttachers.OnClickEvent(playStockfishButton, "StartMatchAgainstStockfishCommand");
 
         foreach (UIElement element in new UIElement[] { moreLabel, moreIcon })
             moreButton.Children.Add(element);

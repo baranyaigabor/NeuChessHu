@@ -62,7 +62,8 @@ public class MenuSideBarViewModel : ObservableBase, IDisposable
     public Action? OnStartMatch { get; set; }
 
     public ICommand OpenTimeSetterCommand { get; }
-    public ICommand StartMatchCommand { get; }
+    public ICommand StartMatchAgainstPlayersCommand { get; }
+    public ICommand StartMatchAgainstStockfishCommand { get; }
     public ICommand MoreIconToggleCommand { get; }
     public ICommand CustomGameCommand { get; }
 
@@ -76,7 +77,8 @@ public class MenuSideBarViewModel : ObservableBase, IDisposable
         MoreIconImageLoader();
 
         OpenTimeSetterCommand = new CommandExecuter<object?>(_ => OnOpenTimeSetter?.Invoke());
-        StartMatchCommand = new CommandExecuter<object?>(_ => OnStartMatch?.Invoke());
+        StartMatchAgainstPlayersCommand = new CommandExecuter<object?>(_ => StartMatchAgainstPlayers());
+        StartMatchAgainstStockfishCommand = new CommandExecuter<object?>(_ => StartMatchAgainstStockfish());
         MoreIconToggleCommand = new CommandExecuter<object?>(_ => MoreIconToggle());
         CustomGameCommand = new CommandExecuter<object?>(_ => OnOpenCustomGamePanel?.Invoke());
     }
@@ -101,6 +103,18 @@ public class MenuSideBarViewModel : ObservableBase, IDisposable
             : AppResources.Get<string>("MinuteText");
 
         TimeSetterButtonContent = $"{Settings.LastMatchDuration}{minuteText}";
+    }
+
+    void StartMatchAgainstPlayers()
+    {
+        settings.LastMatchStockfish = false;
+        OnStartMatch?.Invoke();
+    }
+
+    void StartMatchAgainstStockfish()
+    {
+        settings.LastMatchStockfish = true;
+        OnStartMatch?.Invoke();
     }
 
     void MoreIconImageLoader() =>

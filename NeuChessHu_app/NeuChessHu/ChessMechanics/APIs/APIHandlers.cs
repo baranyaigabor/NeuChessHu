@@ -24,7 +24,10 @@ public class APIHandlers : IDisposable
     void OnSessionChanged(object? s, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is nameof(SessionDatas.Token))
-            CreateHttpClient();
+        {
+            httpClient?.Dispose();
+            httpClient = CreateHttpClient();
+        }
     }
 
     HttpClient CreateHttpClient() => new()
@@ -40,9 +43,9 @@ public class APIHandlers : IDisposable
     internal async Task<string> HttpGetUserAsync(int? userID) =>
         await HttpClient.GetStringAsync($"{baseUrl}users/{userID}");
 
-    public async Task HttpJoinMatchmakingQueueAsync(string matchDuration) =>
+    public async Task HttpJoinMatchmakingQueueAsync(string matchDuration, int? stockfishDepth = null) =>
         await HttpClient.PostAsJsonAsync($"{baseUrl}join/matchmakingqueue",
-            new { playerID = session.UserID, matchDuration }).ConfigureAwait(false);
+            new { playerID = session.UserID, matchDuration, stockfishDepth }).ConfigureAwait(false);
 
     public async Task HttpLeaveMatchmakingQueueAsync() =>
         await HttpClient.PostAsJsonAsync($"{baseUrl}leave/matchmakingqueue",

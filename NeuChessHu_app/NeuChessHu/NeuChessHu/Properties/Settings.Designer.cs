@@ -106,5 +106,17 @@ namespace NeuChessHu.Properties {
                 this["DarkMode"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LastMatchStockfish {
+            get {
+                return ((bool)(this["LastMatchStockfish"]));
+            }
+            set {
+                this["LastMatchStockfish"] = value;
+            }
+        }
     }
 }

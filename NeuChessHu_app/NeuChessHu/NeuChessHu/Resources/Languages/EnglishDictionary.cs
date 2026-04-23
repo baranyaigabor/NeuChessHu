@@ -77,6 +77,7 @@ internal class EnglishDictionary
     static void SetLookingForMatchWindowTexts()
     {
         resources["LookingForMatchText"] = "Looking for Match";
+        resources["AgainstStockfishText"] = "Against Stockfish";
         resources["SearchingNotes"] = new List<string>
         {
             "Waiting for a worthy opponent...",

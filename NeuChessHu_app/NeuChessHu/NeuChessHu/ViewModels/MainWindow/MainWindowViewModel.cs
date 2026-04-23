@@ -13,6 +13,7 @@ using NeuChessHu.UserSettings;
 using NeuChessHu.ViewModels.NavBar;
 using NeuChessHu.ViewModels.Overlays.MenuOverlays.MenuWindows;
 using NeuChessHu.ViewModels.SideBars.MatchSideBar;
+using System.Diagnostics.Eventing.Reader;
 using System.Windows;
 
 namespace NeuChessHu.ViewModels.MainWindow;
@@ -254,10 +255,12 @@ public class MainWindowViewModel : ObservableBase
         MainOverlay = lookingForMatchWindow;
 
         lookingForMatchWindow.StartTimer();
-        lookingForMatchWindow.MatchDuration = settings.LastMatchDuration +
-            $"{(settings.LastMatchDuration.Contains('|')
-            ? string.Empty
-            : " " + AppResources.Get<string>("MinuteText"))}";
+
+        lookingForMatchWindow.MatchDuration = settings.LastMatchStockfish 
+            ? AppResources.Get<string>("AgainstStockfishText")
+            : settings.LastMatchDuration + $"{(settings.LastMatchDuration.Contains('|')
+                ? string.Empty
+                : " " + AppResources.Get<string>("MinuteText"))}";
 
         await lookingForMatchService.LookingForMatchAsync();
     }

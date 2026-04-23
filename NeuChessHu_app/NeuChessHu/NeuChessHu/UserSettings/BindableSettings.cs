@@ -129,4 +129,19 @@ public partial class BindableSettings(Settings settings) : ObservableBase
             }
         }
     }
+
+    public bool LastMatchStockfish
+    {
+        get => settings.LastMatchStockfish;
+        set
+        {
+            if (settings.LastMatchStockfish != value)
+            {
+                settings.LastMatchStockfish = value;
+                settings.Save();
+
+                RaisePropertyChanged();
+            }
+        }
+    }
 }
