@@ -350,10 +350,12 @@ public class MatchSideBarViewModel : ObservableBase
         if (e.PropertyName is nameof(BindableSettings.DarkMode))
             UsersInfosLoader();
 
-        else if (e.PropertyName is nameof(BindableSettings.Language))
+        else if (e.PropertyName is nameof(BindableSettings.Language) && ResignDrawConfirmationText is not null)
+        {
             ResignDrawConfirmationText = ResignDrawConfirmationText.StartsWith('D')
                 ? AppResources.Get<string>("DrawConfirmationText")
                 : AppResources.Get<string>("ResignConfirmationText");
+        }
     }
 
     void OnPlayerDatasChanged(object? s, PropertyChangedEventArgs e)
