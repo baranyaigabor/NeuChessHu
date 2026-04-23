@@ -59,8 +59,8 @@
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
+  --border: oklch(0 0 0);
+  --input: oklch(0 0 0);
   --ring: oklch(0.705 0.015 286.067);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -74,8 +74,59 @@
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.967 0.001 286.375);
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-border: oklch(0 0 0);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+
+  --NavBarBrush: #D0B399;
+  --SideBarBrush: #DAB393;
+  --WindowBrush: #FFE4C4;
+  --ButtonBrush: #FFECC8;
+  --TextBrush: #000000;
+  --TextPopUpBrush: #000000;
+  --BorderBrush: #000000;
+  --BorderChangingBrush: #000000;
+  --PopUpBackground: #F5F5F5;
+  --TextStrongBrush: #2C1A0A;
+  --TextMutedBrush: #5A3A1A;
+  --TextSubtleBrush: #333333;
+  --SurfaceLightBrush: #F0E6D2;
+  --SurfaceDarkBrush: #2C1A0A;
+  --StatusWinBrush: #377E22;
+  --StatusWinStrongBrush: #2D6A2D;
+  --StatusLossBrush: #EA3323;
+  --StatusLossStrongBrush: #8B2020;
+  --StatusUnknownBrush: #808080;
+  --StatusUnknownStrongBrush: #5A5A3A;
+  --ModeBulletBrush: #F0D0A0;
+  --ModeBulletTextBrush: #7A4A00;
+  --ModeBlitzBrush: #D0E0F0;
+  --ModeBlitzTextBrush: #1A4A70;
+  --ModeRapidBrush: #D0EDD0;
+  --ModeRapidTextBrush: #1A5A1A;
+  --ScrollThumbBrush: rgba(0, 0, 0, 0.2);
+  --ScrollThumbHoverBrush: rgba(0, 0, 0, 0.35);
+  --InsetShadowBrush: rgba(0, 0, 0, 0.25);
+  --RuleBrush: rgba(0, 0, 0, 0.28);
+  --ChartFillBrush: rgba(0, 0, 0, 0.1);
+  --TimelineFillBrush: rgba(0, 0, 0, 0.07);
+  --ChartGridBrush: rgba(0, 0, 0, 0.12);
+  --ChartGridSoftBrush: rgba(0, 0, 0, 0.08);
+  --ChartAxisBrush: rgba(0, 0, 0, 0.45);
+  --SelectIconBrush: #888888;
+  --SelectIconHoverBrush: #555555;
+  --ActionBlueBrush: #5897E2;
+  --ActionBlueTextBrush: #FFFFFF;
+  --CalendarAccentBrush: #966A46;
+  --FieldTextBrush: #000000;
+  --LogoBrush: #000000;
+  --ChartBorderColor: #1a1a1a;
+  --ChartBackground: #0000001a;
+  --ChartGridColor: #0000001f;
+  --ChartPointWinBackgroundColor: #29631a;
+  --ChartPointLoseBackgroundColor: #c4281a;
+  --ChartPointDrawBackgroundColor: #666666;
+  --ChartPointBackgroundColor: #1a1a1a;
+  --ChartGridTickColor: #00000073;
 }
 
 .dark {
@@ -95,8 +146,8 @@
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.274 0.006 286.033);
-  --input: oklch(0.274 0.006 286.033);
+  --border: oklch(0 0 0);
+  --input: oklch(0 0 0);
   --ring: oklch(0.442 0.017 285.786);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
@@ -109,8 +160,59 @@
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.274 0.006 286.033);
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.274 0.006 286.033);
+  --sidebar-border: oklch(0 0 0);
   --sidebar-ring: oklch(0.442 0.017 285.786);
+
+  --NavBarBrush: #21211F;
+  --SideBarBrush: #2F2E2A;
+  --WindowBrush: #5B5656;
+  --ButtonBrush: #4C4A4A;
+  --TextBrush: #FFFFFF;
+  --TextPopUpBrush: #000000;
+  --BorderBrush: #000000;
+  --BorderChangingBrush: #ffffff;
+  --PopUpBackground: #C0C0C0;
+  --TextStrongBrush: #F5F5F5;
+  --TextMutedBrush: #DDD6CA;
+  --TextSubtleBrush: #D6D1C8;
+  --SurfaceLightBrush: #C0C0C0;
+  --SurfaceDarkBrush: #21211F;
+  --StatusWinBrush: #7FD05F;
+  --StatusWinStrongBrush: #9BE37A;
+  --StatusLossBrush: #FF7A6A;
+  --StatusLossStrongBrush: #FF9C90;
+  --StatusUnknownBrush: #B0B0B0;
+  --StatusUnknownStrongBrush: #D0D0D0;
+  --ModeBulletBrush: #8A6136;
+  --ModeBulletTextBrush: #FFE2BF;
+  --ModeBlitzBrush: #355E84;
+  --ModeBlitzTextBrush: #E1F1FF;
+  --ModeRapidBrush: #2E6C3F;
+  --ModeRapidTextBrush: #E3FFE5;
+  --ScrollThumbBrush: rgba(255, 255, 255, 0.2);
+  --ScrollThumbHoverBrush: rgba(255, 255, 255, 0.35);
+  --InsetShadowBrush: rgba(0, 0, 0, 0.35);
+  --RuleBrush: rgba(255, 255, 255, 0.28);
+  --ChartFillBrush: rgba(255, 255, 255, 0.12);
+  --TimelineFillBrush: rgba(255, 255, 255, 0.08);
+  --ChartGridBrush: rgba(255, 255, 255, 0.18);
+  --ChartGridSoftBrush: rgba(255, 255, 255, 0.12);
+  --ChartAxisBrush: rgba(255, 255, 255, 0.6);
+  --SelectIconBrush: #A8A8A8;
+  --SelectIconHoverBrush: #D0D0D0;
+  --ActionBlueBrush: #7DB2F0;
+  --ActionBlueTextBrush: #101010;
+  --CalendarAccentBrush: #B9895E;
+  --FieldTextBrush: #FFFFFF;
+  --LogoBrush: #FFFFFF;
+  --ChartBorderColor: #e5e5e5;
+  --ChartBackground: #ffffff1a;
+  --ChartGridColor: #ffffff1f;
+  --ChartPointWinBackgroundColor: #377e22;
+  --ChartPointLoseBackgroundColor: #ea3323;
+  --ChartPointDrawBackgroundColor: #808080;
+  --ChartPointBackgroundColor: #e5e5e5;
+  --ChartGridTickColor: #ffffff73;
 }
 
 @layer base {
@@ -119,5 +221,18 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  input,
+  select,
+  textarea {
+    border-color: var(--BorderBrush) !important;
+    color: var(--FieldTextBrush);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--FieldTextBrush);
+    opacity: 0.6;
   }
 }
