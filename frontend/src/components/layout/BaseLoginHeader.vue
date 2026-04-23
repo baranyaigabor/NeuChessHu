@@ -66,11 +66,9 @@ const stepperConfirmationStepClick = computed(() =>
     </nav>
   </header>
 
-  <div
-    id="stepper"
+  <div id="stepper"
     class="flex items-center justify-center w-full"
-    v-if="showSignUpStepper"
-  >
+    v-if="showSignUpStepper">
     <Stepper>
 
       <StepperItem :step="stepperSignUpStep">
@@ -89,8 +87,8 @@ const stepperConfirmationStepClick = computed(() =>
             :is="stepperPersonalInformationStepClick ? 'RouterLink' : 'div'"
             :to="stepperPersonalInformationStepClick ? 'personalinformation' : null"
             class="stepperLink"
-            :class="!stepperPersonalInformationStepClick ? 'pointer-events-none opacity-50' : ''"
-          >
+            :class="!stepperPersonalInformationStepClick ? 'pointer-events-none opacity-50' : ''">
+            
             <StepperIndicator>2</StepperIndicator>
             <StepperTitle>Personal information</StepperTitle>
           </component>
@@ -104,8 +102,8 @@ const stepperConfirmationStepClick = computed(() =>
             :is="stepperConfirmationStepClick ? 'RouterLink' : 'div'"
             :to="stepperConfirmationStepClick ? 'confirmation' : null"
             class="stepperLink"
-            :class="!stepperConfirmationStepClick ? 'pointer-events-none opacity-50' : ''"
-          >
+            :class="!stepperConfirmationStepClick ? 'pointer-events-none opacity-50' : ''">
+
             <StepperIndicator>3</StepperIndicator>
             <StepperTitle>Final steps</StepperTitle>
           </component>
