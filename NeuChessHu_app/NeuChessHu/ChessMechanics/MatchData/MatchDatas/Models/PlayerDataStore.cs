@@ -31,6 +31,7 @@ public class PlayerDataStore(int? id, UserData? userData, ObservableCollection<P
             RaisePropertyChanged();
         }
     }
+
     public int Points
     {
         get => points;

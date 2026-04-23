@@ -189,6 +189,10 @@ public partial class MatchSideBarView : UserControl
         Interaction.GetBehaviors(((scrollableContainer.Child as Grid)!.Children[1] as DockPanel)!
             .Children[2]).Add(chatBehaviour);
 
+        Binding chatImageVisibilityBinding = new("ChatImageVisibility") { Mode = BindingMode.OneWay };
+        ((chat.Child as Grid)!.Children[0] as Image)!
+            .SetBinding(VisibilityProperty, chatImageVisibilityBinding);
+
         Binding notationsVisibilityBinding = new("NotationsVisibility") { Mode = BindingMode.OneWay };
         (((scrollableContainer.Child as Grid)!.Children[0] as DockPanel)!.Children[1] as ScrollViewer)!
             .SetBinding(VisibilityProperty, notationsVisibilityBinding);

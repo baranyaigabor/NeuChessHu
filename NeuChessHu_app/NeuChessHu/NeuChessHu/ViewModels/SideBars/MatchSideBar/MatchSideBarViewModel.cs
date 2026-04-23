@@ -53,6 +53,7 @@ public class MatchSideBarViewModel : ObservableBase
     Visibility violationNotificationVisibility;
     Visibility resignDrawConfirmationPanelVisibility;
     Visibility inputRowVisibility;
+    Visibility chatImageVisibility;
     Thickness chatButtonThickness;
 
     string resignDrawConfirmationText;
@@ -249,6 +250,16 @@ public class MatchSideBarViewModel : ObservableBase
         }
     }
 
+    public Visibility ChatImageVisibility 
+    { 
+        get => chatImageVisibility; 
+        private set
+        {
+            chatImageVisibility = value;
+            RaisePropertyChanged();
+        }
+    }
+
     public Thickness ChatButtonThickness
     {
         get => chatButtonThickness;
@@ -273,7 +284,7 @@ public class MatchSideBarViewModel : ObservableBase
 
     public Action? OnOpenOptions { get; internal set; }
 
-    public ICommand OpenCloseChatCommand { get; }
+    public ICommand? OpenCloseChatCommand { get; private set; }
     public ICommand SendChatMessageCommand { get; }
     public ICommand ConfirmOrCancelCommand { get; }
     public ICommand OpenOptionsCommand { get; }
@@ -347,12 +358,20 @@ public class MatchSideBarViewModel : ObservableBase
 
     void OnPlayerDatasChanged(object? s, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is not nameof(PlayerDataStore.Time))
-            return;
 
-        if (s == matchDataStore.PlayerDatas[playerSide])
-            PlayerClock = matchDataStore.PlayerDatas[playerSide].Time;
-        else OpponentClock = matchDataStore.PlayerDatas[opponentSide].Time;
+        if (e.PropertyName is nameof(PlayerDataStore.UserData))
+        {
+            ChatImageVisibilityOnStockfish();
+            OpenCloseChatCommand = null;
+            return;
+        }
+
+        if (e.PropertyName is nameof(PlayerDataStore.Time))
+        {
+            if (s == matchDataStore.PlayerDatas[playerSide])
+                PlayerClock = matchDataStore.PlayerDatas[playerSide].Time;
+            else OpponentClock = matchDataStore.PlayerDatas[opponentSide].Time;
+        }
     }
 
     void OnNotationsChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -536,6 +555,17 @@ public class MatchSideBarViewModel : ObservableBase
                 ViolationNotificationVisibility = Visibility.Collapsed;
             });
         });
+    }
+
+    void ChatImageVisibilityOnStockfish()
+    {
+        string?[] nicknames = [
+            matchDataStore.PlayerDatas[Side.White].UserData?.Nickname,
+            matchDataStore.PlayerDatas[Side.Black].UserData?.Nickname
+        ];
+
+        if (nicknames.Any(x => x is "Stockfish"))
+            ChatImageVisibility = Visibility.Collapsed;
     }
 
     async Task OnConfirmOrCancel(bool isConfirmed)
