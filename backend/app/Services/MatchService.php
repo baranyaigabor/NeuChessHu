@@ -122,8 +122,8 @@ class MatchService
     public static function saveMatchToDB(string $channel) : void
     {
         $data = self::getMatchFromCache($channel);
-
-        if (!$data) 
+        
+        if (!$data || !empty($data['stockfish']['enabled'])) 
         {
             return;
         }
