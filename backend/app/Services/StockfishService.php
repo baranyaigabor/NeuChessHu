@@ -13,7 +13,7 @@ class StockfishService
     /**
      * @return array{uci:string,from:array{0:int,1:int},to:array{0:int,1:int},promotionChoice:Piece}
      */
-    public function bestMove(MatchDataStore $store, int $depth): array
+    public function bestMove(MatchDataStore $store, int $depth) : array
     {
         $response = $this->postJson('/bestmove', [
             'fen' => $this->toFen($store),
@@ -22,14 +22,15 @@ class StockfishService
 
         $move = $response['move'] ?? null;
 
-        if (!is_string($move)) {
+        if (!is_string($move)) 
+        {
             throw new RuntimeException('Stockfish response did not include a move.');
         }
 
         return $this->uciToMove($move);
     }
 
-    public function toFen(MatchDataStore $store): string
+    public function toFen(MatchDataStore $store) : string
     {
         return implode(' ', [
             $this->pieceMatrixToFen($store->MatchState->PieceMatrix),
@@ -44,9 +45,10 @@ class StockfishService
     /**
      * @return array{uci:string,from:array{0:int,1:int},to:array{0:int,1:int},promotionChoice:Piece}
      */
-    public function uciToMove(string $move): array
+    public function uciToMove(string $move) : array
     {
-        if (!preg_match('/^[a-h][1-8][a-h][1-8][qrbn]?$/', $move)) {
+        if (!preg_match('/^[a-h][1-8][a-h][1-8][qrbn]?$/', $move)) 
+        {
             throw new RuntimeException("Invalid Stockfish move: {$move}");
         }
 
@@ -63,21 +65,25 @@ class StockfishService
     /**
      * @param ChessPiece[][] $board
      */
-    public function pieceMatrixToFen(array $board): string
+    public function pieceMatrixToFen(array $board) : string
     {
         $ranks = [];
 
-        foreach ($board as $rank) {
+        foreach ($board as $rank) 
+        {
             $empty = 0;
             $fenRank = '';
 
-            foreach ($rank as $piece) {
-                if ($piece->Name === Piece::None) {
+            foreach ($rank as $piece) 
+            {
+                if ($piece->Name === Piece::None) 
+                {
                     $empty++;
                     continue;
                 }
 
-                if ($empty > 0) {
+                if ($empty > 0)
+                {
                     $fenRank .= (string)$empty;
                     $empty = 0;
                 }
@@ -85,7 +91,8 @@ class StockfishService
                 $fenRank .= $this->pieceToFen($piece);
             }
 
-            if ($empty > 0) {
+            if ($empty > 0) 
+            {
                 $fenRank .= (string)$empty;
             }
 
@@ -98,7 +105,7 @@ class StockfishService
     /**
      * @return array{0:int,1:int}
      */
-    public function squareToCoordinates(string $square): array
+    public function squareToCoordinates(string $square) : array
     {
         return [
             8 - (int)$square[1],
@@ -106,12 +113,12 @@ class StockfishService
         ];
     }
 
-    public function coordinatesToSquare(int $row, int $column): string
+    public function coordinatesToSquare(int $row, int $column) : string
     {
         return chr(ord('a') + $column) . (string)(8 - $row);
     }
 
-    private function pieceToFen(ChessPiece $piece): string
+    private function pieceToFen(ChessPiece $piece) : string
     {
         $letter = match ($piece->Name) {
             Piece::Pawn => 'p',
@@ -126,27 +133,33 @@ class StockfishService
         return $piece->Color === Side::White ? strtoupper($letter) : $letter;
     }
 
-    private function castlingRights(MatchDataStore $store): string
+    private function castlingRights(MatchDataStore $store) : string
     {
         $rights = '';
         $board = $store->MatchState->PieceMatrix;
 
-        if (!$store->MatchState->HasWKMoved) {
-            if (!$store->MatchState->HasWRHMoved && $this->hasRook($board, 7, 7, Side::White)) {
+        if (!$store->MatchState->HasWKMoved) 
+        {
+            if (!$store->MatchState->HasWRHMoved && $this->hasRook($board, 7, 7, Side::White)) 
+            {
                 $rights .= 'K';
             }
 
-            if (!$store->MatchState->HasWRAMoved && $this->hasRook($board, 7, 0, Side::White)) {
+            if (!$store->MatchState->HasWRAMoved && $this->hasRook($board, 7, 0, Side::White)) 
+            {
                 $rights .= 'Q';
             }
         }
 
-        if (!$store->MatchState->HasBKMoved) {
-            if (!$store->MatchState->HasBRHMoved && $this->hasRook($board, 0, 7, Side::Black)) {
+        if (!$store->MatchState->HasBKMoved) 
+        {
+            if (!$store->MatchState->HasBRHMoved && $this->hasRook($board, 0, 7, Side::Black)) 
+            {
                 $rights .= 'k';
             }
 
-            if (!$store->MatchState->HasBRAMoved && $this->hasRook($board, 0, 0, Side::Black)) {
+            if (!$store->MatchState->HasBRAMoved && $this->hasRook($board, 0, 0, Side::Black)) 
+            {
                 $rights .= 'q';
             }
         }
@@ -170,7 +183,9 @@ class StockfishService
     {
         $target = $store->MatchState->EnPassantTarget;
 
-        return $target === null ? '-' : $this->coordinatesToSquare($target[0], $target[1]);
+        return $target === null 
+            ? '-' 
+            : $this->coordinatesToSquare($target[0], $target[1]);
     }
 
     private function fullMoveNumber(MatchDataStore $store): int
@@ -192,12 +207,13 @@ class StockfishService
         };
     }
 
-    private function postJson(string $path, array $payload): array
+    private function postJson(string $path, array $payload) : array
     {
         $url = rtrim((string)config('services.stockfish.url', 'http://stockfish:8001'), '/') . $path;
         $body = json_encode($payload);
 
-        if ($body === false) {
+        if ($body === false) 
+        {
             throw new RuntimeException('Could not encode Stockfish request.');
         }
 
@@ -213,17 +229,20 @@ class StockfishService
 
         $response = @file_get_contents($url, false, $context);
 
-        if ($response === false) {
+        if ($response === false) 
+        {
             throw new RuntimeException('Stockfish service is unavailable.');
         }
 
         $data = json_decode($response, true);
 
-        if (!is_array($data)) {
+        if (!is_array($data)) 
+        {
             throw new RuntimeException('Stockfish service returned invalid JSON.');
         }
 
-        if (isset($data['error'])) {
+        if (isset($data['error'])) 
+        {
             throw new RuntimeException((string)$data['error']);
         }
 

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -57,10 +56,5 @@ class User extends Authenticatable
     public function blackMatches()
     {
         return $this->hasMany(Matches::class, 'black_id');
-    }
-
-    public function tournaments(): belongsToMany
-    {
-        return $this->belongsToMany(Tournament::class, 'tournaments_user', 'tournament_name', 'user_id');
     }
 }

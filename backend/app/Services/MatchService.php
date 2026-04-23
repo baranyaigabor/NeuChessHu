@@ -12,14 +12,9 @@ use App\Models\User;
 use ChessLogic\MatchDatas\MatchDataStore;
 use ChessLogic\ChessBoard\ChessPieces\Definitions\Side;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class MatchService 
 {
-    private const STOCKFISH_EMAIL = 'stockfish@neuchess.local';
-    private const STOCKFISH_NICKNAME = 'Stockfish';
-
     public function tryStartMatch(string $match_duration) : ?string
     {
         $matchedPlayers = app(QueueController::class)->matchPlayersFromDB($match_duration);
@@ -58,8 +53,7 @@ class MatchService
         $cacheKey = str_replace('private-', '', $channel);
         $data = Cache::get("game:{$cacheKey}");
 
-        if (!$data) 
-        {
+        if (!$data) {
             return;
         }
 
@@ -87,13 +81,8 @@ class MatchService
         string $channel, array $metadata = [], ?Side $firstPlayerSide = null,
         ?int $assignmentPlayer = null) : void
     {
-        $matchDataStore = MatchDataStore::createDataStore(
-            (string)$player1,
-            (string)$player2,
-            $match_duration,
-            $channel,
-            $firstPlayerSide
-        );
+        $matchDataStore = MatchDataStore::createDataStore((string)$player1, (string)$player2,
+            $match_duration, $channel, $firstPlayerSide);
 
         Cache::put("game:{$channel}", array_merge([
             'match_id' => $matchDataStore->MatchID,
@@ -170,7 +159,7 @@ class MatchService
     {
         $base = (int)$match_duration;
 
-        if ($base < 3) 
+        if ($base < 3)
         {
             return 'Bullet';
         }
@@ -185,31 +174,15 @@ class MatchService
 
     private function stockfishUser() : User
     {
-        $user = User::query()->where('email', self::STOCKFISH_EMAIL)
-                             ->orWhere('nickname', self::STOCKFISH_NICKNAME)
+        return User::query()->where('email', 'stockfish@neuchess.local')
+                             ->orWhere('nickname', 'Stockfish')
                              ->first();
-
-        if ($user) 
-        {
-            return $user;
-        }
-
-        return User::create([
-            'nickname' => self::STOCKFISH_NICKNAME,
-            'email' => self::STOCKFISH_EMAIL,
-            'password' => Hash::make(Str::random(32)),
-            'first_name' => 'Stockfish',
-            'last_name' => 'Engine',
-            'is_active' => true,
-        ]);
     }
 
     private function broadcastMatch(int $player1, int $player2, string $channel,
         ?int $assignmentPlayer = null) : void
     {
-        $players = $assignmentPlayer 
-            ? [$assignmentPlayer] 
-            : [$player1, $player2];
+        $players = $assignmentPlayer ? [$assignmentPlayer] : [$player1, $player2];
 
         foreach ($players as $player) 
         {
