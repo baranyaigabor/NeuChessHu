@@ -36,6 +36,7 @@ use React\EventLoop\Loop;
 use React\Socket\SocketServer;
 use React\Socket\ConnectionInterface;
 use App\WebSocket\Engine\ChessEngine;
+use App\Services\StockfishService;
 use ChessLogic\Messaging\ChatMessagesHandlerFactory;
 use ChessLogic\Moving\Factories\MoveFactory;
 use ChessLogic\Moving\Factories\MoveValidatorFactory;
@@ -49,7 +50,8 @@ $componentsFactory = new MoveComponentsFactory();
 $moveValidatorFactory = new MoveValidatorFactory();
 $moveFactory = new MoveFactory($componentsFactory, $moveValidatorFactory);
 $chatMessagesHandler = new ChatMessagesHandlerFactory();
-$chessEngine = new ChessEngine($moveFactory, $moveValidatorFactory, $componentsFactory, $chatMessagesHandler);
+$stockfishService = new StockfishService();
+$chessEngine = new ChessEngine($moveFactory, $moveValidatorFactory, $componentsFactory, $chatMessagesHandler, $stockfishService);
 
 $loop = Loop::get();
 $socket = new SocketServer('0.0.0.0:7001', [], $loop);

@@ -13,10 +13,11 @@ class ReadyPlayersRegistryService
 {
     public function __construct() { }
 
-    public function markPlayerReady(string $channel, int $playerId): void
+    public function markPlayerReady(string $channel, int $playerId) : void
     {
         $cacheKey = "ready_players:{$channel}";
         $shouldStart = false;
+        
         $matchData = MatchService::getMatchFromCache($channel);
         $stockfishPlayerId = $matchData['stockfish']['player_id'] ?? null;
 
@@ -28,18 +29,23 @@ class ReadyPlayersRegistryService
                 $players = Cache::get($cacheKey, []);
 
                 if (isset($players[$playerId]))
+                {
                     return;
+                }
 
                 $players[$playerId] = true;
                 Cache::put($cacheKey, $players, now()->addMinutes(10));
 
-                if ($stockfishPlayerId !== null && $playerId !== (int)$stockfishPlayerId) {
+                if ($stockfishPlayerId !== null && $playerId !== (int)$stockfishPlayerId) 
+                {
                     $players[(int)$stockfishPlayerId] = true;
                     Cache::put($cacheKey, $players, now()->addMinutes(10));
                 }
 
                 if (count($players) >= 2)
+                {
                     $shouldStart = true;
+                }
             });
         } 
         catch (LockTimeoutException $e) 
@@ -61,12 +67,14 @@ class ReadyPlayersRegistryService
         }
     }
 
-    private function recoverPlayers(string $channel): void
+    private function recoverPlayers(string $channel) : void
     {
         $data = MatchService::getMatchFromCache($channel);
 
         if (!$data) 
+        {
             return;
+        }
 
         Cache::forget("ready_players:{$channel}");
         MatchService::removeMatchFromCache($channel);

@@ -58,7 +58,8 @@ class MatchService
         $cacheKey = str_replace('private-', '', $channel);
         $data = Cache::get("game:{$cacheKey}");
 
-        if (!$data) {
+        if (!$data) 
+        {
             return;
         }
 
@@ -133,7 +134,8 @@ class MatchService
     {
         $data = self::getMatchFromCache($channel);
 
-        if (!$data) {
+        if (!$data) 
+        {
             return;
         }
 
@@ -168,25 +170,27 @@ class MatchService
     {
         $base = (int)$match_duration;
 
-        if ($base < 3) {
+        if ($base < 3) 
+        {
             return 'Bullet';
         }
 
-        if ($base >= 3 && $base <= 5) {
+        if ($base >= 3 && $base <= 5) 
+        {
             return 'Blitz';
         }
 
         return 'Rapid';
     }
 
-    private function stockfishUser(): User
+    private function stockfishUser() : User
     {
-        $user = User::query()
-            ->where('email', self::STOCKFISH_EMAIL)
-            ->orWhere('nickname', self::STOCKFISH_NICKNAME)
-            ->first();
+        $user = User::query()->where('email', self::STOCKFISH_EMAIL)
+                             ->orWhere('nickname', self::STOCKFISH_NICKNAME)
+                             ->first();
 
-        if ($user) {
+        if ($user) 
+        {
             return $user;
         }
 
@@ -203,9 +207,12 @@ class MatchService
     private function broadcastMatch(int $player1, int $player2, string $channel,
         ?int $assignmentPlayer = null) : void
     {
-        $players = $assignmentPlayer ? [$assignmentPlayer] : [$player1, $player2];
+        $players = $assignmentPlayer 
+            ? [$assignmentPlayer] 
+            : [$player1, $player2];
 
-        foreach ($players as $player) {
+        foreach ($players as $player) 
+        {
             Cache::put("pending_channel:{$player}", "private-{$channel}", now()->addMinutes(5));
             broadcast(new ChannelAssignment($channel, $player));
         }

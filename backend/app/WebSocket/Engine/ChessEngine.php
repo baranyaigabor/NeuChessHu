@@ -3,6 +3,7 @@
 namespace App\WebSocket\Engine;
 
 use App\Services\MatchService;
+use App\Services\StockfishService;
 use ChessLogic\ChessBoard\ChessPieces\Definitions\Piece;
 use ChessLogic\ChessBoard\ChessPieces\Definitions\Side;
 use ChessLogic\ChessBoard\ChessPieces\Pieces\ChessPiece;
@@ -13,6 +14,8 @@ use ChessLogic\Moving\Factories\MoveFactory;
 use ChessLogic\Moving\Factories\MoveValidatorFactory;
 use ChessLogic\Moving\Factories\MoveComponents\MoveComponentsFactory;
 use Exception;
+use Illuminate\Support\Facades\Log;
+use RuntimeException;
 use Throwable;
 
 class ChessEngine
@@ -20,20 +23,23 @@ class ChessEngine
     public function __construct(private MoveFactory $moveFactory,
         private MoveValidatorFactory $moveValidatorFactory,
         private MoveComponentsFactory $componentsFactory,
-        private ChatMessagesHandlerFactory $chatMessagesHandler
+        private ChatMessagesHandlerFactory $chatMessagesHandler,
+        private StockfishService $stockfishService
     ) {}
 
     private array $matchDataStores = [];
     private array $validators = [];
 
-    private function methodsFactory(string $channel): array
+    private function methodsFactory(string $channel) : array
     {
         if (!isset($this->validators[$channel]))
         {
             $data = MatchService::getMatchFromCache($channel);
 
             if (!$data)
+            {
                 throw new Exception(message: "Game not found for channel: $channel");
+            }
 
             $matchDataStore = MatchDataStore::fromCache($data);
             $components = $this->componentsFactory->create();
@@ -44,13 +50,14 @@ class ChessEngine
 
         $matchDataStore = $this->matchDataStores[$channel];
         $moveValidator = $this->validators[$channel];
+
         $move = $this->moveFactory->create($matchDataStore, $moveValidator);
         $chatMessage = $this->chatMessagesHandler->create($matchDataStore);
 
         return [$matchDataStore, $moveValidator, $move, $chatMessage];
     }
-
-    public function onMessage(string $rawMessage): string
+    
+    public function onMessage(string $rawMessage) : string
     {
         $data = json_decode($rawMessage, true);
         
@@ -125,19 +132,38 @@ class ChessEngine
 
         $side = Side::from($payload['playingSide']);
 
-        return $validator->currentLegalMovesWithSelectedPiece($pieceMatrix, $payload['from'], $side);
+        return $validator->currentLegalMovesWithSelectedPiece(
+            $pieceMatrix,
+            $payload['from'],
+            $side
+        );
     }
 
     private function movePiece(array $payload) : string
     {
-        [$matchDataStore,, $move] = $this->methodsFactory($payload['channel']);
-
         $promotionChoice = Piece::from($payload['promotionChoice']);
+
+        $result = $this->applyMove(
+            $payload['channel'],
+            $payload['from'],
+            $payload['to'],
+            $promotionChoice
+        );
+
+        $this->updateMatchToClients($payload['channel'], $result, false);
+        $this->playStockfishTurnIfNeeded($payload['channel']);
+
+        return $result['sound'];
+    }
+
+    private function applyMove(string $channel, array $from, array $to, Piece $promotionChoice) : array
+    {
+        [$matchDataStore,, $move] = $this->methodsFactory($channel);
 
         $currentSide = $matchDataStore->MatchState->CurrentSide;
         $timedOut = !$matchDataStore->Clocks->onMove($currentSide);
         
-        $moveResult = $move->movePiece($payload['from'], $payload['to'], $promotionChoice);
+        $moveResult = $move->movePiece($from, $to, $promotionChoice);
         
         if ($timedOut)
         {
@@ -168,9 +194,72 @@ class ChessEngine
             'clocks' => $matchDataStore->Clocks->jsonSerialize()
         ];
 
-        $this->updateMatchToClients($payload['channel'], $result, false);
+        return $result;
+    }
 
-        return $result['sound'];
+    private function playStockfishTurnIfNeeded(string $channel) : void
+    {
+        [$matchDataStore, $validator] = $this->methodsFactory($channel);
+        $config = $this->stockfishConfig($channel);
+
+        if (!$config || $matchDataStore->MatchPoints->MatchEnded) 
+        {
+            return;
+        }
+
+        $currentSide = $matchDataStore->MatchState->CurrentSide;
+
+        if ($currentSide === Side::None) 
+        {
+            return;
+        }
+
+        $currentPlayer = $matchDataStore->PlayerDatas[$currentSide->value]->ID ?? null;
+
+        if ((string)$currentPlayer !== (string)$config['player_id']) 
+        {
+            return;
+        }
+
+        sleep(1);
+
+        try {
+            $stockfishMove = $this->stockfishService->bestMove($matchDataStore, (int)$config['depth']);
+            $legalMoves = $validator->currentLegalMovesWithSelectedPiece(
+                $matchDataStore->MatchState->PieceMatrix,
+                $stockfishMove['from']
+            );
+
+            if (!$legalMoves[$stockfishMove['to'][0]][$stockfishMove['to'][1]]) {
+                throw new RuntimeException("Stockfish returned illegal move {$stockfishMove['uci']}");
+            }
+
+            $result = $this->applyMove(
+                $channel,
+                $stockfishMove['from'],
+                $stockfishMove['to'],
+                $stockfishMove['promotionChoice']
+            );
+
+            $this->updateMatchToClients($channel, $result, false);
+        } 
+        catch (Throwable $e) 
+        {
+            Log::warning("Stockfish move failed for channel {$channel}: {$e->getMessage()}");
+        }
+    }
+
+    private function stockfishConfig(string $channel) : ?array
+    {
+        $data = MatchService::getMatchFromCache($channel);
+        $config = $data['stockfish'] ?? null;
+
+        if (!is_array($config) || empty($config['enabled'])) 
+        {
+            return null;
+        }
+
+        return $config;
     }
 
     private function chatMessage(array $payload) : array
@@ -226,7 +315,7 @@ class ChessEngine
         return "Ok";
     }
 
-    private function updateMatchToClients(string $channel, array $data, bool $isChat): void
+    private function updateMatchToClients(string $channel, array $data, bool $isChat) : void
     {
         $cacheKey = str_replace('private-', '', $channel);
         $existing = MatchService::getMatchFromCache($channel);
@@ -257,6 +346,7 @@ class ChessEngine
                     'match_state' => $data['match_state'],
                     'player_datas' => $data['player_datas'],
                     'match_points' => $data['match_points'],
+                    'draw_trackers' => $data['draw_trackers'],
                     'clocks' => $data['clocks'],
                 ]));
 
