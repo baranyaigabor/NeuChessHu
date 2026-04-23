@@ -27,7 +27,7 @@ public static class Patcher
         if (matchStateDTO.Notations is not null && matchStateDTO.Notations.Count > 0)
         {
             SANNotationRow latest = matchStateDTO.Notations.Last();
-            uiContext.Post(_ =>
+            uiContext?.Post(_ =>
             {
                 if (matchState.Notations.Count > 0 && matchState.Notations.Last().Round == latest.Round)
                     matchState.Notations[matchState.Notations.Count - 1] = latest;
