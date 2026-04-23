@@ -20,6 +20,10 @@ function onFirstNameChange(event)
 <template>                            
     <div class="col">
         <label for="userFirstName">{{ t('common.firstName') }}:</label><br>
-        <input id="userFirstName" @change="onFirstNameChange" :value="props.value" class="w-[6.5rem] m-0 bg-[var(--ButtonBrush)] text-[var(--FieldTextBrush)] placeholder:text-[var(--FieldTextBrush)] placeholder:opacity-60 p-1 ps-2 rounded-[5px] border border-[var(--BorderBrush)] shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] !focus:bg-transparent focus:outline-none" type="text" :placeholder="t('common.firstName')" required minlength="3" maxlength="14">
+        <input id="userFirstName" @change="onFirstNameChange" :value="props.value" class="w-26 m-0 bg-(--ButtonBrush) text-(--FieldTextBrush) placeholder:text-(--FieldTextBrush) placeholder:opacity-60 p-1 ps-2 rounded-[5px] border border-(--BorderBrush) shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] focus:bg-transparent! focus:outline-none" 
+               type="text" 
+               :placeholder="t('common.firstName')" 
+               required minlength="3" 
+               maxlength="14">
     </div>
 </template>
