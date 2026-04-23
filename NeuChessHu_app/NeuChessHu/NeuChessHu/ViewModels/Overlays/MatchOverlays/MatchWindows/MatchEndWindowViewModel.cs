@@ -305,11 +305,15 @@ public class MatchEndWindowViewModel : ObservableBase, IDisposable
             ? "DefaultProfilePictureOnMatchEndWindowStyle"
             : "ProfilePictureStyle");
 
-    static void RedirectToProfile(string nickname) => Process.Start(startInfo: new ProcessStartInfo
+    static void RedirectToProfile(string nickname)
     {
-        FileName = $"http://frontend.vm2.test/user/{nickname}",
-        UseShellExecute = true
-    });
+        if (nickname is not "Stockfish")
+            Process.Start(startInfo: new ProcessStartInfo
+            {
+                FileName = $"http://frontend.vm2.test/user/{nickname}",
+                UseShellExecute = true
+            });
+    }
 
     public void Dispose()
     {
