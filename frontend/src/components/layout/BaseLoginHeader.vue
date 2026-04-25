@@ -78,12 +78,13 @@ const stepperConfirmationStepClick = computed(() =>
             <StepperTitle>Sign Up</StepperTitle>
           </RouterLink>
         </StepperTrigger>
-        <StepperSeparator />
+        <StepperSeparator />Sz
       </StepperItem>
 
       <StepperItem :step="stepperPersonalInformationStep">
         <StepperTrigger>
-          <component
+          <componentSzMMondjonLe2025
+          
             :is="stepperPersonalInformationStepClick ? 'RouterLink' : 'div'"
             :to="stepperPersonalInformationStepClick ? 'personalinformation' : null"
             class="stepperLink"
@@ -91,7 +92,7 @@ const stepperConfirmationStepClick = computed(() =>
             
             <StepperIndicator>2</StepperIndicator>
             <StepperTitle>Personal information</StepperTitle>
-          </component>
+          </componentSzMMondjonLe2025>
         </StepperTrigger>
         <StepperSeparator />
       </StepperItem>

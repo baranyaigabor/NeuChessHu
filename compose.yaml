@@ -120,17 +120,6 @@ services:
     networks:
       - fullstack
 
-  jsonserver:
-    image: idomi27/json-server:26
-    build:
-      context: ./jsonserver
-      dockerfile: Dockerfile
-    networks:
-      - fullstack
-    volumes:
-      - ./jsonserver:/app
-      - /app/node_modules
-  
   mailcatcher:
     image: dockage/mailcatcher:0.9.0
     networks:
