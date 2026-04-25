@@ -12,7 +12,7 @@ const { t } = useI18n()
 const registrationData = userStore.getRegistrationData
 const email = ref(registrationData.email || '')
 const password = ref(registrationData.password || '')
-const confirmPassword = ref('')
+const confirmPassword = ref(registrationData.password || '')
 
 const alertMessage = ref('')
 const alertType = ref('')
@@ -72,9 +72,7 @@ const handleSignupNextStep = async () =>
         <div id="card-body" class="card-body">
             <form @submit.prevent="handleSignupNextStep">
                 <div class="container-fluid">
-                    <div div class="row">
-                        <h2 class="card-title ps-0 text-(--TextBrush)!">{{ t('auth.signUp') }}</h2>
-                    </div>
+                    <h2 class="text-(--TextBrush)! -ml-[0.7rem]!">{{ t('auth.signUp') }}</h2>
 
                     <div class="row">
                         <EmailSignInInput :value="email" @email-change="email = $event; touched.email = true" @email-blur="touched.email = true"/>
@@ -107,8 +105,7 @@ const handleSignupNextStep = async () =>
                     </div>
                 </div>
           
-          
-                <hr class="border-(--BorderChangingBrush)!/24">
+                <hr class="loginSep_HR border-(--BorderChangingBrush)/24!">
           
                 <RouterLink class="text-(--TextBrush)! no-underline hover:underline visited:text-(--TextBrush)" :to="{name: 'signin'}">
                     {{ t('auth.alreadyHaveAccount') }}

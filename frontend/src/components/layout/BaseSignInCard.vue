@@ -124,7 +124,7 @@ async function TryToSignIn()
 
                     <SignInButton :disabled="!isFormValid" @submit="TryToSignIn"/>
 
-                    <hr class="opacity-100 border-(--BorderChangingBrush)/24!" />
+                    <hr class="loginSep_HR border-(--BorderChangingBrush)/24!">
 
                     <RouterLink :to="{ name: 'signup' }" class="text-(--TextBrush)! no-underline hover:underline visited:text-(--TextBrush)">
                         {{ t('auth.newToChess') }}
