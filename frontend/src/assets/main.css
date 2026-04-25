@@ -221,6 +221,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
   }
 
   input,
@@ -228,6 +229,29 @@
   textarea {
     border-color: var(--BorderBrush) !important;
     color: var(--FieldTextBrush);
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-text-fill-color: var(--FieldTextBrush) !important;
+    caret-color: var(--FieldTextBrush);
+    box-shadow: 0 0 0 1000px var(--ButtonBrush) inset,
+      inset 0 2px 5px var(--InsetShadowBrush) !important;
+    transition: background-color 999999s ease-in-out 0s;
+  }
+
+  input:-moz-autofill {
+    background-color: var(--ButtonBrush) !important;
+    color: var(--FieldTextBrush) !important;
+    box-shadow: 0 0 0 1000px var(--ButtonBrush) inset,
+      inset 0 2px 5px var(--InsetShadowBrush) !important;
+  }
+
+  img,
+  svg {
+    max-width: 100%;
   }
 
   input::placeholder,

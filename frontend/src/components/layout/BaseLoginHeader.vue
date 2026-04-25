@@ -11,7 +11,9 @@ const rawData = userStore.registrationData
 const route = useRoute()
 
 const showDownload = computed(() =>
-  route.name === 'welcome' || route.name === 'signin'
+  route.name === 'welcome' ||
+  route.name === 'signin' ||
+  route.name === 'user'
 )
 
 const logoMove = computed(() =>
@@ -115,20 +117,6 @@ const stepperConfirmationStepClick = computed(() =>
     </Stepper>
   </div>
 </template>
-
-<style lang="css">
-nav {
-  background-color: #D0B399;
-  border-bottom: 1px solid rgb(0, 0, 0);
-  padding: 1rem;
-  margin-bottom: 2rem;
-}
-
-.stepperLink {
-  color: black;
-  text-decoration: none;
-}
-</style>
 
 <style lang="css">
 .navbar {
