@@ -41,7 +41,7 @@ export default
     footer:
     {
         copyright: '© {year} NeuChess. All rights reserved.',
-        terms: 'Terms and Conditions',
+        terms: 'Terms of Conditions',
         userGuide: 'User Documentation',
         supportLabel: 'Account and login help',
         observerLabel: 'Fair play and reports',

@@ -228,6 +228,8 @@ const countryCodeOverrides =
     vietnam: 'VN',
 }
 
+export const countryValues = Object.keys(hungarianNameOverrides)
+
 let englishRegionCodeBySlug = null
 
 function slugify(value) 
