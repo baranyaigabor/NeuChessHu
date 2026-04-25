@@ -13,11 +13,17 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['firstNameChange', 'lastNameChange'])
+const emit = defineEmits(['firstNameChange', 'lastNameChange', 'firstNameBlur', 'lastNameBlur'])
 </script>
 
 <template>
-    <UserFirstName :value="firstName" @firstNameChange="emit('firstNameChange', $event)"/>
+    <UserFirstName
+      :value="firstName"
+      @firstNameChange="emit('firstNameChange', $event)"
+      @firstNameBlur="emit('firstNameBlur')" />
 
-    <UserLastName :value="lastName" @lastNameChange="emit('lastNameChange', $event)"/>
+    <UserLastName
+      :value="lastName"
+      @lastNameChange="emit('lastNameChange', $event)"
+      @lastNameBlur="emit('lastNameBlur')" />
 </template>

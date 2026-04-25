@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { computed, reactive, ref, onMounted } from 'vue';
 import { useRouter } from "vue-router";
 import { useUserStore } from "@stores/UserStore";
 import {  EmailSignInInput,  OrSeparator,  OtherSignIn,  PasswordSignInInput,  SignInButton} from '@components/ui/signin-card';
 import { useI18n } from '@utils/i18n'
+import { emailMessage, requiredMessage } from '@utils/validation'
 
 const userStore = useUserStore();
 const userEmail = ref('')
@@ -11,6 +12,21 @@ const router = useRouter()
 const userPassword = ref('')
 const redirectUri = ref(null)
 const { t } = useI18n()
+const touched = reactive({
+  email: false,
+  password: false
+})
+const submitAttempted = ref(false)
+const authError = ref('')
+
+const validationErrors = computed(() => ({
+  email: emailMessage(userEmail.value),
+  password: requiredMessage(userPassword.value, 'common.password')
+}))
+
+const isFormValid = computed(() =>
+  Object.values(validationErrors.value).every((error) => error === '')
+)
 
 onMounted(() => {
   redirectUri.value = new URLSearchParams(window.location.search).get('redirect_uri')
@@ -19,43 +35,26 @@ onMounted(() => {
 function handleEmailChange(newEmail) 
 {
   userEmail.value = newEmail
+  touched.email = true
+  authError.value = ''
 }
 
 function handlePasswordChange(newPassword) 
 {
   userPassword.value = newPassword
-}
-
-function LoginError() {
-  try 
-  {
-    const forgetLink = document.getElementById("forgetPass")
-
-    if (forgetLink)
-    {
-      forgetLink.remove()
-    }
-  } 
-  catch 
-  {
-
-  }
-
-  const errorDiv = document.getElementById("pass")
-  const errorForgetPass = document.createElement("a")
-
-  errorForgetPass.textContent = t('auth.forgotPassword')
-  errorForgetPass.href = "#"
-
-  errorForgetPass.id = "forgetPass"
-  errorDiv.appendChild(errorForgetPass)
+  touched.password = true
+  authError.value = ''
 }
 
 async function TryToSignIn() 
 {
-  if (!userEmail.value || !userPassword.value) 
+  submitAttempted.value = true
+  touched.email = true
+  touched.password = true
+  authError.value = ''
+
+  if (!isFormValid.value) 
   {
-    LoginError()
     return
   }
 
@@ -88,7 +87,7 @@ async function TryToSignIn()
 
   catch (error) 
   {
-    LoginError()
+    authError.value = t('auth.invalidCredentials')
   }
 }
 </script>
@@ -102,14 +101,29 @@ async function TryToSignIn()
 
           <h2 class="card-title text-(--TextBrush)!" style="color: var(--TextBrush);">{{ t('auth.signIn') }}</h2>
 
-          <EmailSignInInput @email-change="handleEmailChange" />
+          <EmailSignInInput
+            @email-change="handleEmailChange"
+            @email-blur="touched.email = true" />
+          <p v-if="(touched.email || submitAttempted) && validationErrors.email" class="mt-1 mx-1 text-[11px] text-danger">
+            {{ validationErrors.email }}
+          </p>
 
           <div id="pass" class="gx-0 loginSep container-fluid">
-            <PasswordSignInInput @password-change="handlePasswordChange" />
-            <div id="forgetDiv"></div>
+            <PasswordSignInInput
+              @password-change="handlePasswordChange"
+              @password-blur="touched.password = true" />
+            <p v-if="(touched.password || submitAttempted) && validationErrors.password" class="mt-1 mx-1 text-[11px] text-danger">
+              {{ validationErrors.password }}
+            </p>
+            <p v-if="authError" class="mt-1 mx-1 text-[11px] text-danger">
+              {{ authError }}
+            </p>
+            <a v-if="authError" id="forgetPass" class="text-[11px] text-(--TextBrush)" href="#">
+              {{ t('auth.forgotPassword') }}
+            </a>
           </div>
 
-          <SignInButton @submit="TryToSignIn"/>
+          <SignInButton :disabled="!isFormValid" @submit="TryToSignIn"/>
 
           <OrSeparator />
           <OtherSignIn />

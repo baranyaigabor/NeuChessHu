@@ -1,20 +1,38 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { ConfirmInfos, NextStepButton, PreviousStepButton } from '@components/ui/confirmation-card'
 import { useUserStore } from "@stores/UserStore";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
+import { emailMessage, nicknameMessage, passwordMessage } from '@utils/validation'
 
 const userStore = useUserStore();
 const router = useRouter();
 const acceptedTerms = ref(false)
 const { t } = useI18n()
+const submitAttempted = ref(false)
+
+const validationErrors = computed(() => {
+    const rawData = userStore.registrationData
+
+    return {
+        nickname: nicknameMessage(rawData.nickname || ''),
+        email: emailMessage(rawData.email || ''),
+        password: passwordMessage(rawData.password || ''),
+        terms: acceptedTerms.value ? '' : t('validation.acceptTerms')
+    }
+})
+
+const isFormValid = computed(() =>
+    Object.values(validationErrors.value).every((error) => error === '')
+)
 
 const handleNext = async () => 
 {
-    if (!acceptedTerms.value) 
+    submitAttempted.value = true
+
+    if (!isFormValid.value) 
     {
-        alert(t('registration.acceptTermsAlert'))
         return
     }
 
@@ -68,12 +86,18 @@ const handlePrevious = () => {
                                     </label>
                                 </div>
                             </div>
+                            <p v-if="submitAttempted && validationErrors.terms" class="mt-1  mx-1  p-0 text-center text-[11px] text-danger">
+                                {{ validationErrors.terms }}
+                            </p>
+                            <p v-if="submitAttempted && (validationErrors.nickname || validationErrors.email || validationErrors.password)" class="mt-1  mx-1 p-0 text-center text-[11px] text-danger">
+                                {{ t('validation.fixRegistrationFields') }}
+                            </p>
                         </div>
 
                         <div class="row">
                             <div class="d-flex justify-content-between p-0">
                                 <PreviousStepButton @submit="handlePrevious" />
-                                <NextStepButton @submit="handleNext" />
+                                <NextStepButton :disabled="!isFormValid" @submit="handleNext" />
                             </div>
                         </div>
 

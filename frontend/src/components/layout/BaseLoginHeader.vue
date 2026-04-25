@@ -78,12 +78,12 @@ const stepperConfirmationStepClick = computed(() =>
             <StepperTitle>Sign Up</StepperTitle>
           </RouterLink>
         </StepperTrigger>
-        <StepperSeparator />Sz
+        <StepperSeparator />
       </StepperItem>
 
       <StepperItem :step="stepperPersonalInformationStep">
         <StepperTrigger>
-          <componentSzMMondjonLe2025
+          <component
           
             :is="stepperPersonalInformationStepClick ? 'RouterLink' : 'div'"
             :to="stepperPersonalInformationStepClick ? 'personalinformation' : null"
@@ -92,7 +92,7 @@ const stepperConfirmationStepClick = computed(() =>
             
             <StepperIndicator>2</StepperIndicator>
             <StepperTitle>Personal information</StepperTitle>
-          </componentSzMMondjonLe2025>
+          </component>
         </StepperTrigger>
         <StepperSeparator />
       </StepperItem>
@@ -126,6 +126,20 @@ nav {
 
 .stepperLink {
   color: black;
+  text-decoration: none;
+}
+</style>
+
+<style lang="css">
+.navbar {
+  background-color: var(--NavBarBrush);
+  border-bottom: 1px solid var(--BorderBrush);
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stepperLink {
+  color: var(--TextBrush);
   text-decoration: none;
 }
 </style>

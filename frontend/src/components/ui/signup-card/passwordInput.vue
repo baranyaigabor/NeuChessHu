@@ -4,10 +4,18 @@ import { useI18n } from '@utils/i18n'
 
 const props = defineProps({
   password: String,
-  confirmPassword: String
+  confirmPassword: String,
+  passwordError: {
+    type: String,
+    default: ''
+  },
+  confirmPasswordError: {
+    type: String,
+    default: ''
+  }
 })
 
-const emit = defineEmits(['update:password', 'update:confirmPassword'])
+const emit = defineEmits(['update:password', 'update:confirmPassword', 'password-blur', 'confirm-password-blur'])
 
 const showPassword = ref(false)
 const { t } = useI18n()
@@ -35,7 +43,7 @@ function onConfirmPasswordInput(e)
 
 <template>
   <div class="d-flex p-0">
-    <p class="w-full text-(--TextBrush)">{{ t('common.password') }}: *</p>
+    <p class="w-full mt-2 text-(--TextBrush)">{{ t('common.password') }}: *</p>
     <div class="d-flex justify-content-end w-full">
       <div id="password" class="d-flex justify-content-end text-[8px] w-full">
         <a @click.prevent class="me-1 cursor-pointer text-(--TextBrush)" @mousedown.prevent="show" @mouseup.prevent="hide" @mouseleave.prevent="hide">
@@ -80,16 +88,26 @@ function onConfirmPasswordInput(e)
     :type="showPassword ? 'text' : 'password'"
     :value="password"
     @input="onPasswordInput"
+    @blur="emit('password-blur')"
     class="input-placeholder-spacing gx-0 w-full m-0 bg-(--ButtonBrush) text-(--FieldTextBrush) placeholder:text-(--FieldTextBrush) placeholder:opacity-60 p-1! ps-2! rounded-[5px] border border-(--BorderBrush) shadow-[inset_0_2px_5px_var(--InsetShadowBrush)]"
     placeholder="*********">
 
-  <p class="mt-4! p-0 text-(--TextBrush)">{{ t('common.confirmPassword') }}: *</p>
+  <p v-if="passwordError" class="mt-1 mx-1 p-0 text-[11px] text-danger">
+    {{ passwordError }}
+  </p>
+
+  <p class="mt-2! p-0 text-(--TextBrush)">{{ t('common.confirmPassword') }}: *</p>
   <input
     :type="showPassword ? 'text' : 'password'"
     :value="confirmPassword"
     @input="onConfirmPasswordInput"
-    class="input-placeholder-spacing gx-0 w-full m-0 bg-(--ButtonBrush) text-(--FieldTextBrush) placeholder:text-(--FieldTextBrush) placeholder:opacity-60 p-1! ps-2! rounded-[5px] border border-(--BorderBrush) shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] mb-4"
+    @blur="emit('confirm-password-blur')"
+    class="input-placeholder-spacing gx-0 w-full m-0 bg-(--ButtonBrush) text-(--FieldTextBrush) placeholder:text-(--FieldTextBrush) placeholder:opacity-60 p-1! ps-2! rounded-[5px] border border-(--BorderBrush) shadow-[inset_0_2px_5px_var(--InsetShadowBrush)]"
     placeholder="*********">
+
+  <p v-if="confirmPasswordError" class="mt-1 mx-1 p-0 text-[11px] text-danger">
+    {{ confirmPasswordError }}
+  </p>
 </template>
 
 <style lang="css">

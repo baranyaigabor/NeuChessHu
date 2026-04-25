@@ -16,7 +16,11 @@ const props = defineProps({
     <div class="container-fluid justify-content-end d-flex p-0">
         <a id="singup_BTN"
            @click.prevent="!props.disabled && emit('submit')" 
-           class="btn w-18 bg-(--ButtonBrush)! text-(--TextBrush)! border border-(--BorderBrush)!">
+           :aria-disabled="props.disabled"
+           :class="[
+             'btn w-18 bg-(--ButtonBrush)! text-(--TextBrush)! border border-(--BorderBrush)!',
+             props.disabled ? 'disabled opacity-50 cursor-not-allowed' : ''
+           ]">
            {{ t('common.next') }}
         </a>
     </div>

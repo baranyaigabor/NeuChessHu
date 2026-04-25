@@ -15,7 +15,7 @@ function hide()
   showPassword.value = false
 }
 
-const emit = defineEmits(['password-change'])
+const emit = defineEmits(['password-change', 'password-blur'])
 
 function onPasswordChange(event) 
 {
@@ -62,7 +62,7 @@ function onPasswordChange(event)
             </a>
         </div>
     </div>
-    <input id="loginPass" @change="onPasswordChange" class="input-placeholder-spacing w-full m-0 bg-(--ButtonBrush) text-(--FieldTextBrush) placeholder:text-(--FieldTextBrush) placeholder:opacity-60 p-1 ps-2 rounded-[5px] border border-(--BorderBrush)! shadow-[inset_0_2px_5px_var(--InsetShadowBrush)]" 
+    <input id="loginPass" @input="onPasswordChange" @blur="emit('password-blur')" class="input-placeholder-spacing w-full m-0 bg-(--ButtonBrush) text-(--FieldTextBrush) placeholder:text-(--FieldTextBrush) placeholder:opacity-60 p-1 ps-2 rounded-[5px] border border-(--BorderBrush)! shadow-[inset_0_2px_5px_var(--InsetShadowBrush)]" 
            placeholder="*********" 
            :type="showPassword ? 'text' : 'password'">
 </template>

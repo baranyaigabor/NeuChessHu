@@ -8,7 +8,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['firstNameChange'])
+const emit = defineEmits(['firstNameChange', 'firstNameBlur'])
 const { t } = useI18n()
 
 function onFirstNameChange(event) 
@@ -20,10 +20,10 @@ function onFirstNameChange(event)
 <template>                            
     <div class="col">
         <label for="userFirstName">{{ t('common.firstName') }}:</label><br>
-        <input id="userFirstName" @change="onFirstNameChange" :value="props.value" class="w-26 m-0 bg-(--ButtonBrush) text-(--FieldTextBrush) placeholder:text-(--FieldTextBrush) placeholder:opacity-60 p-1 ps-2 rounded-[5px] border border-(--BorderBrush) shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] focus:bg-transparent! focus:outline-none" 
+        <input id="userFirstName" @input="onFirstNameChange" @blur="emit('firstNameBlur')" :value="props.value" class="w-26 m-0 bg-(--ButtonBrush) text-(--FieldTextBrush) placeholder:text-(--FieldTextBrush) placeholder:opacity-60 p-1 ps-2 rounded-[5px] border border-(--BorderBrush) shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] focus:bg-transparent! focus:outline-none" 
                type="text" 
                :placeholder="t('common.firstName')" 
-               required minlength="3" 
+               minlength="2" 
                maxlength="14">
     </div>
 </template>
