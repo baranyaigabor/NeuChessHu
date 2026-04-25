@@ -42,6 +42,7 @@ export default
     {
         copyright: '© {year} NeuChess. All rights reserved.',
         terms: 'Terms and Conditions',
+        userGuide: 'User Documentation',
         supportLabel: 'Account and login help',
         observerLabel: 'Fair play and reports',
         teamLabel: 'General and team contact'
@@ -111,6 +112,8 @@ export default
         finalSteps: 'Final steps',
         confirmInformation: 'Confirm Your Information',
         acceptTerms: 'I accept the Terms and Conditions',
+        acceptTermsPrefix: 'I accept the',
+        termsLinkText: 'Terms and Conditions',
         acceptTermsAlert: 'You must accept the Terms and Conditions.'
     },
 

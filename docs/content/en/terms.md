@@ -29,10 +29,6 @@ Players must not harass others or use:
 
 Impersonating others, spamming, or disrupting the service is not allowed.
 
-## Account Actions
-
-NeuChessHu may suspend accounts, remove matches, or restrict access if these terms are violated.
-
 ## Purpose of the Game
 
 NeuChessHu is provided for entertainment, practice, and learning.

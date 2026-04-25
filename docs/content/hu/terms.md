@@ -29,10 +29,6 @@ A játékosok nem zaklathatnak másokat, és nem használhatnak:
 
 Mások megszemélyesítése, a spam és a szolgáltatás zavarása nem megengedett.
 
-## Fiókkal kapcsolatos intézkedések
-
-A NeuChessHu szabálysértés esetén fiókokat korlátozhat vagy felfüggeszthet, illetve mérkőzéseket távolíthat el.
-
 ## A játék célja
 
 A NeuChessHu szórakozásra, gyakorlásra és tanulásra szolgál.

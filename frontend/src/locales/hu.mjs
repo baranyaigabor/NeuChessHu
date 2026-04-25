@@ -42,6 +42,7 @@ export default
     {
         copyright: '© {year} NeuChess. Minden jog fenntartva.',
         terms: 'Felhasználási feltételek',
+        userGuide: 'Felhasználói útmutató',
         supportLabel: 'Fiók- és bejelentkezési segítség',
         observerLabel: 'Fair play és jelentések',
         teamLabel: 'Általános és csapatkapcsolat'
@@ -111,6 +112,8 @@ export default
         finalSteps: 'Utolsó lépések',
         confirmInformation: 'Adatok megerősítése',
         acceptTerms: 'Elfogadom az Általános Szerződési Feltételeket',
+        acceptTermsPrefix: 'Elfogadom a',
+        termsLinkText: 'Felhasználási feltételeket',
         acceptTermsAlert: 'El kell fogadnod az Általános Szerződési Feltételeket.'
     },
 

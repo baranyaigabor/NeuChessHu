@@ -4,13 +4,18 @@ import { ConfirmInfos, NextStepButton, PreviousStepButton } from '@components/ui
 import { useUserStore } from "@stores/UserStore";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
-import { emailMessage, nicknameMessage, passwordMessage } from '@utils/validation.mjs'
+import { emailMessage, nicknameMessage, passwordMessage } from '@utils/validation'
 
 const userStore = useUserStore();
 const router = useRouter();
 const acceptedTerms = ref(false)
-const { t } = useI18n()
+const { locale, t } = useI18n()
 const submitAttempted = ref(false)
+const termsHref = computed(() =>
+    locale.value === 'hu'
+        ? 'http://docs.vm2.test/hu/terms'
+        : 'http://docs.vm2.test/en/terms'
+)
 
 const validationErrors = computed(() => {
     const rawData = userStore.registrationData
@@ -76,17 +81,25 @@ const handlePrevious = () => {
                             <div class="d-flex justify-content-center">
                                 <div class="form-check">
                                     <input 
-                                        class="form-check-input" 
+                                        class="form-check-input mt-2" 
                                         type="checkbox" 
                                         id="terms" 
                                         v-model="acceptedTerms"
                                     >
                                     <label class="form-check-label" for="terms">
-                                        {{ t('registration.acceptTerms') }}
+                                        {{ t('registration.acceptTermsPrefix') }}
+                                        <a
+                                            :href="termsHref"
+                                            class="text-(--TextBrush) underline"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            @click.stop>
+                                            {{ t('registration.termsLinkText') }}
+                                        </a>
                                     </label>
                                 </div>
                             </div>
-                            <p v-if="submitAttempted && validationErrors.terms" class="mt-1  mx-1  p-0 text-center text-[11px] text-danger">
+                            <p v-if="submitAttempted && validationErrors.terms" class="mt-1  mx-1 p-0 text-center text-[11px] text-danger">
                                 {{ validationErrors.terms }}
                             </p>
                             <p v-if="submitAttempted && (validationErrors.nickname || validationErrors.email || validationErrors.password)" class="mt-1  mx-1 p-0 text-center text-[11px] text-danger">
@@ -124,11 +137,12 @@ p {
 
 label {
     color: var(--TextBrush);
-    font-size: 10px;
+    font-size: 12px;
     margin: 0;
     padding-left: 0;
     padding-top: 0;
     padding-right: 0.25rem;
     padding-bottom: 0;
+    margin-top: 0.4rem;
 }
 </style>
