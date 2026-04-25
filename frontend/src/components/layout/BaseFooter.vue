@@ -9,61 +9,46 @@ const termsHref = computed(() => termsUrl(locale.value))
 const userGuideHref = computed(() => termsUrl(locale.value).replace(/\/terms$/, '/user-guide'))
 
 const contacts = [
-  {
-    email: 'authsupport@neuchess.hu',
-    labelKey: 'footer.supportLabel'
-  },
-  {
-    email: 'observer@neuchess.hu',
-    labelKey: 'footer.observerLabel'
-  },
-  {
-    email: 'team@neuchess.hu',
-    labelKey: 'footer.teamLabel'
-  }
+    {
+        email: 'authsupport@neuchess.hu',
+        labelKey: 'footer.supportLabel'
+    },
+    {
+        email: 'observer@neuchess.hu',
+        labelKey: 'footer.observerLabel'
+    },
+    {
+        email: 'team@neuchess.hu',
+        labelKey: 'footer.teamLabel'
+    }
 ]
 </script>
 
 <template>
-  <footer class="mt-auto border-t border-(--BorderBrush) bg-(--FooterBrush) px-4 py-4 text-center text-[12px] text-(--FooterTextBrush)">
-    <div class="mx-auto flex max-w-[1200px] flex-col items-center gap-2">
-      <div class="flex w-full flex-wrap items-center justify-center gap-x-5 gap-y-1">
-        <a
-          :href="termsHref"
-          class="footer-link font-semibold text-(--FooterTextBrush) no-underline hover:underline">
-          {{ t('footer.terms') }}
-        </a>
+    <footer class="mt-auto border-t border-(--BorderBrush) bg-(--FooterBrush) px-4 py-4 text-center text-[12px] text-(--FooterTextBrush)">
+        <div class="mx-auto flex max-w-[1200px] flex-col items-center gap-2">
+            <div class="flex w-full flex-wrap items-center justify-center gap-x-5 gap-y-1">
+                <a :href="termsHref" class="footer-link break-anywhere  font-semibold text-(--FooterTextBrush) no-underline hover:underline">
+                    {{ t('footer.terms') }}
+                </a>
 
-        <a
-          :href="userGuideHref"
-          class="footer-link font-semibold text-(--FooterTextBrush) no-underline hover:underline">
-          {{ t('footer.userGuide') }}
-        </a>
-      </div>
+                <a :href="userGuideHref" class="footer-link break-anywhere font-semibold text-(--FooterTextBrush) no-underline hover:underline">
+                    {{ t('footer.userGuide') }}
+                </a>
+            </div>
 
-      <div class="flex w-full flex-wrap items-center justify-center gap-x-3 gap-y-2 md:flex-nowrap lg:gap-x-5">
-        <span
-          v-for="contact in contacts"
-          :key="contact.email"
-          class="footer-link whitespace-nowrap text-center text-(--FooterTextBrush)">
-          <span class="font-semibold">{{ t(contact.labelKey) }}: </span>
-          <a
-            :href="`mailto:${contact.email}`"
-            class="text-(--FooterTextBrush) no-underline hover:underline">
-            {{ contact.email }}
-          </a>
-        </span>
-      </div>
+            <div class="flex w-full flex-wrap items-center justify-center py-1 gap-x-3 gap-y-2 md:flex-nowrap lg:gap-x-5">
+                <span v-for="contact in contacts" :key="contact.email" class="footer-link break-anywhere whitespace-nowrap text-center text-(--FooterTextBrush)">
+                    <span class="font-semibold">{{ t(contact.labelKey) }}: </span>
+                    <a :href="`mailto:${contact.email}`" class="text-(--FooterTextBrush) no-underline hover:underline">
+                        {{ contact.email }}
+                    </a>
+                </span>
+            </div>
 
-      <p class="m-0 opacity-85">
-        {{ t('footer.copyright', { year: currentYear }) }}
-      </p>
-    </div>
-  </footer>
+            <p class="my-1 opacity-85">
+                {{ t('footer.copyright', { year: currentYear }) }}
+            </p>
+        </div>
+    </footer>
 </template>
-
-<style lang="css">
-.footer-link {
-  overflow-wrap: anywhere;
-}
-</style>

@@ -5,17 +5,14 @@ import { useUserStore } from "@stores/UserStore";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
 import { emailMessage, nicknameMessage, passwordMessage } from '@utils/validation'
+import { termsUrl } from '@utils/docs'
 
 const userStore = useUserStore();
 const router = useRouter();
 const acceptedTerms = ref(false)
 const { locale, t } = useI18n()
 const submitAttempted = ref(false)
-const termsHref = computed(() =>
-    locale.value === 'hu'
-        ? 'http://docs.vm2.test/hu/terms'
-        : 'http://docs.vm2.test/en/terms'
-)
+const termsHref = computed(() => termsUrl(locale.value))
 
 const validationErrors = computed(() => {
     const rawData = userStore.registrationData
@@ -67,7 +64,7 @@ const handlePrevious = () => {
 
 <template>
     <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100 px-2 sm:px-4">
-        <div class="card confirmation-card w-full max-w-[18rem]">
+        <div class="card confirmation-card mb-48 w-full max-w-[18rem] !border !border-(--BorderBrush) bg-(--SideBarBrush)">
             <div id="card-body" class="card-body">
 
                 <form @submit.prevent="handleNext">
@@ -80,13 +77,8 @@ const handlePrevious = () => {
                         <div class="row">
                             <div class="d-flex justify-content-center">
                                 <div class="form-check">
-                                    <input 
-                                        class="form-check-input mt-2" 
-                                        type="checkbox" 
-                                        id="terms" 
-                                        v-model="acceptedTerms"
-                                    >
-                                    <label class="form-check-label" for="terms">
+                                    <input class="form-check-input" type="checkbox" id="terms" v-model="acceptedTerms">
+                                    <label class="form-check-label m-0 mt-[0.4rem] p-0 pr-1 text-xs text-(--TextBrush)" for="terms">
                                         {{ t('registration.acceptTermsPrefix') }}
                                         <a
                                             :href="termsHref"
@@ -99,12 +91,15 @@ const handlePrevious = () => {
                                     </label>
                                 </div>
                             </div>
-                            <p v-if="submitAttempted && validationErrors.terms" class="mt-1  mx-1 p-0 text-center text-[11px] text-danger">
+
+                            <p v-if="submitAttempted && validationErrors.terms" class="m-0 mx-1 mt-1 p-0 text-center text-[11px] text-danger">
                                 {{ validationErrors.terms }}
                             </p>
-                            <p v-if="submitAttempted && (validationErrors.nickname || validationErrors.email || validationErrors.password)" class="mt-1  mx-1 p-0 text-center text-[11px] text-danger">
+
+                            <p v-if="submitAttempted && (validationErrors.nickname || validationErrors.email || validationErrors.password)" class="m-0 mx-1 mt-1 p-0 text-center text-[11px] text-danger">
                                 {{ t('validation.fixRegistrationFields') }}
                             </p>
+
                         </div>
 
                         <div class="row">
@@ -121,28 +116,3 @@ const handlePrevious = () => {
         </div>
     </div>
 </template>
-
-<style lang="css">
-.card {
-    border: 1px solid var(--BorderBrush) !important;
-    background-color: var(--SideBarBrush);
-    margin-bottom: 12rem;
-}
-
-p {
-    font-size: 14px;
-    margin: 0;
-    padding: 0;
-}
-
-label {
-    color: var(--TextBrush);
-    font-size: 12px;
-    margin: 0;
-    padding-left: 0;
-    padding-top: 0;
-    padding-right: 0.25rem;
-    padding-bottom: 0;
-    margin-top: 0.4rem;
-}
-</style>
