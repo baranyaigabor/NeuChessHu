@@ -352,39 +352,6 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Resources\Images\Statics\Icons\NeuChess_Hu.ico" />
-		<Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\BishopBlack.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\KingBlack.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\KnightBlack.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\PawnBlack.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\QueenBlack.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\RookBlack.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\BishopWhite.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\KingWhite.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\KnightWhite.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\PawnWhite.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\QueenWhite.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.14" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.14" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.14" />

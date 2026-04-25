@@ -7,7 +7,6 @@ public readonly struct PieceTheme(string value) : IEquatable<PieceTheme>
     public string Value { get; } = value ?? throw new ArgumentNullException(nameof(Value));
 
     public static PieceTheme Default { get; } = new("Default");
-    public static PieceTheme ThemeName { get; } = new("ThemeName");
 
     public static readonly Dictionary<string, PieceTheme> AllPieceThemes = typeof(PieceTheme)
         .GetProperties(BindingFlags.Public | BindingFlags.Static)
