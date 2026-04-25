@@ -6,7 +6,7 @@ import { termsUrl } from '@utils/docs'
 const { locale, t } = useI18n()
 const currentYear = computed(() => new Date().getFullYear())
 const termsHref = computed(() => termsUrl(locale.value))
-const userGuideHref = computed(() => termsUrl(locale.value).replace(/\/terms$/, '/user-guide'))
+//const userGuideHref = computed(() => )
 
 const contacts = [
     {
@@ -39,7 +39,9 @@ const contacts = [
 
             <div class="flex w-full flex-wrap items-center justify-center py-1 gap-x-3 gap-y-2 md:flex-nowrap lg:gap-x-5">
                 <span v-for="contact in contacts" :key="contact.email" class="footer-link break-anywhere whitespace-nowrap text-center text-(--FooterTextBrush)">
-                    <span class="font-semibold">{{ t(contact.labelKey) }}: </span>
+                    <span class="font-semibold">
+                      {{ t(contact.labelKey) }}: 
+                    </span>
                     <a :href="`mailto:${contact.email}`" class="text-(--FooterTextBrush) no-underline hover:underline">
                         {{ contact.email }}
                     </a>

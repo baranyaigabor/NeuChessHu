@@ -19,11 +19,11 @@ const showDownload = computed(() =>
 const logoMove = computed(() =>
   showDownload.value
     ? route.name === 'signin'
-      ? "!pl-[5rem]"
-      : "!pl-[4.146rem]"
+      ? "pl-[5rem]!"
+      : "pl-[4.146rem]!"
     : route.name === 'signup'
-      ? "!pr-[3.25rem]"
-      : "!pr-[3.21rem]"
+      ? "pr-[3.25rem]!"
+      : "pr-[3.21rem]!"
 )
 
 const showSignUpStepper = computed(() =>
@@ -68,9 +68,7 @@ const stepperConfirmationStepClick = computed(() =>
     </nav>
   </header>
 
-  <div id="stepper"
-    class="flex items-center justify-center w-full"
-    v-if="showSignUpStepper">
+  <div id="stepper" class="flex items-center justify-center w-full" v-if="showSignUpStepper">
     <Stepper>
 
       <StepperItem :step="stepperSignUpStep">

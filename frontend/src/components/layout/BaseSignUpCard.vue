@@ -4,7 +4,7 @@ import {EmailSignInInput, PasswordSignInInput, SignUpNextStepButton} from '@comp
 import { useUserStore } from "@stores/UserStore";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
-import { confirmPasswordMessage, emailMessage, passwordMessage } from '@utils/validation.mjs'
+import { confirmPasswordMessage, emailMessage, passwordMessage } from '@utils/validation'
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -68,29 +68,25 @@ const handleSignupNextStep = async () =>
 
 <template>
     <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
-      <div class="card" style="width: 18rem;">
+      <div class="card -mt-20 mb-32 w-[18rem] border !border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)!">
         <div id="card-body" class="card-body">
         
           <form @submit.prevent="handleSignupNextStep">
             <div class="container-fluid">
                 <div class="row">
-                    <h2 class="card-title ps-0 text-(--TextBrush)!" style="color: var(--TextBrush);">{{ t('auth.signUp') }}</h2>
+                    <h2 class="card-title ps-0 text-(--TextBrush)!">{{ t('auth.signUp') }}</h2>
                 </div>
                 
                 <div class="row">
-                    <EmailSignInInput
-                      :value="email"
-                      @email-change="email = $event; touched.email = true"
-                      @email-blur="touched.email = true"/>
-                    <p v-if="(touched.email || submitAttempted) && validationErrors.email" class="mt-1 mx-1 p-0 text-[11px] text-danger">
-                      {{ validationErrors.email }}
+                    <EmailSignInInput :value="email" @email-change="email = $event; touched.email = true" @email-blur="touched.email = true"/>
+                    
+                    <p v-if="(touched.email || submitAttempted) && validationErrors.email" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
+                        {{ validationErrors.email }}
                     </p>
                 </div>
                 
                 <div class="row">
-                    <PasswordSignInInput
-                      :password="password"
-                      :confirmPassword="confirmPassword"
+                    <PasswordSignInInput :password="password" :confirmPassword="confirmPassword"
                       :passwordError="(touched.password || submitAttempted) ? validationErrors.password : ''"
                       :confirmPasswordError="(touched.confirmPassword || submitAttempted) ? validationErrors.confirmPassword : ''"
                       @update:password="password = $event; touched.password = true"
@@ -101,9 +97,9 @@ const handleSignupNextStep = async () =>
                 
                 <div class="row">
                     <div id="alerts">
-                      <p v-if="alertMessage" :class="['mt-1 mx-1 p-0 text-[11px]', alertType === 'danger' ? 'text-danger' : 'text-success']">
-                        {{ alertMessage }}
-                      </p>
+                        <p v-if="alertMessage" :class="['m-0 mx-1 mt-1 p-0 text-[11px]', alertType === 'danger' ? 'text-danger' : 'text-success']">
+                          {{ alertMessage }}
+                        </p>
                     </div>
                 </div>
                 
@@ -113,10 +109,10 @@ const handleSignupNextStep = async () =>
             </div>
         
         
-            <hr class="loginSep_HR !border-(--BorderChangingBrush)]/[0.24">
+            <hr class="border-(--BorderChangingBrush)!/24">
         
-            <RouterLink class="text-(--TextBrush)" :to="{name: 'signin'}">
-              {{ t('auth.alreadyHaveAccount') }}
+            <RouterLink class="text-(--TextBrush) no-underline hover:underline visited:text-(--TextBrush)" :to="{name: 'signin'}">
+                {{ t('auth.alreadyHaveAccount') }}
             </RouterLink>
         
           </form>
@@ -125,37 +121,3 @@ const handleSignupNextStep = async () =>
       </div>
     </div>
 </template>
-
-<style lang="css">
-.card{
-    border: 1px solid var(--BorderBrush);
-    background-color: var(--SideBarBrush);
-    margin-top: -5rem;
-    margin-bottom: 8rem;
-}
-
-a{
-    color: var(--TextBrush);
-}
-
-p{
-    font-size: 14px;
-    margin: 0;
-    padding: 0;
-}
-
-label{
-    color: var(--TextBrush);
-    font-size: 10px;
-    margin: 0;
-    padding-left: 0;
-    padding-top: 0;
-    padding-right: 0.25rem;
-    padding-bottom: 0;
-}
-
-.loginSep{
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-}
-</style>

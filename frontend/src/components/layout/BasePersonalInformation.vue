@@ -4,7 +4,7 @@ import {UserName, UserNameInput, UserRegionInput, UserDateOfBirthInput, NextStep
 import { useUserStore } from "@stores/UserStore";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
-import { dateOfBirthMessage, nicknameMessage, optionalNameMessage } from '@utils/validation.mjs'
+import { dateOfBirthMessage, nicknameMessage, optionalNameMessage } from '@utils/validation'
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -73,9 +73,9 @@ const handlePrevious = async () =>
 
 <template>
     <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
-        <div class="card" style="width: 18rem;">
+        <div class="card mb-48 w-[18rem] border! border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)!">
             <div id="card-body" class="card-body">
-                <h2 class="text-(--TextBrush)!" style="color: var(--TextBrush);">{{ t('registration.personalInformation') }}</h2>
+                <h2 class="text-(--TextBrush)!">{{ t('registration.personalInformation') }}</h2>
 
                 <form @submit.prevent="handleNext">
                     <div class="container-fluid px-0">
@@ -85,7 +85,8 @@ const handlePrevious = async () =>
                               :value="nickname"
                               @usernameChange="nickname = $event; touched.nickname = true"
                               @usernameBlur="touched.nickname = true"/>
-                            <p v-if="(touched.nickname || submitAttempted) && validationErrors.nickname" class="mt-1 mx-1  p-0 text-[11px] text-danger">
+                              
+                            <p v-if="(touched.nickname || submitAttempted) && validationErrors.nickname" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
                                 {{ validationErrors.nickname }}
                             </p>
                         </div>
@@ -100,10 +101,12 @@ const handlePrevious = async () =>
                               @lastNameChange="lastName = $event; touched.lastName = true"
                               @firstNameBlur="touched.firstName = true"
                               @lastNameBlur="touched.lastName = true"/>
-                            <p v-if="(touched.firstName || submitAttempted) && validationErrors.firstName" class="mt-1 mx-1  p-0 text-[11px] text-danger">
+
+                            <p v-if="(touched.firstName || submitAttempted) && validationErrors.firstName" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
                                 {{ validationErrors.firstName }}
                             </p>
-                            <p v-if="(touched.lastName || submitAttempted) && validationErrors.lastName" class="mt-1 mx-1  p-0 text-[11px] text-danger">
+
+                            <p v-if="(touched.lastName || submitAttempted) && validationErrors.lastName" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
                                 {{ validationErrors.lastName }}
                             </p>
                         </div>
@@ -118,7 +121,8 @@ const handlePrevious = async () =>
 
                         <div class="row">
                             <UserDateOfBirthInput :model-value="dob" @dateOfBirthChange="dob = $event; touched.dob = true"/>
-                            <p v-if="(touched.dob || submitAttempted) && validationErrors.dob" class="mt-1 mx-1  p-0 text-[11px] text-danger">
+                            
+                            <p v-if="(touched.dob || submitAttempted) && validationErrors.dob" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
                                 {{ validationErrors.dob }}
                             </p>
                         </div>
@@ -137,27 +141,3 @@ const handlePrevious = async () =>
         </div>
     </div>
 </template>
-
-<style lang="css">
-.card{
-    border: 1px solid var(--BorderBrush);
-    background-color: var(--SideBarBrush);
-    margin-bottom: 12rem;
-}
-
-p{
-    font-size: 14px;
-    margin: 0;
-    padding: 0;
-}
-
-label{
-    color: var(--TextBrush);
-    font-size: 10px;
-    margin: 0;
-    padding-left: 0;
-    padding-top: 0;
-    padding-right: 0.25rem;
-    padding-bottom: 0;
-}
-</style>
