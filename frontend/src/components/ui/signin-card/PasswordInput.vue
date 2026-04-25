@@ -62,6 +62,6 @@ function onPasswordChange(event)
             </a>
         </div>
     </div>
-    <input id="loginPass" @input="onPasswordChange" @blur="emit('password-blur')" class="w-full m-0 bg-(--ButtonBrush) text-(--FieldTextBrush) placeholder:text-(--FieldTextBrush) placeholder:tracking-[0.08rem] placeholder:opacity-60 p-1 ps-2 rounded-[5px] border border-(--BorderBrush)! shadow-[inset_0_2px_5px_var(--InsetShadowBrush)]" 
+    <input id="loginPass" @input="onPasswordChange" @blur="emit('password-blur')" class="gx-0 w-full m-0 bg-(--ButtonBrush) text-(--FieldTextBrush) placeholder:text-(--FieldTextBrush) placeholder:tracking-[0.08rem] placeholder:opacity-60 p-1! ps-2! rounded-[5px] border border-(--BorderBrush) shadow-[inset_0_2px_5px_var(--InsetShadowBrush)]" 
            placeholder="*********" :type="showPassword ? 'text' : 'password'">
 </template>

@@ -68,7 +68,7 @@ const handleSignupNextStep = async () =>
 
 <template>
     <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
-      <div class="card -mt-20 mb-32 w-[18rem] border !border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)!">
+      <div class="card -mt-20 mb-32 w-[18rem] border! [--bs-card-bg:var(--SideBarBrush)] [--bs-card-border-color:var(--BorderBrush)] border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)">
         <div id="card-body" class="card-body">
         
           <form @submit.prevent="handleSignupNextStep">
@@ -111,7 +111,7 @@ const handleSignupNextStep = async () =>
         
             <hr class="border-(--BorderChangingBrush)!/24">
         
-            <RouterLink class="text-(--TextBrush) no-underline hover:underline visited:text-(--TextBrush)" :to="{name: 'signin'}">
+            <RouterLink class="text-(--TextBrush)! no-underline hover:underline visited:text-(--TextBrush)" :to="{name: 'signin'}">
                 {{ t('auth.alreadyHaveAccount') }}
             </RouterLink>
         
