@@ -38,6 +38,15 @@ export default
         downloadApp: 'Download App'
     },
 
+    footer:
+    {
+        copyright: '© {year} NeuChess. All rights reserved.',
+        terms: 'Terms and Conditions',
+        supportLabel: 'Account and login help',
+        observerLabel: 'Fair play and reports',
+        teamLabel: 'General and team contact'
+    },
+
     sidebar: 
     {
         dashboard: 'Dashboard',

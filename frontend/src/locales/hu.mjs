@@ -38,6 +38,15 @@ export default
         downloadApp: 'App letöltése'
     },
 
+    footer:
+    {
+        copyright: '© {year} NeuChess. Minden jog fenntartva.',
+        terms: 'Felhasználási feltételek',
+        supportLabel: 'Fiók- és bejelentkezési segítség',
+        observerLabel: 'Fair play és jelentések',
+        teamLabel: 'Általános és csapatkapcsolat'
+    },
+
     sidebar: 
     {
         dashboard: 'Irányítópult',
