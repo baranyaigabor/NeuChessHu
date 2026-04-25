@@ -4,7 +4,7 @@ import { ConfirmInfos, NextStepButton, PreviousStepButton } from '@components/ui
 import { useUserStore } from "@stores/UserStore";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
-import { emailMessage, nicknameMessage, passwordMessage } from '@utils/validation'
+import { emailMessage, nicknameMessage, passwordMessage } from '@utils/validation.mjs'
 
 const userStore = useUserStore();
 const router = useRouter();

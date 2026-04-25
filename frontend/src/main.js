@@ -4,7 +4,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { plugin, defaultConfig } from '@formkit/vue'
 import {router} from '@/router'
 import App from '@/App.vue'
-import { applySavedTheme } from '@/utils/theme'
+import { applySavedTheme } from '@utils/theme.mjs'
 
 import '@assets/main.css'
 

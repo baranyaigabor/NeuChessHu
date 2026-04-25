@@ -4,7 +4,7 @@ import {EmailSignInInput, PasswordSignInInput, SignUpNextStepButton} from '@comp
 import { useUserStore } from "@stores/UserStore";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
-import { confirmPasswordMessage, emailMessage, passwordMessage } from '@utils/validation'
+import { confirmPasswordMessage, emailMessage, passwordMessage } from '@utils/validation.mjs'
 
 const router = useRouter();
 const userStore = useUserStore();

@@ -4,7 +4,7 @@ import {UserName, UserNameInput, UserRegionInput, UserDateOfBirthInput, NextStep
 import { useUserStore } from "@stores/UserStore";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
-import { dateOfBirthMessage, nicknameMessage, optionalNameMessage } from '@utils/validation'
+import { dateOfBirthMessage, nicknameMessage, optionalNameMessage } from '@utils/validation.mjs'
 
 const userStore = useUserStore();
 const router = useRouter();
