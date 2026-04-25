@@ -7,6 +7,6 @@ const { t } = useI18n()
 
 <template>
     <div class="container-fluid justify-content-start d-flex">
-        <a href="#" id="submit_BTN" @click.prevent="emit('submit')" class="btn mt-4 w-[5.5rem] bg-(--ButtonBrush)! text-(--TextBrush)! border border-(--BorderBrush)!">{{ t('common.previous') }}</a>
+        <a href="#" id="submit_BTN" @click.prevent="emit('submit')" class="btn mt-4 w-24 bg-(--ButtonBrush)! text-(--TextBrush)! border border-(--BorderBrush)!">{{ t('common.previous') }}</a>
     </div>
 </template>
