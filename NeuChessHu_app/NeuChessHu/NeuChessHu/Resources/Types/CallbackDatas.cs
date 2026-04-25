@@ -22,6 +22,9 @@ internal struct CallbackDatas
             };
 
             SendMessage(hwnd, 0x004A, IntPtr.Zero, ref data);
+
+            SetForegroundWindow(hwnd);
+            ShowWindow(hwnd, 9);
         }
     }
 
@@ -30,4 +33,10 @@ internal struct CallbackDatas
 
     [DllImport("user32.dll")]
     static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, ref CallbackDatas lParam);
+
+    [DllImport("user32.dll")]
+    static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 }
