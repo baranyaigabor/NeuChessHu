@@ -32,7 +32,7 @@ watch(date, (val) => {
 
 <template>
   <div class="col">
-    <label for="calendar">{{ t('common.dateOfBirth') }}:</label>
+    <label class=" m-0 mb-1" for="calendar">{{ t('common.dateOfBirth') }}:</label>
 
     <Popover id="calendar" v-slot="{ close }">
 

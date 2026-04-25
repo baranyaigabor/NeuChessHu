@@ -30,7 +30,7 @@ function onRegionChange(event)
 
 <template>
     <div class="col">
-        <label for="region">{{ t('common.region') }}:</label>
+        <label class=" m-0 mb-1" for="region">{{ t('common.region') }}:</label>
         <select :value="props.value" class="w-full m-0 p-1.5 ps-2 bg-(--ButtonBrush)! text-(--FieldTextBrush) rounded-[5px] border border-(--BorderBrush) shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] focus:bg-transparent focus:outline-none! custom-select" 
                 @change="onRegionChange" id="region" name="region">
 
