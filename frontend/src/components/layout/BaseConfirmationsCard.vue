@@ -63,8 +63,8 @@ const handlePrevious = () => {
 </script>
 
 <template>
-    <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100 px-2 sm:px-4">
-        <div class="card confirmation-card mb-48 w-full max-w-[18rem] border! border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)">
+    <div class="flex min-h-[60vh] items-center my-4 justify-center"> 
+        <div class="card confirmation-card w-full max-w-[18rem] border! border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)">
             <div id="card-body" class="card-body">
 
                 <form @submit.prevent="handleNext">
@@ -78,9 +78,9 @@ const handlePrevious = () => {
                             <div class="d-flex justify-content-center">
                                 <div class="form-check">
                                     <input class="form-check-input mb-0.5" type="checkbox" id="terms" v-model="acceptedTerms">
-                                    <label class="form-check-label mt-1 p-0 pr-1 text-xs text-(--TextBrush)" for="terms">
+                                    <label class="form-check-label mt-1 p-0 pr-1 text-xs text-(--TextBrush)!" for="terms">
                                         {{ t('registration.acceptTermsPrefix') }}
-                                        <a :href="termsHref" class="text-(--TextBrush) **:underline" target="_blank" rel="noopener noreferrer" @click.stop>
+                                        <a :href="termsHref" class="text-(--TextBrush)! **:underline" target="_blank" rel="noopener noreferrer" @click.stop>
                                             {{ t('registration.termsLinkText') }}
                                         </a>
                                     </label>

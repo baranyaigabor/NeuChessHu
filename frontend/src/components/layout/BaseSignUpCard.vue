@@ -67,57 +67,56 @@ const handleSignupNextStep = async () =>
 </script>
 
 <template>
-    <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
-      <div class="card -mt-20 mb-32 w-[18rem] border! [--bs-card-bg:var(--SideBarBrush)] [--bs-card-border-color:var(--BorderBrush)] border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)">
+<div class="flex min-h-[60vh] items-center my-4 justify-center"> 
+    <div class="card w-[18rem] !border [--bs-card-bg:var(--SideBarBrush)] [--bs-card-border-color:var(--BorderBrush)] !border-[var(--BorderBrush)] !bg-[var(--SideBarBrush)] text-[var(--TextBrush)]">
         <div id="card-body" class="card-body">
-        
-          <form @submit.prevent="handleSignupNextStep">
-            <div class="container-fluid">
-                <div class="row">
-                    <h2 class="card-title ps-0 text-(--TextBrush)!">{{ t('auth.signUp') }}</h2>
-                </div>
-                
-                <div class="row">
-                    <EmailSignInInput :value="email" @email-change="email = $event; touched.email = true" @email-blur="touched.email = true"/>
-                    
-                    <p v-if="(touched.email || submitAttempted) && validationErrors.email" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
-                        {{ validationErrors.email }}
-                    </p>
-                </div>
-                
-                <div class="row">
-                    <PasswordSignInInput :password="password" :confirmPassword="confirmPassword"
-                      :passwordError="(touched.password || submitAttempted) ? validationErrors.password : ''"
-                      :confirmPasswordError="(touched.confirmPassword || submitAttempted) ? validationErrors.confirmPassword : ''"
-                      @update:password="password = $event; touched.password = true"
-                      @update:confirmPassword="confirmPassword = $event; touched.confirmPassword = true"
-                      @password-blur="touched.password = true"
-                      @confirm-password-blur="touched.confirmPassword = true"/>
-                </div>
-                
-                <div class="row">
-                    <div id="alerts">
-                        <p v-if="alertMessage" :class="['m-0 mx-1 mt-1 p-0 text-[11px]', alertType === 'danger' ? 'text-danger' : 'text-success']">
-                          {{ alertMessage }}
+            <form @submit.prevent="handleSignupNextStep">
+                <div class="container-fluid">
+                    <div div class="row">
+                        <h2 class="card-title ps-0 text-(--TextBrush)!">{{ t('auth.signUp') }}</h2>
+                    </div>
+
+                    <div class="row">
+                        <EmailSignInInput :value="email" @email-change="email = $event; touched.email = true" @email-blur="touched.email = true"/>
+
+                        <p v-if="(touched.email || submitAttempted) && validationErrors.email" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
+                            {{ validationErrors.email }}
                         </p>
                     </div>
+
+                    <div class="row">
+                        <PasswordSignInInput :password="password" :confirmPassword="confirmPassword"
+                            :passwordError="(touched.password || submitAttempted) ? validationErrors.password : ''"
+                            :confirmPasswordError="(touched.confirmPassword || submitAttempted) ? validationErrors.confirmPassword : ''"
+                            @update:password="password = $event; touched.password = true"
+                            @update:confirmPassword="confirmPassword = $event; touched.confirmPassword = true"
+                            @password-blur="touched.password = true"
+                            @confirm-password-blur="touched.confirmPassword = true"/>
+                    </div>
+
+                    <div class="row">
+                        <div id="alerts">
+                                <p v-if="alertMessage" :class="['m-0 mx-1 mt-1 p-0 text-[11px]', alertType === 'danger' ? 'text-danger' : 'text-success']">
+                                {{ alertMessage }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <SignUpNextStepButton :disabled="!isFormValid" @submit="handleSignupNextStep"/>
+                    </div>
                 </div>
-                
-                <div class="row">
-                    <SignUpNextStepButton :disabled="!isFormValid" @submit="handleSignupNextStep"/>
-                </div>
-            </div>
-        
-        
-            <hr class="border-(--BorderChangingBrush)!/24">
-        
-            <RouterLink class="text-(--TextBrush)! no-underline hover:underline visited:text-(--TextBrush)" :to="{name: 'signin'}">
-                {{ t('auth.alreadyHaveAccount') }}
-            </RouterLink>
-        
-          </form>
+          
+          
+                <hr class="border-(--BorderChangingBrush)!/24">
+          
+                <RouterLink class="text-(--TextBrush)! no-underline hover:underline visited:text-(--TextBrush)" :to="{name: 'signin'}">
+                    {{ t('auth.alreadyHaveAccount') }}
+                </RouterLink>
+          
+            </form>
       
         </div>
-      </div>
     </div>
+</div>
 </template>

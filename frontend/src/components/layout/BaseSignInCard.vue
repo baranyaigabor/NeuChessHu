@@ -93,8 +93,8 @@ async function TryToSignIn()
 </script>
 
 <template>
-    <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
-        <div class="card -mt-12 mb-32 w-[18rem] border! border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)">
+    <div class="flex min-h-[70vh] items-center justify-center"> 
+        <div class="card w-[18rem] border! border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)">
             <div id="card-body" class="card-body">
                 <form @submit.prevent="TryToSignIn">
 

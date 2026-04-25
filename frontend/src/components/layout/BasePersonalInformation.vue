@@ -72,7 +72,7 @@ const handlePrevious = async () =>
 </script>
 
 <template>
-    <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="flex min-h-[60vh] items-center my-4 justify-center"> 
         <div class="card w-[18rem] border! border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)!">
             <div id="card-body" class="card-body">
                 <h2 class="text-(--TextBrush)!">{{ t('registration.personalInformation') }}</h2>
