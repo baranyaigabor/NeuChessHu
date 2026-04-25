@@ -25,10 +25,10 @@ function onPasswordChange(event)
 </script>
 
 <template>
-    <div class="d-flex">
+    <div class="d-flex -mb-3">
         <p class="text-(--TextBrush)">{{ t('common.password') }}:</p>
         <div id="password" class="d-flex justify-content-end text-[8px] w-full">
-            <a href="#" class="me-1 text-(--TextBrush)" @mousedown.prevent="show" @mouseup.prevent="hide" @mouseleave.prevent="hide" id="showPass_A">
+            <button href="#" class="me-1 mb-3 text-(--TextBrush)" @mousedown.prevent="show" @mouseup.prevent="hide" @mouseleave.prevent="hide" id="showPass_A">
                 <svg v-if="showPassword"
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-4 w-4"
@@ -59,7 +59,7 @@ function onPasswordChange(event)
                   <path d="M4 4l16 16" />
                   <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
                 </svg>
-            </a>
+            </button>
         </div>
     </div>
     <input id="loginPass" @input="onPasswordChange" @blur="emit('password-blur')" class="gx-0 w-full m-0 bg-(--ButtonBrush) text-(--FieldTextBrush) placeholder:text-(--FieldTextBrush) placeholder:tracking-[0.08rem] placeholder:opacity-60 p-1! ps-2! rounded-[5px] border border-(--BorderBrush) shadow-[inset_0_2px_5px_var(--InsetShadowBrush)]" 
