@@ -1,12 +1,12 @@
 <script setup>
-import BaseLoginLayout from '@layouts/BaseLoginLayout.vue'
+import BaseCardLayout from '@layouts/BaseCardLayout.vue'
 import BaseSingInCard from '@components/layout/BaseSignInCard.vue'
 </script>
 
 <template>
-    <BaseLoginLayout>
+    <BaseCardLayout>
         <BaseSingInCard />
-    </BaseLoginLayout>
+    </BaseCardLayout>
 </template>
 
 <style lang="css">

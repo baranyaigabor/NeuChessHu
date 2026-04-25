@@ -73,7 +73,7 @@ const handlePrevious = async () =>
 
 <template>
     <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
-        <div class="card mb-48 w-[18rem] border! border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)!">
+        <div class="card w-[18rem] border! border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)!">
             <div id="card-body" class="card-body">
                 <h2 class="text-(--TextBrush)!">{{ t('registration.personalInformation') }}</h2>
 
@@ -86,7 +86,7 @@ const handlePrevious = async () =>
                               @usernameChange="nickname = $event; touched.nickname = true"
                               @usernameBlur="touched.nickname = true"/>
                               
-                            <p v-if="(touched.nickname || submitAttempted) && validationErrors.nickname" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
+                            <p v-if="(touched.nickname || submitAttempted) && validationErrors.nickname" class="m-0 mx-1 mt-1 text-[11px] text-danger">
                                 {{ validationErrors.nickname }}
                             </p>
                         </div>

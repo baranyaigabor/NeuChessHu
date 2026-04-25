@@ -1,12 +1,12 @@
 <script setup>
-import BaseLoginLayout from '@layouts/BaseLoginLayout.vue'
+import BaseCardLayout from '@layouts/BaseCardLayout.vue'
 import BaseConfirmationsCard from '@components/layout/BaseConfirmationsCard.vue'
 </script>
 
 <template>
-    <BaseLoginLayout>
+    <BaseCardLayout>
         <BaseConfirmationsCard />
-    </BaseLoginLayout>
+    </BaseCardLayout>
 </template>
 
 <route lang="yaml">
