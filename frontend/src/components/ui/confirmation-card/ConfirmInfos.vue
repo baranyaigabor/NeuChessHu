@@ -26,7 +26,7 @@ const formattedData = computed(() => {
 
 <template>
   <div class="flex flex-col gap-4">
-    <h2 class="text-center text-lg font-semibold text-(--TextBrush)!">{{ t('registration.confirmInformation') }}</h2>
+    <h2 class="text-lg text-left font-semibold text-(--TextBrush)!">{{ t('registration.confirmInformation') }}</h2>
 
     <div class="flex flex-col gap-2">
       <div class="flex justify-between border-b border-(--BorderChangingBrush)/24 pb-1">
