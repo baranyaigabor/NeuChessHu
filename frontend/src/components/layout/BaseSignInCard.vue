@@ -2,7 +2,7 @@
 import { computed, reactive, ref, onMounted } from 'vue';
 import { useRouter } from "vue-router";
 import { useUserStore } from "@stores/UserStore";
-import {    EmailSignInInput,    OrSeparator,    OtherSignIn,    PasswordSignInInput,    SignInButton} from '@components/ui/signin-card';
+import { EmailSignInInput, PasswordSignInInput, SignInButton} from '@components/ui/signin-card';
 import { useI18n } from '@utils/i18n'
 import { emailMessage, requiredMessage } from '@utils/validation'
 
@@ -126,7 +126,7 @@ async function TryToSignIn()
 
                     <hr class="opacity-100 border-(--BorderChangingBrush)/24!" />
 
-                    <RouterLink :to="{ name: 'signup' }" class="text-(--TextBrush) no-underline hover:underline visited:text-(--TextBrush)">
+                    <RouterLink :to="{ name: 'signup' }" class="text-(--TextBrush)! no-underline hover:underline visited:text-(--TextBrush)">
                         {{ t('auth.newToChess') }}
                     </RouterLink>
 

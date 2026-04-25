@@ -1,2 +1,3 @@
-export { default as EmailSignInInput } from './emailInput.vue'
-export { default as PasswordSignInInput } from './passwordInput.vue'
+export { default as EmailSignInInput } from './EmailInput.vue'
+export { default as PasswordSignInInput } from './PasswordInput.vue'
+export { default as SignInButton } from './SingInButton.vue'
