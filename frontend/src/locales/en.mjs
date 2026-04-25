@@ -72,7 +72,7 @@ export default
         required: '{field} is required.',
         emailInvalid: 'Please enter a valid email address.',
         passwordMin: 'Password must be at least {min} characters.',
-        confirmPasswordRequired: 'Confirm password is required.',
+        confirmPasswordRequired: 'Password confirmation is required.',
         passwordLetterNumber: 'Password must contain at least one letter and one number.',
         passwordMismatch: 'Passwords do not match.',
         usernameMin: 'Username must be at least {min} characters.',

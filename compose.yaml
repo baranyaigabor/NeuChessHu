@@ -16,7 +16,6 @@ services:
       - swagger
       - db
       - phpmyadmin
-      - jsonserver
       - docs
       - mailcatcher
     networks:

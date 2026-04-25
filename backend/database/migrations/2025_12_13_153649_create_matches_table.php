@@ -22,8 +22,6 @@ return new class extends Migration
             $table->string("match_end_result");
             $table->string("winner_id")->nullable();
             $table->string("winner_time")->nullable();
-            
-            $table->foreignId("tournament_id")->nullable()->constrained();
         });
     }
     
