@@ -12,18 +12,22 @@ use App\Http\Controllers\PendingChannelController;
 use App\Http\Controllers\QueueController;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource("users", UserController::class);
-Route::get('/users/{identifier}', [UserController::class, 'show']);
+Route::apiResource('users', UserController::class)
+    ->middlewareFor('index', ['auth:sanctum', 'can:manage-users'])
+    ->middlewareFor('update', ['auth:sanctum', 'can:update-user,user'])
+    ->middlewareFor('destroy', ['auth:sanctum', 'can:destroy-user,user']);
+
 Route::get('/user', [UserController::class, 'showCurrent'])
     ->middleware('auth:sanctum');
 
-Route::apiResource("matches", MatchesController::class);
+Route::apiResource('matches', MatchesController::class)
+    ->middlewareFor('store', ['auth:sanctum', 'can:store-match']);
 
 Route::post('/signin', [AuthController::class, 'webLogin']);
 Route::post('/logout', [AuthController::class, 'webLogout']);
 
 Route::post('/desktop/logout', [DesktopAuthController::class, 'desktopLogout'])
-    ->middleware('auth:sanctum');
+    ->middleware(['auth:sanctum', 'can:logout']);
 
 Route::post('/join/matchmakingqueue', [QueueController::class, 'join'])
     ->middleware('auth:sanctum');

@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref, computed } from 'vue'
 import {EmailSignInInput, PasswordSignInInput, SignUpNextStepButton} from '@components/ui/signup-card'
-import { useUserStore } from "@stores/UserStore";
+import { useUserStore } from "@stores/UserStore.mjs";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
 import { confirmPasswordMessage, emailMessage, passwordMessage } from '@utils/validation'

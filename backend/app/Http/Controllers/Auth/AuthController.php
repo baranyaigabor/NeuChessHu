@@ -1,11 +1,11 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
@@ -13,21 +13,21 @@ class AuthController extends Controller
     {
         $credentials = $request->validated();
 
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::attempt($credentials)) 
+        {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
         /** @var \App\Models\User|\Laravel\Sanctum\HasApiTokens $user */
         $user = Auth::user();
-        
+
         $user->update(['is_active' => true]);
 
-        $tokenName = $request->has('redirect_uri') ? 'desktop' : 'api';
-        $token = $user->createToken($tokenName)->plainTextToken;
+        $token = $user->createToken('desktop-app', ['*'], now()->addHours(4))->plainTextToken;
 
         return response()->json([
             'token' => $token,
-            'user' => $user
+            'user' => $user->load(['whiteMatches', 'blackMatches']),
         ]);
     }
 
@@ -35,20 +35,10 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
-        if (!$user) 
-        {
-            $token = $request->query('token');
-            $tokenModel = PersonalAccessToken::findToken($token);
-            $user = $tokenModel?->tokenable;
-            $tokenModel?->delete();
-        }
+        $user->currentAccessToken()?->delete();
 
-        else 
-        {
-            $request->user()->currentAccessToken()->delete();
-        }
-                
-        $user?->update(['is_active' => false]);
+        $user->update(['is_active' => false]);
+
         return response()->json(['message' => 'Logged out successfully']);
     }
 }

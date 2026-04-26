@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, onBeforeUnmount } from 'vue'
-import { useUserStore } from '@stores/UserStore'
+import { useUserStore } from '@stores/UserStore.mjs'
 
 onMounted(() => {
     window.addEventListener('beforeunload', handleUnload)

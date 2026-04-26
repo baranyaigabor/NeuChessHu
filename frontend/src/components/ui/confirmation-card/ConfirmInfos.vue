@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from "vue"
-import { useUserStore } from "@stores/UserStore"
+import { useUserStore } from "@stores/UserStore.mjs"
 import { useI18n } from '@utils/i18n'
 import { countryName } from '@utils/i18n/countries'
 
