@@ -13,15 +13,18 @@ class QueueController
 
     public function join(QueueRequest $request)
     {
+        $playerID = $request->user()->id;
+        $matchDuration = $request->input('matchDuration');
         $stockfishDepth = $request->input('stockfishDepth', $request->input('StockfishDepth'));
 
-        if ($stockfishDepth !== null) {
-            MatchmakingQueue::where('player_id', $request->playerID)->delete();
+        if ($stockfishDepth !== null) 
+        {
+            MatchmakingQueue::where('player_id', $playerID)->delete();
 
             $channel = $this->matchMaker->startStockfishMatch(
-                $request->playerID,
-                $request->matchDuration,
-                (int)$stockfishDepth
+                $playerID,
+                $matchDuration,
+                (int) $stockfishDepth
             );
 
             return response()->json([
@@ -31,26 +34,27 @@ class QueueController
             ]);
         }
 
-        $this->enqueuePlayer($request->playerID, $request->matchDuration);
-                
-        $channel = $this->matchMaker->tryStartMatch($request->matchDuration);
-     
+        $this->enqueuePlayer($playerID, $matchDuration);
+
+        $channel = $this->matchMaker->tryStartMatch($matchDuration);
+
         return response()->json([
             'status' => $channel ? 'match-found' : 'waiting',
-            'channel' => $channel
+            'channel' => $channel,
         ]);
     }
 
     public function leave(QueueRequest $request)
     {
-        $playerId = $request->playerID;
+        $playerId = $request->user()->id;
 
         $player = MatchmakingQueue::where('player_id', $playerId)->first();
 
-        if (!$player) {
+        if (!$player) 
+        {
             return response()->json([
                 'status' => 'not-in-queue',
-                'message' => 'Player is not currently in the matchmaking queue.'
+                'message' => 'Player is not currently in the matchmaking queue.',
             ]);
         }
 
@@ -58,33 +62,35 @@ class QueueController
 
         return response()->json([
             'status' => 'left',
-            'message' => 'Player successfully removed from the matchmaking queue.'
+            'message' => 'Player successfully removed from the matchmaking queue.',
         ]);
     }
 
-    public function enqueuePlayer(int $playerID, string $match_duration) : void
+    public function enqueuePlayer(int $playerID, string $matchDuration) : void
     {
         MatchmakingQueue::updateOrCreate(
             ['player_id' => $playerID],
-            ['match_duration' => $match_duration, 'joined_at' => now()]
+            ['match_duration' => $matchDuration, 'joined_at' => now()]
         );
     }
 
-    public function matchPlayersFromDB(string $match_duration) : ?array
+    public function matchPlayersFromDB(string $matchDuration) : ?array
     {
-        return DB::transaction(function () use ($match_duration): ?array {
-            $players = MatchmakingQueue::where('match_duration', $match_duration)
-                ->orderBy('joined_at')
-                ->lockForUpdate()
-                ->limit(2)
-                ->get();
+        return DB::transaction(function () use ($matchDuration) : ?array 
+        {
+            $players = MatchmakingQueue::where('match_duration', $matchDuration)
+                                       ->orderBy('joined_at')
+                                       ->lockForUpdate()
+                                       ->limit(2)
+                                       ->get();
 
-            if ($players->count() < 2) {
+            if ($players->count() < 2) 
+            {
                 return null;
             }
 
-            $player1 = (int)$players[0]->player_id;
-            $player2 = (int)$players[1]->player_id;
+            $player1 = (int) $players[0]->player_id;
+            $player2 = (int) $players[1]->player_id;
 
             MatchmakingQueue::whereIn('player_id', [$player1, $player2])->delete();
 

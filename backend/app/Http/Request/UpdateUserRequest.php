@@ -5,12 +5,13 @@ namespace App\Http\Requests;
 use App\Rules\Base64ImageRule;
 use App\Rules\ClamAVScanRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 class UpdateUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('update-user', $this->route('user'));
     }
 
     public function rules(): array
