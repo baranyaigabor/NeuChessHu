@@ -130,6 +130,19 @@ export default
         deleteAccountConfirm: 'Do you want to delete your account?'
     },
 
+    admin:
+    {
+        title: 'Admin users',
+        subtitle: '{count} users listed',
+        editUser: 'Edit user',
+        changePicture: 'Change picture',
+        noUsers: 'No users found.',
+        loadFailed: 'Could not load users.',
+        saveFailed: 'Could not save user.',
+        deleteFailed: 'Could not delete user.',
+        deleteConfirm: 'Delete @{nickname}?'
+    },
+
     match: 
     {
         moves: 'Moves',

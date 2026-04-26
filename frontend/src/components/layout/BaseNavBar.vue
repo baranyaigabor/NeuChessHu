@@ -96,7 +96,7 @@ const stepperConfirmationStepClick = computed(() =>
             :class="!stepperPersonalInformationStepClick ? 'pointer-events-none opacity-50' : ''">
             
             <StepperIndicator>2</StepperIndicator>
-            <StepperTitle class="max-w-[5.25rem] whitespace-normal text-center text-[10px] leading-tight sm:max-w-none sm:text-xs md:text-sm">{{ t('registration.personalInformation') }}</StepperTitle>
+            <StepperTitle class="max-w-[5.25rem] whitespace-normal text-center text-[10px] md:text-nowrap leading-tight sm:max-w-none sm:text-xs md:text-sm">{{ t('registration.personalInformation') }}</StepperTitle>
           </component>
         </StepperTrigger>
         <StepperSeparator class="hidden sm:block" />

@@ -18,7 +18,7 @@ export default
         deleteAccount: 'Fiók törlése',
         next: 'Következő',
         previous: 'Előző',
-        confirm: 'Megerősít',
+        confirm: 'Megerősítés',
         email: 'Email',
         password: 'Jelszó',
         confirmPassword: 'Jelszó megerősítése',
@@ -128,6 +128,19 @@ export default
         imageOnly: 'Csak képfájl tölthető fel.',
         imageTooLarge: 'A kép feldolgozás után is túl nagy.',
         deleteAccountConfirm: 'Biztosan törölni szeretnéd a fiókodat?'
+    },
+
+    admin:
+    {
+        title: 'Admin felhasználók',
+        subtitle: '{count} felhasználó listázva',
+        editUser: 'Felhasználó szerkesztése',
+        changePicture: 'Kép módosítása',
+        noUsers: 'Nincs felhasználó.',
+        loadFailed: 'Nem sikerült betölteni a felhasználókat.',
+        saveFailed: 'Nem sikerült menteni a felhasználót.',
+        deleteFailed: 'Nem sikerült törölni a felhasználót.',
+        deleteConfirm: 'Törlöd @{nickname} felhasználót?'
     },
 
     match: 
