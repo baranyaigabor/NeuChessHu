@@ -35,7 +35,10 @@ export default
 
     nav: 
     {
-        downloadApp: 'App letöltése'
+        downloadApp: 'Letöltés',
+        lightMode: 'Világos mód',
+        darkMode: 'Sötét mód',
+        logout: 'Kijelentkezés'
     },
 
     footer:
@@ -121,7 +124,7 @@ export default
     {
         loading: 'Betöltés...',
         loadFailed: 'Nem sikerült betölteni a profilt:',
-        registeredAt: 'Regisztrált:',
+        registeredAt: 'Regisztrált',
         status: 'Állapot',
         dropHere: 'Húzd ide',
         max2Mb: 'max 2MB',
