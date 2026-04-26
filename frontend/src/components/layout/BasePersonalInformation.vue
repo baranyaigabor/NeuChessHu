@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref, computed } from 'vue'
 import {UserName, UserNameInput, UserRegionInput, UserDateOfBirthInput, NextStepButton, PreviousStepButton} from '@components/ui/personal-information-card'
-import { useUserStore } from "@stores/UserStore.mjs";
+import { useUserStore } from "@stores/UserStore";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
 import { dateOfBirthMessage, nicknameMessage, optionalNameMessage } from '@utils/validation'
@@ -102,11 +102,11 @@ const handlePrevious = async () =>
                               @firstNameBlur="touched.firstName = true"
                               @lastNameBlur="touched.lastName = true"/>
 
-                            <p v-if="(touched.firstName || submitAttempted) && validationErrors.firstName" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
+                            <p v-if="(touched.firstName || submitAttempted) && validationErrors.firstName" class="m-0 mx-1 mt-1 text-[11px] text-danger">
                                 {{ validationErrors.firstName }}
                             </p>
 
-                            <p v-if="(touched.lastName || submitAttempted) && validationErrors.lastName" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
+                            <p v-if="(touched.lastName || submitAttempted) && validationErrors.lastName" class="m-0 mx-1 mt-1 text-[11px] text-danger">
                                 {{ validationErrors.lastName }}
                             </p>
                         </div>
@@ -122,7 +122,7 @@ const handlePrevious = async () =>
                         <div class="row">
                             <UserDateOfBirthInput :model-value="dob" @dateOfBirthChange="dob = $event; touched.dob = true"/>
                             
-                            <p v-if="(touched.dob || submitAttempted) && validationErrors.dob" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
+                            <p v-if="(touched.dob || submitAttempted) && validationErrors.dob" class="m-0 mx-1 mt-1 text-[11px] text-danger">
                                 {{ validationErrors.dob }}
                             </p>
                         </div>

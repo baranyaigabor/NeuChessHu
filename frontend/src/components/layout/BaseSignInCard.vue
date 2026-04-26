@@ -1,7 +1,7 @@
 <script setup>
 import { computed, reactive, ref, onMounted } from 'vue';
 import { useRouter } from "vue-router";
-import { useUserStore } from "@stores/UserStore.mjs";
+import { useUserStore } from "@stores/UserStore";
 import { EmailSignInInput, PasswordSignInInput, SignInButton} from '@components/ui/signin-card';
 import { useI18n } from '@utils/i18n'
 import { emailMessage, requiredMessage } from '@utils/validation'
@@ -81,8 +81,13 @@ async function TryToSignIn()
                 password: userPassword.value
             })
 
-            router.push({ name: "user", params: { nickname:response.nickname } });
-        }
+            if (response.role === 'admin') 
+            {
+                router.push({ name: "admin" });
+                return;
+            }
+
+            router.push({ name: "user", params: { nickname: response.nickname } });        }
     } 
 
     catch (error) 
