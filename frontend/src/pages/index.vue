@@ -1,19 +1,13 @@
 <script setup>
-import BaseCardLayout from '@layouts/BaseCardLayout.vue'
-import BaseSignUpCard from '@components/layout/BaseSignUpCard.vue'
+import BaseLayout from '@layouts/BaseMainLayout.vue'
 </script>
 
 <template>
-    <BaseCardLayout>
-        <BaseSignUpCard />
-    </BaseCardLayout>
+    <BaseLayout />
 </template>
 
-<style lang="css">
-</style>
-
 <route lang="yaml">
-name: signup
+name: welcome
 meta:
-    title: Sign Up
+    title: Welcome
 </route>
