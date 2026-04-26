@@ -14,9 +14,12 @@ function handleUnload()
 {
     const token = useUserStore().token
 
-    if(token !== null)
+    if(token)
     {
-        navigator.sendBeacon(`/api/logout?token=${token}`)
+        const logoutUrl = new URL('logout', import.meta.env.VITE_BACKEND_URL)
+        logoutUrl.searchParams.set('token', token)
+
+        navigator.sendBeacon(logoutUrl.toString())
     }
 }
 </script>

@@ -5,10 +5,12 @@ import { LanguageFlag, NavbarLogo, DownloadButtonDiv, DownloadButton } from '@co
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from "@stores/UserStore";
+import { useI18n } from '@utils/i18n'
 
 const userStore = useUserStore();
 const rawData = userStore.registrationData
 const route = useRoute()
+const { t } = useI18n()
 
 const showDownload = computed(() =>
   route.name === 'welcome' ||
@@ -52,7 +54,10 @@ const stepperConfirmationStepClick = computed(() =>
   rawData.nickname !== ''
 )
 </script>
-
+  background-color: var(--NavBarBrush);
+  border-bottom: 1px solid var(--BorderBrush);
+  padding: 1rem;
+  margin-bottom: 2rem;
 <template>
   <header>
     <nav class="navbar navbar-expand-lg">
@@ -68,48 +73,50 @@ const stepperConfirmationStepClick = computed(() =>
     </nav>
   </header>
 
-  <div id="stepper" class="flex items-center justify-center w-full" v-if="showSignUpStepper">
-    <Stepper>
+  <div id="stepper" class="flex w-full items-center justify-center px-2 sm:px-4" v-if="showSignUpStepper">
+    <Stepper class="mx-auto grid w-full max-w-[44rem] grid-cols-3 items-start gap-1 sm:gap-2">
 
-      <StepperItem :step="stepperSignUpStep">
-        <StepperTrigger>
-          <RouterLink class="stepperLink" to="signup">
+      <StepperItem :step="stepperSignUpStep" class="min-w-0 justify-center gap-1 sm:gap-2">
+        <StepperTrigger class="w-full min-w-0">
+          <RouterLink class="stepperLink flex min-w-0 flex-col items-center gap-1 text-center" to="signup">
             <StepperIndicator>1</StepperIndicator>
-            <StepperTitle>Sign Up</StepperTitle>
+            <StepperTitle class="max-w-[4.5rem] whitespace-normal text-center text-[10px] leading-tight sm:max-w-none sm:text-xs md:text-sm">{{ t('auth.signUpStepper') }}</StepperTitle>
           </RouterLink>
         </StepperTrigger>
-        <StepperSeparator />
+        <StepperSeparator class="hidden sm:block" />
       </StepperItem>
 
-      <StepperItem :step="stepperPersonalInformationStep">
-        <StepperTrigger>
+      <StepperItem :step="stepperPersonalInformationStep" class="min-w-0 justify-center gap-1 sm:gap-2">
+        <StepperTrigger class="w-full min-w-0">
           <component
           
             :is="stepperPersonalInformationStepClick ? 'RouterLink' : 'div'"
             :to="stepperPersonalInformationStepClick ? 'personalinformation' : null"
-            class="stepperLink"
+            class="stepperLink flex min-w-0 flex-col items-center gap-1 text-center"
             :class="!stepperPersonalInformationStepClick ? 'pointer-events-none opacity-50' : ''">
             
             <StepperIndicator>2</StepperIndicator>
-            <StepperTitle>Personal information</StepperTitle>
+            <StepperTitle class="max-w-[5.25rem] whitespace-normal text-center text-[10px] leading-tight sm:max-w-none sm:text-xs md:text-sm">{{ t('registration.personalInformation') }}</StepperTitle>
           </component>
         </StepperTrigger>
-        <StepperSeparator />
+        <StepperSeparator class="hidden sm:block" />
       </StepperItem>
 
-      <StepperItem :step="stepperConfirmationStep">
-        <StepperTrigger>
+      <StepperItem :step="stepperConfirmationStep" class="min-w-0 justify-center gap-1 sm:gap-2">
+        <StepperTrigger class="w-full min-w-0">
           <component
             :is="stepperConfirmationStepClick ? 'RouterLink' : 'div'"
             :to="stepperConfirmationStepClick ? 'confirmation' : null"
-            class="stepperLink"
+            class="stepperLink text-(--TextBrush) decoration-0 flex min-w-0 flex-col items-center gap-1 text-center"
             :class="!stepperConfirmationStepClick ? 'pointer-events-none opacity-50' : ''">
 
             <StepperIndicator>3</StepperIndicator>
-            <StepperTitle>Final steps</StepperTitle>
+            <StepperTitle class="max-w-[4.5rem] whitespace-normal text-center text-[10px] leading-tight sm:max-w-none sm:text-xs md:text-sm">
+              {{ t('registration.finalSteps') }}
+            </StepperTitle>
           </component>
         </StepperTrigger>
-        <StepperSeparator />
+        <StepperSeparator class="hidden sm:block" />
       </StepperItem>
 
     </Stepper>
