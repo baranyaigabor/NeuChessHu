@@ -47,5 +47,11 @@ function handleClick() {
 </script>
 
 <template>
-    
+    <button type="button" :class="buttonClass" :title="languageTitle" :aria-label="languageTitle" @click="handleClick">
+        <img :src="flagPath" :class="props.menu ? 'h-6 transition-transform duration-200 md:group-hover:scale-105 group-active:scale-95' : 'h-12 transition-transform duration-200 md:group-hover:scale-105 group-active:scale-95'" :alt="languageTitle">
+
+        <span v-if="props.menu">
+            {{ languageTitle }}
+        </span>
+    </button>
 </template>
