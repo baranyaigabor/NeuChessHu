@@ -1,8 +1,14 @@
 <script setup>
-import BaseAdminLayout from '@layouts/BaseAdminLayout.vue'
+import BaseAdminBody from '@components/layout/BaseAdminBody.vue'
 
 </script>
 
 <template>
-  <BaseAdminLayout/>
+  <BaseAdminBody/>
 </template>
+
+<route lang="yaml">
+name: admin
+meta:
+    title: Administration
+</route>
