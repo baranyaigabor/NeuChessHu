@@ -15,7 +15,7 @@ class UserController
         $users = User::select('id', 'nickname', 'email', 'first_name', 'last_name',
             'region', 'date_of_birth', 'is_active', 'created_at', 'updated_at' )->get();
 
-        return UserResource::collection($users->load(["whiteMatches", "blackMatches"]));#,"tournaments"
+        return UserResource::collection($users->load(["whiteMatches", "blackMatches"]));
     }
 
     public function store(StoreUserRequest $request)
@@ -27,11 +27,16 @@ class UserController
 
     public function show(string $identifier)
     {
-        $user = is_numeric($identifier)
-            ? User::where('id', (int)$identifier)->firstOrFail()
-            : User::where('nickname', $identifier)->firstOrFail();
+        $user = User::where('role', 'user')->where(function ($query) use ($identifier) 
+        {
+            $query->where('nickname', $identifier);
+
+            if (is_numeric($identifier)) {
+                $query->orWhere('id', (int) $identifier);
+            }
+        })->firstOrFail();
     
-        return new UserResource($user->load(["whiteMatches", "blackMatches"]));#, "tournaments"
+        return new UserResource($user->load(["whiteMatches", "blackMatches"]));
     }
 
     public function showCurrent()
