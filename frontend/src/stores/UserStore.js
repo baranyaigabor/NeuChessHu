@@ -3,7 +3,108 @@ import { api } from "@utils/http.mjs";
 import { ref, computed } from "vue"
 import { t } from "@utils/i18n"
 
-export const useUserStore = defineStore("api/user", () => {
+function normalizeUserPayload(data) {
+    const payload = {}
+
+    if (data.nickname && data.nickname !== 'Unknown') {
+        payload.nickname = data.nickname
+    }
+
+    if (data.full_name) {
+        const parts = data.full_name.trim().split(' ')
+        payload.first_name = parts[0] || ''
+        payload.last_name = parts.slice(1).join(' ') || ''
+    } else {
+        if (data.first_name !== undefined) {
+            payload.first_name = data.first_name === 'Unknown' ? null : data.first_name
+        }
+
+        if (data.last_name !== undefined) {
+            payload.last_name = data.last_name === 'Unknown' ? null : data.last_name
+        }
+    }
+
+    if (data.region !== undefined) {
+        payload.region = data.region === 'Unknown' || data.region === '' ? null : data.region
+    }
+
+    if (data.date_of_birth !== undefined) {
+        payload.date_of_birth = data.date_of_birth === 'Unknown' || data.date_of_birth === '' ? null : data.date_of_birth
+    }
+
+    if (isValidImageDataUrl(data.profile_picture)) {
+        payload.profile_picture = data.profile_picture
+    }
+
+    return payload
+}
+
+function isValidImageDataUrl(value) {
+    if (typeof value !== 'string') return false
+
+    const match = value.match(/^data:image\/(jpe?g|png);base64,([A-Za-z0-9+/]+={0,2})$/)
+    if (!match) return false
+
+    try {
+        const bytes = atob(match[2])
+        const isPng = bytes.charCodeAt(0) === 0x89 &&
+                      bytes.slice(1, 4) === 'PNG'
+        const isJpeg = bytes.charCodeAt(0) === 0xff &&
+                       bytes.charCodeAt(1) === 0xd8 &&
+                       bytes.charCodeAt(2) === 0xff
+
+        return isPng || isJpeg
+    } catch {
+        return false
+    }
+}
+
+function normalizeUsers(responseData) {
+    if (Array.isArray(responseData)) return responseData
+    if (Array.isArray(responseData?.data)) return responseData.data
+    return []
+}
+
+export const useUsersStore = defineStore('users', () => {
+    async function getUsers() {
+        const response = await api.get('users')
+        const users = normalizeUsers(response.data)
+
+        return Promise.all(
+            users.map(async (user) => {
+                if (!user.nickname) return user
+
+                try {
+                    const detailsResponse = await api.get(`users/${user.nickname}`)
+                    return {
+                        ...user,
+                        ...detailsResponse.data.data
+                    }
+                } catch {
+                    return user
+                }
+            })
+        )
+    }
+
+    async function updateUser(identifier, data) {
+        const authStore = useUserStore()
+        const response = await api.patch(`users/${identifier}`, normalizeUserPayload(data), {
+            headers: {
+                Authorization: `Bearer ${authStore.token}`
+            }
+        })
+
+        return response.data.data
+    }
+
+    return {
+        getUsers,
+        updateUser
+    }
+})
+
+export const useUserStore = defineStore("user", () => {
     const token = ref("")
     const user = ref({})
     const userId = ref(null)
@@ -87,15 +188,7 @@ export const useUserStore = defineStore("api/user", () => {
     }
 
     async function updateUser(data) {
-        const payload = { ...data }
-        if (data.full_name) {
-            const parts = data.full_name.trim().split(' ')
-            payload.first_name = parts[0] || ''
-            payload.last_name = parts.slice(1).join(' ') || ''
-            delete payload.full_name
-        }
-
-        const response = await api.patch(`users/${user.value.data.nickname}`, payload, {
+        const response = await api.patch(`users/${user.value.data.nickname}`, normalizeUserPayload(data), {
             headers: {
                 Authorization: `Bearer ${token.value}`
             }
