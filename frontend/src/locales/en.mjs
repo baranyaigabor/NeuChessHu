@@ -35,7 +35,10 @@ export default
 
     nav: 
     {
-        downloadApp: 'Download App'
+        downloadApp: 'Download',
+        lightMode: 'Light mode',
+        darkMode: 'Dark mode',
+        logout: 'Log out'
     },
 
     footer:
