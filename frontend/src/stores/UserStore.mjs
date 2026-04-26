@@ -167,14 +167,16 @@ export const useUserStore = defineStore("user", () => {
     }
 
     async function logout() {
-        try {
-            await api.post("logout", null, {
-                headers: {
-                    Authorization: `Bearer ${token.value}`
-                }
-            })
-        } catch (e) {
-            console.error("Logout error:", e)
+        if (token.value) {
+            try {
+                await api.post("logout", null, {
+                    headers: {
+                        Authorization: `Bearer ${token.value}`
+                    }
+                })
+            } catch (e) {
+                console.error("Logout error:", e)
+            }
         }
 
         token.value = ""
