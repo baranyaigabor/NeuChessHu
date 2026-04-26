@@ -3,9 +3,9 @@ import { Stepper, StepperIndicator, StepperItem, StepperSeparator, StepperTitle,
 import { LanguageButton, NavbarLogo, DownloadButton, ThemeToggleButton, LogoutButton } from '@components/ui/navbar'
 import { navIconButtonClass, navHamburgerSvgClass } from '@components/ui/navbar/navActionClasses.mjs'
 
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { useUserStore } from "@stores/UserStore.mjs";
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from "@stores/UserStore";
 import { useI18n } from '@utils/i18n'
 
 const userStore = useUserStore();

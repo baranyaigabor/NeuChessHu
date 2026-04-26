@@ -2,8 +2,8 @@
 import BaseNavBar from '@components/layout/BaseNavBar.vue'
 import { computed, onMounted, ref } from 'vue'
 import { api } from '@utils/http.mjs'
-import { useUserStore, useUsersStore } from '@stores/UserStore.mjs'
-import Infos from '@components/ui/public-infos/infos.vue'
+import { useUserStore, useUsersStore } from '@stores/UserStore'
+import Infos from '@components/ui/public-infos/PersonalInfos.vue'
 
 const users = ref([])
 const userStore = useUserStore()
@@ -30,17 +30,20 @@ async function handleSave(user, updatedUser)
         users.value = users.value.map((item) =>
             item.id === user.id ? savedUser : item
         )
-    } 
-
+    }
+    
     catch (error) 
     {
         console.error('Admin user update failed:', error.response?.data ?? error)
     }
 }
 
-async function updateUserFallback(identifier, updatedUser) {
-    const response = await api.patch(`users/${identifier}`, normalizeUserPayload(updatedUser), {
-        headers: {
+async function updateUserFallback(identifier, updatedUser) 
+{
+    const response = await api.patch(`users/${identifier}`, normalizeUserPayload(updatedUser), 
+    {
+        headers: 
+        {
             Authorization: `Bearer ${userStore.token}`
         }
     })
@@ -63,6 +66,7 @@ function normalizeUserPayload(data)
         payload.first_name = parts[0] || ''
         payload.last_name = parts.slice(1).join(' ') || ''
     } 
+
     else 
     {
         if (data.first_name !== undefined) 
@@ -70,7 +74,7 @@ function normalizeUserPayload(data)
             payload.first_name = data.first_name === 'Unknown' ? null : data.first_name
         }
 
-        if (data.last_name !== undefined) 
+        if (data.last_name !== undefined)
         {
             payload.last_name = data.last_name === 'Unknown' ? null : data.last_name
         }
@@ -94,13 +98,15 @@ function normalizeUserPayload(data)
     return payload
 }
 
-function isValidImageDataUrl(value) {
+function isValidImageDataUrl(value) 
+{
     if (typeof value !== 'string')
     {
         return false
     }
 
     const match = value.match(/^data:image\/(jpe?g|png);base64,([A-Za-z0-9+/]+={0,2})$/)
+    
     if (!match)
     {
         return false
@@ -109,13 +115,11 @@ function isValidImageDataUrl(value) {
     try 
     {
         const bytes = atob(match[2])
-
         const isPng = bytes.charCodeAt(0) === 0x89 &&
-                      bytes.slice(1, 4) === 'PNG'
-
+                                    bytes.slice(1, 4) === 'PNG'
         const isJpeg = bytes.charCodeAt(0) === 0xff &&
-                       bytes.charCodeAt(1) === 0xd8 &&
-                       bytes.charCodeAt(2) === 0xff
+                                     bytes.charCodeAt(1) === 0xd8 &&
+                                     bytes.charCodeAt(2) === 0xff
 
         return isPng || isJpeg
     } 
@@ -133,7 +137,7 @@ function isValidImageDataUrl(value) {
 
         <div class="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-4 px-3 pb-6 sm:px-4 md:px-6 lg:flex-row lg:gap-5 lg:px-6 lg:pb-8">
             <main class="w-full min-w-0 flex-1">
-                <div v-for="user in visibleUsers" :key="user.id" class="bg-(--SideBarBrush) border border-black! rounded shadow flex flex-col items-center my-5 md:mx-6">
+                <div v-for="user in visibleUsers" :key="user.id" class="my-5 flex w-full min-w-0 flex-col items-stretch overflow-hidden rounded border border-black! bg-(--SideBarBrush) shadow md:mx-6">
                         <Infos :user="user" :userId="user.id" :isOwner="true" @save="(updatedUser) => handleSave(user, updatedUser)"/>
                 </div>
             </main>
