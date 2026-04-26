@@ -4,7 +4,7 @@ import { LanguageFlag, NavbarLogo, DownloadButtonDiv, DownloadButton } from '@co
 
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useUserStore } from "@stores/UserStore";
+import { useUserStore } from "@stores/UserStore.mjs";
 import { useI18n } from '@utils/i18n'
 
 const userStore = useUserStore();

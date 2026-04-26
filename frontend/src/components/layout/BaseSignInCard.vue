@@ -1,7 +1,7 @@
 <script setup>
 import { computed, reactive, ref, onMounted } from 'vue';
 import { useRouter } from "vue-router";
-import { useUserStore } from "@stores/UserStore";
+import { useUserStore } from "@stores/UserStore.mjs";
 import { EmailSignInInput, PasswordSignInInput, SignInButton} from '@components/ui/signin-card';
 import { useI18n } from '@utils/i18n'
 import { emailMessage, requiredMessage } from '@utils/validation'

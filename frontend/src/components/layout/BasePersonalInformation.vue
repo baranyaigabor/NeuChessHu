@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref, computed } from 'vue'
 import {UserName, UserNameInput, UserRegionInput, UserDateOfBirthInput, NextStepButton, PreviousStepButton} from '@components/ui/personal-information-card'
-import { useUserStore } from "@stores/UserStore";
+import { useUserStore } from "@stores/UserStore.mjs";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
 import { dateOfBirthMessage, nicknameMessage, optionalNameMessage } from '@utils/validation'

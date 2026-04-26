@@ -2,7 +2,7 @@
 import BaseNavBar from '@components/layout/BaseNavBar.vue'
 import { computed, onMounted, ref } from 'vue'
 import { api } from '@utils/http.mjs'
-import { useUserStore, useUsersStore } from '@stores/UserStore'
+import { useUserStore, useUsersStore } from '@stores/UserStore.mjs'
 import Infos from '@components/ui/publicInfos/infos.vue'
 
 const users = ref([])

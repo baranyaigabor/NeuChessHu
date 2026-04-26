@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { ConfirmInfos, NextStepButton, PreviousStepButton } from '@components/ui/confirmation-card'
-import { useUserStore } from "@stores/UserStore";
+import { useUserStore } from "@stores/UserStore.mjs";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
 import { emailMessage, nicknameMessage, passwordMessage } from '@utils/validation'
