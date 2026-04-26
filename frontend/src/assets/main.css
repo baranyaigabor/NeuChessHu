@@ -119,6 +119,9 @@
   --ActionBlueBrush: #5897E2;
   --ActionBlueTextBrush: #FFFFFF;
   --CalendarAccentBrush: #966A46;
+  --CalendarSelectedBrush: #966A46;
+  --CalendarTodayBrush: #966A46;
+  --CalendarHoverBrush: #FFECC8;
   --FieldTextBrush: #000000;
   --LogoBrush: #000000;
   --ChartBorderColor: #1a1a1a;
@@ -207,6 +210,9 @@
   --ActionBlueBrush: #7DB2F0;
   --ActionBlueTextBrush: #101010;
   --CalendarAccentBrush: #B9895E;
+  --CalendarSelectedBrush: #B9895E;
+  --CalendarTodayBrush: #B9895E;
+  --CalendarHoverBrush: #4C4A4A;
   --FieldTextBrush: #FFFFFF;
   --LogoBrush: #FFFFFF;
   --ChartBorderColor: #e5e5e5;
@@ -223,6 +229,18 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  html,
+  body,
+  #app {
+    min-height: 100%;
+    background-color: var(--WindowBrush);
+  }
+
+  html {
+    overscroll-behavior: none;
+  }
+
   body {
     @apply bg-background text-foreground;
     overflow-x: hidden;
