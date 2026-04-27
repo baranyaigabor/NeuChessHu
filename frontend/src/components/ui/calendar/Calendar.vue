@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import {
   NativeSelect,
   NativeSelectOption,
-} from '@/components/ui/native-select';
+} from '../native-select';
 import {
   CalendarCell,
   CalendarCellTrigger,
@@ -99,12 +99,12 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     <div class="**:data-[slot=native-select-icon]:right-1">
       <div class="relative">
         <div
-          class="absolute inset-0 flex h-full bg-[#FFECC8] !rounded-[5px] items-center text-sm !border-black shadow-[inset_0_2px_5px_rgba(0,0,0,0.25)] pl-2 pointer-events-none"
+          class="absolute inset-0 flex h-full bg-[var(--ButtonBrush)] !rounded-[5px] items-center text-sm !border-[var(--BorderBrush)] shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] pl-2 pointer-events-none"
         >
           {{ formatter.custom(toDate(date), { month: "short" }) }}
         </div>
         <NativeSelect
-          class="text-x h-8 pr-6 pl-2 text-transparent !rounded-[5px] !border-black relative"
+          class="text-x h-8 pr-6 pl-2 text-transparent !rounded-[5px] !border-[var(--BorderBrush)] relative"
           @change="
             (e) => {
               placeholder = placeholder.set({
@@ -118,7 +118,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
             :key="month.toString()"
             :value="month.month"
             :selected="date.month === month.month"
-            class="bg-[#FFECC8]"
+            class="bg-[var(--ButtonBrush)]"
           >
             {{ formatter.custom(toDate(month), { month: "short" }) }}
           </NativeSelectOption>
@@ -131,12 +131,12 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     <div class="**:data-[slot=native-select-icon]:right-1 ">
       <div class="relative">
         <div
-          class="absolute inset-0 flex h-full bg-[#FFECC8] !rounded-[5px] items-center text-sm !border-black shadow-[inset_0_2px_5px_rgba(0,0,0,0.25)] pl-2 pointer-events-none"
+          class="absolute inset-0 flex h-full bg-[var(--ButtonBrush)] !rounded-[5px] items-center text-sm !border-[var(--BorderBrush)] shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] pl-2 pointer-events-none"
         >
           {{ formatter.custom(toDate(date), { year: "numeric" }) }}
         </div>
         <NativeSelect
-          class="text-xs h-8 pr-6 pl-2 text-transparent !rounded-[5px] !border-black relative year-select"
+          class="text-xs h-8 pr-6 pl-2 text-transparent !rounded-[5px] !border-[var(--BorderBrush)] relative year-select"
           @change="
             (e) => {
               placeholder = placeholder.set({
@@ -150,7 +150,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
             :key="year.toString()"
             :value="year.year"
             :selected="date.year === year.year"
-            class="bg-[#FFECC8]"
+            class="bg-[var(--ButtonBrush)]"
           >
             {{ formatter.custom(toDate(year), { year: "numeric" }) }}
           </NativeSelectOption>
@@ -164,11 +164,11 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
     v-bind="forwarded"
     v-model:placeholder="placeholder"
     data-slot="calendar"
-    :class="cn('p-3', props.class)"
+    :class="cn('p-3 bg-[var(--SideBarBrush)] text-[var(--TextBrush)] rounded-md !border-[var(--BorderBrush)]', props.class)"
   >
     <CalendarHeader class="pt-0">
       <nav
-        class="flex items-center gap-1 bg-transparent absolute top-0 inset-x-0 !border-black justify-between"
+        class="flex items-center gap-1 bg-transparent absolute top-0 inset-x-0 !border-[var(--BorderBrush)] justify-between"
       >
         <CalendarPrevButton>
           <slot name="calendar-prev-icon" />
@@ -239,7 +239,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 
 <style lang="css">
 select::-webkit-scrollbar {
-    background: #FFECC8;
+    background: var(--ButtonBrush);
     width: 12px;
 }
 
@@ -248,13 +248,13 @@ select::-webkit-scrollbar-track {
 }
 
 select::-webkit-scrollbar-thumb {
-    background-color: #888;
+    background-color: var(--SelectIconBrush);
     border-radius: 6px;
-    border: 2px solid #FFECC8;
+    border: 2px solid var(--ButtonBrush);
 }
 
 select::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
+    background-color: var(--SelectIconHoverBrush);
 }
 
 .year-select select {

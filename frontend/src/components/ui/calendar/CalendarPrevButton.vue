@@ -23,7 +23,7 @@ const forwardedProps = useForwardProps(delegatedProps);
     :class="
       cn(
         buttonVariants({ variant: 'outline' }),
-        'size-5 !bg-[#FFECC8] !rounded-[5px] border-black p-0 opacity-50 hover:opacity-100',
+        'size-5 !bg-[var(--ButtonBrush)] !text-[var(--TextBrush)] !rounded-[5px] !border-[var(--BorderBrush)] p-0 opacity-50 hover:opacity-100',
         props.class,
       )
     "

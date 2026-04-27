@@ -23,16 +23,16 @@ const forwardedProps = useForwardProps(delegatedProps);
     :class="
       cn(
         buttonVariants({ variant: 'ghost' }),
-        'size-8 p-0 font-normal aria-selected:opacity-100 cursor-default hover:bg-[#966a46]',
-        '[&[data-today]:not([data-selected])]:bg-[#DAB393] border-black [&[data-today]:not([data-selected])]:text-accent-foreground',
+        'size-8 p-0 font-normal aria-selected:opacity-100 cursor-default !text-[var(--TextBrush)] hover:!bg-[var(--CalendarHoverBrush)] hover:!text-[var(--TextBrush)] focus:!bg-[var(--CalendarHoverBrush)] focus:!text-[var(--TextBrush)] focus-visible:!ring-0',
+        '[&[data-today]:not([data-selected])]:!bg-[var(--ButtonBrush)] [&[data-today]:not([data-selected])]:!text-[var(--TextBrush)] [&[data-today]:not([data-selected])]:!ring-1 [&[data-today]:not([data-selected])]:!ring-[var(--CalendarTodayBrush)] !border-[var(--BorderBrush)]',
         // Selected
-        'data-[selected]:bg-[#966a46] data-[selected]:text-primary-foreground data-[selected]:opacity-100 data-[selected]:hover:bg-[#966a46] data-[selected]:hover:text-primary-foreground data-[selected]:focus:bg-[#966a46] data-[selected]:focus:text-primary-foreground',
+        'data-[selected]:!bg-[var(--CalendarSelectedBrush)] data-[selected]:!text-[var(--TextBrush)] data-[selected]:!opacity-100 data-[selected]:hover:!bg-[var(--CalendarSelectedBrush)] data-[selected]:hover:!text-[var(--TextBrush)] data-[selected]:focus:!bg-[var(--CalendarSelectedBrush)] data-[selected]:focus:!text-[var(--TextBrush)]',
         // Disabled
-        'data-[disabled]:text-muted-foreground :bg-[#966a46] data-[disabled]:opacity-50',
+        'data-[disabled]:text-[var(--TextMutedBrush)] data-[disabled]:opacity-50',
         // Unavailable
-        'data-[unavailable]:text-destructive-foreground data-[unavailable]:line-through',
+        'data-[unavailable]:text-[var(--StatusLossStrongBrush)] data-[unavailable]:line-through',
         // Outside months
-        'data-[outside-view]:text-muted-foreground',
+        'data-[outside-view]:text-[var(--TextMutedBrush)]',
         props.class,
       )
     "
