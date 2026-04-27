@@ -103,7 +103,7 @@ const handlePrevious = () => {
                         <div class="row">
                             <div class="d-flex justify-content-center">
                                 <div class="form-check">
-                                    <input class="form-check-input mb-0.5" type="checkbox" id="terms" v-model="acceptedTerms">
+                                    <input class="form-check-input mb-0.5 hover:outline-3 hover:outline-blue-400" type="checkbox" id="terms" v-model="acceptedTerms">
                                     <label class="form-check-label mt-1 p-0 pr-1 text-xs text-(--TextBrush)!" for="terms">
                                         {{ t('registration.acceptTermsPrefix') }}
                                         <a :href="termsHref" class="text-(--TextBrush)! **:underline" target="_blank" rel="noopener noreferrer" @click.stop>

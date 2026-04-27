@@ -229,7 +229,7 @@ function handleMatchClick(match)
     </div>
 </template>
 
-<style scoped>
+<style lang="css">
 .match-list {
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
