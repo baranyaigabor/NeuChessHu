@@ -249,14 +249,24 @@ export const useUserStore = defineStore("user", () =>
 
     async function register(data) 
     {
-        const response = await api.post('users', {
+        const registerResponse = await api.post('users', {
             ...data,
             region: normalizeRegionForStorage(data.region)
         })
 
-        user.value = response.data.data
-        userId.value = response.data.data.id
-        return response.data.data
+        const loginResponse = await api.post('signin', {
+            email: data.email,
+            password: data.password
+        })
+
+        const newToken = loginResponse.data.token
+        const authenticatedUser = normalizeAuthenticatedUser(loginResponse.data.user)
+
+        user.value = { data: authenticatedUser }
+        token.value = newToken
+        userId.value = authenticatedUser?.id ?? registerResponse.data.data?.id ?? null
+
+        return user.value.data
     }
 
     async function logout() 

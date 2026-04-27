@@ -17,7 +17,6 @@ services:
       - db
       - phpmyadmin
       - docs
-      - mailcatcher
     networks:
       - fullstack
     ports:
@@ -116,11 +115,6 @@ services:
       - SWAGGER_JSON=/docs/openapi.yaml
       - DISPLAY_OPERATION_ID=true
       - VALIDATOR_URL=null
-    networks:
-      - fullstack
-
-  mailcatcher:
-    image: dockage/mailcatcher:0.9.0
     networks:
       - fullstack
 

@@ -18,7 +18,7 @@ export default
         deleteAccount: 'Fiók törlése',
         next: 'Következő',
         previous: 'Előző',
-        confirm: 'Megerősítés',
+        confirm: 'Megerősít',
         email: 'Email',
         password: 'Jelszó',
         confirmPassword: 'Jelszó megerősítése',
