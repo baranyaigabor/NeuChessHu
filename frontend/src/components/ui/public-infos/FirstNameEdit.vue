@@ -19,7 +19,7 @@ function onFirstNameChange(event)
 
 <template>                                                        
     <div class="w-full min-w-0">
-        <input id="userFirstName" @change="onFirstNameChange" :value="props.value" class="m-0 w-full min-w-0 rounded-[5px] border border-black! bg-(--ButtonBrush) p-1 px-1.5! text-(--FieldTextBrush) shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] placeholder:text-(--FieldTextBrush) placeholder:opacity-60 focus:outline-none"
+        <input id="userFirstName" @change="onFirstNameChange" :value="props.value" class="m-0 w-full min-w-0 rounded-[5px] border border-black! bg-(--ButtonBrush) p-1 px-1.5! text-(--FieldTextBrush) shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] placeholder:text-(--FieldTextBrush) placeholder:opacity-60"
             type="text" :placeholder="t('common.firstName')" required minlength="3" maxlength="14">
     </div>
 </template>
