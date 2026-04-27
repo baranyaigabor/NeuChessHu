@@ -1,7 +1,7 @@
 using ChessMechanics.MatchData.Clock;
 using NUnit.Framework;
 
-namespace ChessMechanics.Tests.MatchData.Clock;
+namespace ChessMechanics.Test.MatchData.Clock;
 
 [TestFixture]
 public class ClockExtensionsTests

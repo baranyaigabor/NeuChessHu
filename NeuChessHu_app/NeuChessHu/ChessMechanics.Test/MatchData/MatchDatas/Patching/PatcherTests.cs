@@ -9,7 +9,7 @@ using ChessMechanics.MatchData.MatchDatas.Models.DomainModels;
 using ChessMechanics.MatchData.MatchDatas.Patching;
 using NUnit.Framework;
 
-namespace ChessMechanics.Tests.MatchData.MatchDatas.Patching;
+namespace ChessMechanics.Test.MatchData.MatchDatas.Patching;
 
 [TestFixture]
 public class PatcherTests

@@ -1,4 +1,4 @@
-namespace ChessMechanics.Tests;
+namespace ChessMechanics.Test;
 
 internal sealed class ImmediateSynchronizationContext : SynchronizationContext
 {

@@ -4,7 +4,7 @@ using ChessMechanics.MatchData.MatchDatas.Models;
 using ChessMechanics.MatchData.MatchDatas.Patching;
 using NUnit.Framework;
 
-namespace ChessMechanics.Tests.MatchData.MatchDatas.Models;
+namespace ChessMechanics.Test.MatchData.MatchDatas.Models;
 
 [TestFixture]
 public class PlayerDataStoreTests

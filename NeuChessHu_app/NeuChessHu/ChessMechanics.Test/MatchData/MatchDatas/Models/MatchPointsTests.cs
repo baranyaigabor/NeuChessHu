@@ -3,7 +3,7 @@ using ChessMechanics.MatchData.MatchDatas.Patching;
 using ChessMechanics.MatchData.MatchDatas.DataTransferObjects;
 using NUnit.Framework;
 
-namespace ChessMechanics.Tests.MatchData.MatchDatas.Models;
+namespace ChessMechanics.Test.MatchData.MatchDatas.Models;
 
 [TestFixture]
 public class MatchPointsTests
