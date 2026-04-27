@@ -3,95 +3,144 @@ import { api } from "@utils/http.mjs";
 import { ref, computed } from "vue"
 import { t } from "@utils/i18n"
 
-function normalizeUserPayload(data) {
+function normalizeUserPayload(data) 
+{
     const payload = {}
 
-    if (data.nickname && data.nickname !== 'Unknown') {
+    if (data.nickname && data.nickname !== 'Unknown') 
+    {
         payload.nickname = data.nickname
     }
 
-    if (data.full_name) {
+    if (data.full_name) 
+    {
         const parts = data.full_name.trim().split(' ')
         payload.first_name = parts[0] || ''
         payload.last_name = parts.slice(1).join(' ') || ''
-    } else {
-        if (data.first_name !== undefined) {
+    } 
+    else 
+    {
+        if (data.first_name !== undefined) 
+        {
             payload.first_name = data.first_name === 'Unknown' ? null : data.first_name
         }
 
-        if (data.last_name !== undefined) {
+        if (data.last_name !== undefined)
+        {
             payload.last_name = data.last_name === 'Unknown' ? null : data.last_name
         }
     }
 
-    if (data.region !== undefined) {
+    if (data.region !== undefined) 
+    {
         payload.region = data.region === 'Unknown' || data.region === '' ? null : data.region
     }
 
-    if (data.date_of_birth !== undefined) {
+    if (data.date_of_birth !== undefined) 
+    {
         payload.date_of_birth = data.date_of_birth === 'Unknown' || data.date_of_birth === '' ? null : data.date_of_birth
     }
 
-    if (isValidImageDataUrl(data.profile_picture)) {
+    if (isValidImageDataUrl(data.profile_picture)) 
+    {
         payload.profile_picture = data.profile_picture
     }
 
     return payload
 }
 
-function isValidImageDataUrl(value) {
-    if (typeof value !== 'string') return false
+function isValidImageDataUrl(value) 
+{
+    if (typeof value !== 'string')
+    {
+        return false
+    }
 
     const match = value.match(/^data:image\/(jpe?g|png);base64,([A-Za-z0-9+/]+={0,2})$/)
-    if (!match) return false
+    
+    if (!match)
+    {
+        return false
+    }
 
-    try {
+    try 
+    {
         const bytes = atob(match[2])
+
         const isPng = bytes.charCodeAt(0) === 0x89 &&
                       bytes.slice(1, 4) === 'PNG'
+
         const isJpeg = bytes.charCodeAt(0) === 0xff &&
                        bytes.charCodeAt(1) === 0xd8 &&
                        bytes.charCodeAt(2) === 0xff
 
         return isPng || isJpeg
-    } catch {
+    } 
+    
+    catch 
+    {
         return false
     }
 }
 
-function normalizeUsers(responseData) {
-    if (Array.isArray(responseData)) return responseData
-    if (Array.isArray(responseData?.data)) return responseData.data
+function normalizeUsers(responseData) 
+{
+    if (Array.isArray(responseData))
+    {
+        return responseData
+    }
+
+    if (Array.isArray(responseData?.data))
+    {
+        return responseData.data
+    }
+
     return []
 }
 
-export const useUsersStore = defineStore('users', () => {
-    async function getUsers() {
-        const response = await api.get('users')
+export const useUsersStore = defineStore('users', () => 
+{
+    async function getUsers() 
+    {
+        const response = await api.get('users', {
+            headers: {
+                Authorization: `Bearer ${useUserStore().token}`
+            }
+        })
+
         const users = normalizeUsers(response.data)
 
         return Promise.all(
-            users.map(async (user) => {
-                if (!user.nickname) return user
+            users.map(async (user) => 
+            {
+                if (!user.nickname)
+                {
+                    return user
+                }
 
-                try {
+                try 
+                {
                     const detailsResponse = await api.get(`users/${user.nickname}`)
+
                     return {
                         ...user,
                         ...detailsResponse.data.data
                     }
-                } catch {
+                } 
+
+                catch 
+                {
                     return user
                 }
             })
         )
     }
 
-    async function updateUser(identifier, data) {
-        const authStore = useUserStore()
+    async function updateUser(identifier, data) 
+    {
         const response = await api.patch(`users/${identifier}`, normalizeUserPayload(data), {
             headers: {
-                Authorization: `Bearer ${authStore.token}`
+                Authorization: `Bearer ${useUserStore().token}`
             }
         })
 
@@ -104,7 +153,8 @@ export const useUsersStore = defineStore('users', () => {
     }
 })
 
-export const useUserStore = defineStore("user", () => {
+export const useUserStore = defineStore("user", () => 
+{
     const token = ref("")
     const user = ref({})
     const userId = ref(null)
@@ -120,7 +170,8 @@ export const useUserStore = defineStore("user", () => {
         profile_picture: null
     });
 
-    function resetRegistrationData() {
+    function resetRegistrationData() 
+    {
         registrationData.value = {
             nickname: "",
             email: "",
@@ -133,7 +184,8 @@ export const useUserStore = defineStore("user", () => {
         }
     }
 
-    function setCredentials({ email, password }) {
+    function setCredentials({ email, password }) 
+    {
         registrationData.value.email = email;
         registrationData.value.password = password;
     }
@@ -148,7 +200,8 @@ export const useUserStore = defineStore("user", () => {
 
     const getRegistrationData = computed(() => registrationData.value);
     
-    async function login(data) {
+    async function login(data) 
+    {
         const response = await api.post('signin', data)
         const newToken = response.data.token
 
@@ -158,7 +211,8 @@ export const useUserStore = defineStore("user", () => {
         return user.value.data
     }
 
-    async function register(data) {
+    async function register(data) 
+    {
         const response = await api.post('users', data)
 
         user.value = response.data.data
@@ -166,15 +220,21 @@ export const useUserStore = defineStore("user", () => {
         return response.data.data
     }
 
-    async function logout() {
-        if (token.value) {
-            try {
+    async function logout() 
+    {
+        if (token.value) 
+        {
+            try 
+            {
                 await api.post("logout", null, {
                     headers: {
                         Authorization: `Bearer ${token.value}`
                     }
                 })
-            } catch (e) {
+            } 
+            
+            catch (e) 
+            {
                 console.error("Logout error:", e)
             }
         }
@@ -189,7 +249,43 @@ export const useUserStore = defineStore("user", () => {
         return t("auth.logoutSuccess")
     }
 
-    async function updateUser(data) {
+    async function deleteUser(id) 
+    {
+        const currentUser = user.value?.data ?? user.value
+        const isDeletingSelf = String(currentUser?.id) === String(id)
+        const isAdmin = currentUser?.role === 'admin'
+
+        if (!id || !token.value)
+        {
+            return
+        }
+
+        await api.delete(`users/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token.value}`
+            }
+        })
+
+        if (isDeletingSelf && !isAdmin)
+        {
+            token.value = ""
+            user.value = { role: "" }
+            userId.value = null
+
+            sessionStorage.removeItem("token")
+            sessionStorage.removeItem("user")
+        }
+    }
+
+    async function deleteCurrentUser() 
+    {
+        const currentUser = user.value?.data ?? user.value
+
+        return deleteUser(currentUser?.id)
+    }
+
+    async function updateUser(data) 
+    {
         const response = await api.patch(`users/${user.value.data.nickname}`, normalizeUserPayload(data), {
             headers: {
                 Authorization: `Bearer ${token.value}`
@@ -197,10 +293,12 @@ export const useUserStore = defineStore("user", () => {
         })
 
         user.value = { ...user.value, data: response.data.data }
+
         return response.data
     }
 
-    async function fetchUser(nickname) {
+    async function fetchUser(nickname)
+    {
         const response = await api.get(`users/${nickname}`)
         return response.data.data
     }
@@ -217,6 +315,8 @@ export const useUserStore = defineStore("user", () => {
         login,
         register,
         updateUser,
+        deleteUser,
+        deleteCurrentUser,
         fetchUser,
         logout 
     }

@@ -38,6 +38,20 @@ async function handleSave(user, updatedUser)
     }
 }
 
+async function handleDelete(userId)
+{
+    try
+    {
+        await userStore.deleteUser(userId)
+        users.value = users.value.filter((item) => String(item.id) !== String(userId))
+    }
+
+    catch (error)
+    {
+        console.error('Admin user delete failed:', error.response?.data ?? error)
+    }
+}
+
 async function updateUserFallback(identifier, updatedUser) 
 {
     const response = await api.patch(`users/${identifier}`, normalizeUserPayload(updatedUser), 
@@ -138,7 +152,7 @@ function isValidImageDataUrl(value)
         <div class="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-4 px-3 pb-6 sm:px-4 md:px-6 lg:flex-row lg:gap-5 lg:px-6 lg:pb-8">
             <main class="w-full min-w-0 flex-1">
                 <div v-for="user in visibleUsers" :key="user.id" class="my-5 flex w-full min-w-0 flex-col items-stretch overflow-hidden rounded border border-black! bg-(--SideBarBrush) shadow md:mx-6">
-                        <Infos :user="user" :userId="user.id" :isOwner="true" @save="(updatedUser) => handleSave(user, updatedUser)"/>
+                    <Infos :user="user" :userId="user.id" :isOwner="true" @save="(updatedUser) => handleSave(user, updatedUser)" @delete="handleDelete"/>
                 </div>
             </main>
         </div>
