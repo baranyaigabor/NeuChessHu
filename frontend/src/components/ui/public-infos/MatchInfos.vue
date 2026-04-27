@@ -228,3 +228,31 @@ function handleMatchClick(match)
         </template>
     </div>
 </template>
+
+<style scoped>
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ScrollThumbBrush); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ScrollThumbHoverBrush); }
+
+@media (max-width: 526px) {
+    .match-mobile {
+        display: grid;
+        grid-template-columns: auto minmax(140px, 1fr) auto;
+        grid-template-areas:
+            "avatar main main"
+            "result mode date";
+        align-items: center;
+        justify-content: center;
+        column-gap: 8px;
+        row-gap: 6px;
+        text-align: center;
+    }
+
+    .match-mobile .match-avatar { grid-area: avatar; }
+    .match-mobile .match-main { grid-area: main; min-width: 0; text-align: left; }
+    .match-mobile .match-result { grid-area: result; justify-self: center; }
+    .match-mobile .match-mode { grid-area: mode; justify-self: center; }
+    .match-mobile .match-date { grid-area: date; justify-self: center; }
+}
+</style>
