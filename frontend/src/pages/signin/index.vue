@@ -14,6 +14,4 @@ import BaseSingInCard from '@components/layout/BaseSignInCard.vue'
 
 <route lang="yaml">
 name: signin
-meta:
-    title: Sign In
 </route>

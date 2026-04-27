@@ -1,7 +1,27 @@
 import { defineStore } from "pinia";
 import { api } from "@utils/http.mjs";
 import { ref, computed } from "vue"
-import { t } from "@utils/i18n"
+import { locale, t } from "@utils/i18n"
+import { countryName, countryValueFromStoredName, countryValues } from "@utils/i18n/countries"
+
+const countryOptions = countryValues.map((value) => ({
+    value,
+    name: countryName(value, 'hu')
+}))
+
+function normalizeRegionForStorage(value)
+{
+    if (!value || value === 'Unknown')
+    {
+        return null
+    }
+
+    const countryValue = countryValueFromStoredName(value, countryOptions)
+
+    return countryValue
+        ? countryName(countryValue, locale.value)
+        : value
+}
 
 function normalizeUserPayload(data) 
 {
@@ -33,7 +53,7 @@ function normalizeUserPayload(data)
 
     if (data.region !== undefined) 
     {
-        payload.region = data.region === 'Unknown' || data.region === '' ? null : data.region
+        payload.region = normalizeRegionForStorage(data.region)
     }
 
     if (data.date_of_birth !== undefined) 
@@ -96,6 +116,21 @@ function normalizeUsers(responseData)
     }
 
     return []
+}
+
+function normalizeAuthenticatedUser(user)
+{
+    if (!user)
+    {
+        return null
+    }
+
+    return {
+        id: user.id,
+        nickname: user.nickname,
+        email: user.email,
+        role: user.role
+    }
 }
 
 export const useUsersStore = defineStore('users', () => 
@@ -204,16 +239,20 @@ export const useUserStore = defineStore("user", () =>
     {
         const response = await api.post('signin', data)
         const newToken = response.data.token
+        const authenticatedUser = normalizeAuthenticatedUser(response.data.user)
 
-        user.value = { data: response.data.user }
+        user.value = { data: authenticatedUser }
         token.value = newToken
-        userId.value = response.data.user.id
+        userId.value = authenticatedUser?.id ?? null
         return user.value.data
     }
 
     async function register(data) 
     {
-        const response = await api.post('users', data)
+        const response = await api.post('users', {
+            ...data,
+            region: normalizeRegionForStorage(data.region)
+        })
 
         user.value = response.data.data
         userId.value = response.data.data.id

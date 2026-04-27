@@ -9,6 +9,4 @@ import BaseAdminBody from '@components/layout/BaseAdminBody.vue'
 
 <route lang="yaml">
 name: admin
-meta:
-    title: Administration
 </route>

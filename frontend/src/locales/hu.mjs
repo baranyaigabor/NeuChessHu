@@ -41,6 +41,16 @@ export default
         logout: 'Kijelentkezés'
     },
 
+    pageTitles:
+    {
+        welcome: 'Főoldal',
+        signIn: 'Bejelentkezés',
+        signUp: 'Regisztráció',
+        personalInformation: 'Személyes adatok',
+        confirmations: 'Megerősítés',
+        administration: 'Adminisztráció'
+    },
+
     footer:
     {
         copyright: '© {year} NeuChess. Minden jog fenntartva.',
@@ -68,7 +78,6 @@ export default
         signIn: 'Bejelentkezés',
         signUp: 'Regisztráció',
         signUpStepper: 'Regisztráció',
-        forgotPassword: 'Elfelejtetted a jelszavad?',
         newToChess: 'Új vagy? Regisztrálj',
         alreadyHaveAccount: 'Már van fiókod? Jelentkezz be',
         discordSignIn: 'Bejelentkezés Discorddal',

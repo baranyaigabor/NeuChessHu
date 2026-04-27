@@ -1,12 +1,12 @@
 <script setup>
-import { computed, reactive, ref, onMounted } from 'vue';
-import { useRouter } from "vue-router";
-import { useUserStore } from "@stores/UserStore";
-import { EmailSignInInput, PasswordSignInInput, SignInButton} from '@components/ui/signin-card';
+import { computed, reactive, ref, onMounted } from 'vue'
+import { useRouter } from "vue-router"
+import { useUserStore } from "@stores/UserStore"
+import { EmailSignInInput, PasswordSignInInput, SignInButton} from '@components/ui/signin-card'
 import { useI18n } from '@utils/i18n'
 import { emailMessage, requiredMessage } from '@utils/validation'
 
-const userStore = useUserStore();
+const userStore = useUserStore()
 const userEmail = ref('')
 const router = useRouter()
 const userPassword = ref('')
@@ -83,16 +83,20 @@ async function TryToSignIn()
 
             if (response.role === 'admin') 
             {
-                router.push({ name: "admin" });
-                return;
+                router.push({ name: "admin" })
+                return
             }
 
-            router.push({ name: "user", params: { nickname: response.nickname } });        }
+            router.push(`/user/${encodeURIComponent(response.nickname)}`)
+        }
     } 
 
     catch (error) 
     {
-        authError.value = t('auth.invalidCredentials')
+        console.error('Sign in failed:', error)
+        authError.value = error.response?.status === 401
+            ? t('auth.invalidCredentials')
+            : t('auth.networkError')
     }
 }
 </script>
@@ -121,10 +125,6 @@ async function TryToSignIn()
                         <p v-if="authError" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
                             {{ authError }}
                         </p>
-
-                        <a v-if="authError" id="forgetPass" class="text-[11px] text-(--TextBrush)" href="#">
-                            {{ t('auth.forgotPassword') }}
-                        </a>
                     </div>
 
                     <SignInButton :disabled="!isFormValid" @submit="TryToSignIn"/>

@@ -41,6 +41,16 @@ export default
         logout: 'Log out'
     },
 
+    pageTitles:
+    {
+        welcome: 'Welcome',
+        signIn: 'Sign in',
+        signUp: 'Sign up',
+        personalInformation: 'Personal informations',
+        confirmations: 'Confirmation',
+        administration: 'Administration'
+    },
+
     footer:
     {
         copyright: '© {year} NeuChess. All rights reserved.',
@@ -68,7 +78,6 @@ export default
         signIn: 'Sign in',
         signUp: 'Sign up',
         signUpStepper: 'Sign Up',
-        forgotPassword: 'Forgot password?',
         newToChess: 'New to chess? Sign up',
         alreadyHaveAccount: 'Already have an account? Sign in',
         discordSignIn: 'Sign in with Discord',
