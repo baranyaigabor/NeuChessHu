@@ -129,8 +129,10 @@ function isValidImageDataUrl(value)
     try 
     {
         const bytes = atob(match[2])
+        
         const isPng = bytes.charCodeAt(0) === 0x89 &&
                                     bytes.slice(1, 4) === 'PNG'
+
         const isJpeg = bytes.charCodeAt(0) === 0xff &&
                                      bytes.charCodeAt(1) === 0xd8 &&
                                      bytes.charCodeAt(2) === 0xff

@@ -8,6 +8,4 @@ import BaseLayout from '@layouts/BaseMainLayout.vue'
 
 <route lang="yaml">
 name: welcome
-meta:
-    title: Welcome
 </route>

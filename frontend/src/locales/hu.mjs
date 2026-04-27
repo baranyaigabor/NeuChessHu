@@ -41,6 +41,16 @@ export default
         logout: 'Kijelentkezés'
     },
 
+    pageTitles:
+    {
+        welcome: 'Főoldal',
+        signIn: 'Bejelentkezés',
+        signUp: 'Regisztráció',
+        personalInformation: 'Személyes adatok',
+        confirmations: 'Megerősítés',
+        administration: 'Adminisztráció'
+    },
+
     footer:
     {
         copyright: '© {year} NeuChess. Minden jog fenntartva.',

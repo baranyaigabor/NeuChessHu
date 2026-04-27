@@ -11,6 +11,4 @@ import BaseConfirmationsCard from '@components/layout/BaseConfirmationsCard.vue'
 
 <route lang="yaml">
 name: confirminformation
-meta:
-    title: Confirmations
 </route>

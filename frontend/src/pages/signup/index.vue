@@ -14,6 +14,4 @@ import BaseSignUpCard from '@components/layout/BaseSignUpCard.vue'
 
 <route lang="yaml">
 name: signup
-meta:
-    title: Sign Up
 </route>

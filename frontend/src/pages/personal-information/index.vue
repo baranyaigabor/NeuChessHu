@@ -11,6 +11,4 @@ import BasePersonalInformationCard from '@components/layout/BasePersonalInformat
 
 <route lang="yaml">
 name: personalinformation
-meta:
-    title: Personal Information
 </route>

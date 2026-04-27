@@ -41,6 +41,16 @@ export default
         logout: 'Log out'
     },
 
+    pageTitles:
+    {
+        welcome: 'Welcome',
+        signIn: 'Sign in',
+        signUp: 'Sign up',
+        personalInformation: 'Personal informations',
+        confirmations: 'Confirmation',
+        administration: 'Administration'
+    },
+
     footer:
     {
         copyright: '© {year} NeuChess. All rights reserved.',
