@@ -7,7 +7,7 @@ const { t } = useI18n()
 
 <template>
     <div class="container-fluid d-flex justify-content-start p-0">
-        <a href="#" @click.prevent="emit('submit')" class="btn mt-4 w-26 bg-(--ButtonBrush)! text-(--TextBrush)! border border-(--BorderBrush)!">
+        <a href="#" @click.prevent="emit('submit')" class="btn mt-4 w-24 bg-(--ButtonBrush)! text-(--TextBrush)! border border-(--BorderBrush)!">
             {{ t('common.previous') }}
         </a>
     </div>
