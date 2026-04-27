@@ -78,7 +78,6 @@ export default
         signIn: 'Bejelentkezés',
         signUp: 'Regisztráció',
         signUpStepper: 'Regisztráció',
-        forgotPassword: 'Elfelejtetted a jelszavad?',
         newToChess: 'Új vagy? Regisztrálj',
         alreadyHaveAccount: 'Már van fiókod? Jelentkezz be',
         discordSignIn: 'Bejelentkezés Discorddal',

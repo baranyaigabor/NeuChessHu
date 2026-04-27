@@ -78,7 +78,6 @@ export default
         signIn: 'Sign in',
         signUp: 'Sign up',
         signUpStepper: 'Sign Up',
-        forgotPassword: 'Forgot password?',
         newToChess: 'New to chess? Sign up',
         alreadyHaveAccount: 'Already have an account? Sign in',
         discordSignIn: 'Sign in with Discord',

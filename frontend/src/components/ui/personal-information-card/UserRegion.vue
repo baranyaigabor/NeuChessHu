@@ -1,35 +1,41 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from '@utils/i18n'
-import { countryName, countryValues } from '@utils/i18n/countries'
+import { countryName, countryValueFromStoredName, countryValues } from '@utils/i18n/countries'
 
 const props = defineProps({
-  value: {
-    type: String,
-    default: ""
-  }
+    value: {
+        type: String,
+        default: ""
+    }
 })
 
 const emit = defineEmits(['regionChange'])
 const { locale, t } = useI18n()
 
 const localizedCountries = computed(() =>
-  countryValues.map((value) => ({
-    value,
-    label: countryName(value, locale.value),
-  }))
+    countryValues.map((value) => ({
+      value,
+      name: countryName(value, 'hu'),
+      label: countryName(value, locale.value),
+    }))
+)
+
+const selectedCountryValue = computed(() =>
+    countryValueFromStoredName(props.value, localizedCountries.value)
 )
 
 function onRegionChange(event) 
 {
-  emit('regionChange', event.target.value)
+    const selectedCountry = localizedCountries.value.find((country) => country.value === event.target.value)
+    emit('regionChange', selectedCountry?.label ?? event.target.value)
 }
 </script>
 
 <template>
     <div class="col">
         <label class="m-0 mb-1" for="region">{{ t('common.region') }}:</label>
-        <select :value="props.value" class="custom-select m-0 max-h-16! w-full rounded-[5px] border border-[var(--BorderBrush)] !bg-[var(--ButtonBrush)] p-1.5 ps-2 text-[var(--FieldTextBrush)] shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] focus:!bg-[var(--ButtonBrush)] focus:!outline-none"
+        <select :value="selectedCountryValue" class="custom-select m-0 max-h-16! w-full rounded-[5px] border border-[var(--BorderBrush)] !bg-[var(--ButtonBrush)] p-1.5 ps-2 text-[var(--FieldTextBrush)] shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] focus:!bg-[var(--ButtonBrush)] focus:!outline-none"
             @change="onRegionChange" id="region" name="region">
 
             <option value="" disabled>{{ t('common.chooseCountry') }}</option>
