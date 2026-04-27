@@ -149,10 +149,10 @@ function isValidImageDataUrl(value)
     <div class="flex min-h-screen flex-col bg-(--WindowBrush) text-(--TextBrush)">
         <BaseNavBar />
 
-        <div class="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-4 px-3 pb-6 sm:px-4 md:px-6 lg:flex-row lg:gap-5 lg:px-6 lg:pb-8">
-            <main class="w-full min-w-0 flex-1">
-                <div v-for="user in visibleUsers" :key="user.id" class="my-5 flex w-full min-w-0 flex-col items-stretch overflow-hidden rounded border border-black! bg-(--SideBarBrush) shadow md:mx-6">
-                    <Infos :user="user" :userId="user.id" :isOwner="true" @save="(updatedUser) => handleSave(user, updatedUser)" @delete="handleDelete"/>
+        <div class="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-4 px-3 pb-6 sm:px-4 md:px-6 lg:px-8 lg:pb-8">
+            <main class="mx-auto w-full min-w-0 max-w-[1500px] flex-1">
+                <div v-for="user in visibleUsers" :key="user.id" class="my-5 flex w-full min-w-0 flex-col items-stretch overflow-hidden rounded border border-black! bg-(--SideBarBrush) shadow">
+                    <Infos class="admin-profile-info" :user="user" :userId="user.id" :isOwner="true" @save="(updatedUser) => handleSave(user, updatedUser)" @delete="handleDelete"/>
                 </div>
             </main>
         </div>
