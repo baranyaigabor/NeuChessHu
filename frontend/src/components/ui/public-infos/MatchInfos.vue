@@ -174,4 +174,57 @@ function handleMatchClick(match)
 </script>
 
 <template>
+    <div class="max-h-[22rem] overflow-y-auto md:max-h-[10rem]">
+        <div v-if="allMatches.length === 0" class="px-4 py-6 text-center text-[13px] text-(--TextBrush)">
+            {{ t('match.noMatches') }}
+        </div>
+
+        <template v-else>
+            <RouterLink v-for="(match, index) in allMatches" :key="match?.match_id ?? index" :to="`/user/${getOpponentId(match)}`"
+                @click="handleMatchClick(match)" class="match-mobile flex flex-wrap items-center gap-2 px-2 py-2.5 hover:bg-black/[0.08] transition-colors duration-100 !no-underline sm:px-4" :class="{ 'border-b !border-[var(--BorderChangingBrush)]/[0.24]': index < allMatches.length - 1 }">
+                <div class="match-avatar w-7 h-7 rounded-md overflow-hidden shrink-0" :class="{
+                        '!border-3 !border-[var(--ChartPointWinBackgroundColor)]': getResult(match) === 'win',
+                        '!border-3 !border-[var(--ChartPointLoseBackgroundColor)]': getResult(match) === 'loss',
+                        '!border-3 !border-[var(--ChartPointDrawBackgroundColor)]': getResult(match) === 'unknown',
+                    }" >
+                    <img v-if="getOpponentAvatar(match)" :src="getOpponentAvatar(match)" :alt="getOpponentName(match)" class="w-full h-full object-cover"/>
+                    <div v-else class="w-full h-full flex items-center justify-center text-xs font-bold" :class="match?.myColor === 'white' ? 'bg-[#F0E6D2] text-[#2C1A0A]' : 'bg-[#2C1A0A] text-[#F0E6D2]'">
+                        {{ match?.myColor === 'white' ? 'W' : 'B' }}
+                    </div>
+                </div>
+
+                <div class="match-main flex-1 min-w-[150px]">
+                    <div class="text-[13px] font-semibold text-[var(--TextStrongBrush)]">
+                        {{ t('match.vs') }} {{ getOpponentName(match) }}
+                    </div>
+                    <div class="text-[11px] text-[var(--TextMutedBrush)] mt-px">
+                        {{ formatTime(match?.winner_time, locale) }} · {{ formatMatchResult(match?.match_end_result ?? '—') }}
+                    </div>
+                </div>
+
+                <span class="match-result text-[12px] font-bold min-w-[36px] text-center shrink-0"
+                    :class="{
+                        'text-(--ChartPointWinBackgroundColor)': getResult(match) === 'win',
+                        'text-(--ChartPointLoseBackgroundColor)': getResult(match) === 'loss',
+                        'text-(--ChartPointDrawBackgroundColor)': getResult(match) === 'unknown',
+                    }">
+                    {{ getResult(match) === 'win' ? t('match.win') : getResult(match) === 'loss' ? t('match.loss') : t('match.draw') }}
+                </span>
+
+                <span v-if="match?.gamemode" class="match-mode text-[11px] font-semibold px-3 py-0.5 rounded-full shrink-0 min-w-[65px] text-center"
+                    :class="{
+                        'bg-[#F0D0A0] text-[#7A4A00]': match.gamemode === 'Bullet',
+                        'bg-[#D0E0F0] text-[#1A4A70]': match.gamemode === 'Blitz',
+                        'bg-[#D0EDD0] text-[#1A5A1A]': match.gamemode === 'Rapid',
+                    }">
+                    {{ match.gamemode }}
+                </span>
+                <span v-else class="match-mode text-[11px] text-[var(--TextBrush)] shrink-0">—</span>
+
+                <span class="match-date text-[11px] text-[var(--TextBrush)] shrink-0 sm:min-w-[70px] sm:text-right">
+                    {{ formatDate(match?.played_at) }}
+                </span>
+            </RouterLink>
+        </template>
+    </div>
 </template>
