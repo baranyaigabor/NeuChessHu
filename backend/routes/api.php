@@ -24,7 +24,8 @@ Route::apiResource('matches', MatchesController::class)
     ->middlewareFor('store', ['auth:sanctum', 'can:store-match']);
 
 Route::post('/signin', [AuthController::class, 'webLogin']);
-Route::post('/logout', [AuthController::class, 'webLogout']);
+Route::post('/logout', [AuthController::class, 'webLogout'])
+    ->middleware(['auth:sanctum', 'can:logout']);
 
 Route::post('/desktop/logout', [DesktopAuthController::class, 'desktopLogout'])
     ->middleware(['auth:sanctum', 'can:logout']);
