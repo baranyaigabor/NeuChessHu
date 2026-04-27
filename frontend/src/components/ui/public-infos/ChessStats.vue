@@ -112,4 +112,21 @@ const stats = computed(() =>
 </script>
 
 <template>
+    <div class="flex w-full flex-col">
+        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            <div v-for="stat in stats" :key="stat.label" class="h-full min-h-0 bg-[var(--ButtonBrush)] border !border-black rounded p-2.5 flex flex-col items-center justify-center text-center gap-1">
+                <span class="text-[10px] text-[var(--TextBrush)] font-medium uppercase tracking-wide leading-tight">
+                    {{ stat.label }}
+                </span>
+
+                <span class="text-sm font-bold px-3 my-2 py-0.5 rounded-full text-center" :class="stat.key === 'favouriteType' ? {
+                        '!bg-[#F0D0A0] text-[#7A4A00]': stat.value === 'Bullet',
+                        '!bg-[#D0E0F0] text-[#1A4A70]': stat.value === 'Blitz',
+                        '!bg-[#D0EDD0] text-[#1A5A1A]': stat.value === 'Rapid',
+                    } : 'bg-(--ButtonBrush) text-(--TextBrush)'">
+                    {{ stat.value }}
+                </span>
+            </div>
+        </div>
+    </div>
 </template>
