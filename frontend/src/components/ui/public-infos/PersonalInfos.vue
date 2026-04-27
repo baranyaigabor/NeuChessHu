@@ -237,3 +237,115 @@ function clearProfilePicture()
 function deleteAccount() 
 {}
 </script>
+
+<template>
+    <div class="relative grid h-auto min-h-0 w-full min-w-0 grid-cols-1 gap-5 overflow-visible rounded-xl px-4 py-4 pr-12 text-left md:grid-cols-2 md:px-6 md:pr-14 lg:grid-cols-[minmax(160px,0.7fr)_minmax(0,1.15fr)_minmax(0,1.15fr)] lg:items-stretch"
+        :class="isEditing && isOwner ? 'items-start' : 'items-center'">
+        
+        <div class="absolute right-2 top-2 z-10 flex gap-2">
+            <template v-if="isEditing && isOwner">
+                <button class="text-[var(--TextBrush)] transition hover:text-green-600" @click="saveEdit" :title="t('common.save')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <path d="M20 7 9 18l-5-5"/>
+                    </svg>
+                </button>
+                <button class="text-red-400 transition hover:text-red-600" @click="cancelEdit" :title="t('common.cancel')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M18 6 6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+                <button class="text-red-600 transition hover:text-red-800" @click="deleteAccount" :title="t('common.deleteAccount')">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M10 6v12m4-12v12M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14M9 3h6l1 2H8l1-2z" />
+                    </svg>
+                </button>
+            </template>
+            <button v-else class="pe-3 transition" @click="openSettings">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7Z"/>
+                    <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .26 1.7 1.7 0 0 0-.85 1.47V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-.85-1.47 1.7 1.7 0 0 0-1-.26 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.26-1 1.7 1.7 0 0 0-1.47-.85H2.8a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.47-.85 1.7 1.7 0 0 0 .26-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.26 1.7 1.7 0 0 0 .85-1.47V2.8a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 .85 1.47 1.7 1.7 0 0 0 1 .26 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c0 .35.09.7.26 1 .3.5.84.81 1.43.85h.11a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.47.85c-.17.3-.24.65-.24 1z"/>
+                </svg>
+            </button>
+        </div>
+
+        <div class="info-card-col-left flex min-w-0 flex-col items-center! justify-center! md:col-span-2 lg:col-span-1 lg:self-stretch lg:pr-6">
+            <div class="mt-3 flex h-28 w-28 shrink-0 items-center! justify-center! overflow-hidden text-2xl font-semibold"
+                :class="isEditing && isOwner ? 'relative cursor-pointer border-2 border-dashed border-gray-400 bg-gray-100 transition' : ''"
+                @dragover.prevent="isEditing && isOwner && (isDragging = true)" @dragleave="isEditing && isOwner && (isDragging = false)"
+                @drop.prevent="isEditing && isOwner && handleDrop($event)" @click="isEditing && isOwner && $refs.fileInput.click()">
+                
+                <img v-if="!isEditing || !isOwner" :src="cleanProfilePicture" :alt="user.nickname || user.full_name" class="h-full w-full rounded-full object-cover" />
+                <template v-else>
+                    <div class="relative h-full w-full">
+                        <img v-if="editData.profile_picture && editData.profile_picture !== 'Unknown'" :src="cleanProfilePicture" :alt="user.nickname || user.full_name" class="h-full w-full object-cover" />
+                        
+                        <div v-else class="flex h-full w-full flex-col items-center! justify-center! px-1 text-center text-xs leading-tight text-[var(--TextBrush)]">
+                            <div class="text-lg">📁</div>
+                            <div>{{ t('profile.dropHere') }}</div>
+                            <div class="m-2 text-[var(--TextMutedBrush)]">{{ t('profile.max2Mb') }}</div>
+                        </div>
+
+                        <button class="absolute right-0 top-0 text-red-700 transition hover:text-red-900" @click.stop="clearProfilePicture" :title="t('common.cancel')">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                                <path d="M18 6 6 18M6 6l12 12"/>
+                            </svg>
+                        
+                        </button>
+                    </div>
+                </template>
+
+                <input v-if="isEditing && isOwner" ref="fileInput" type="file" accept="image/*" class="hidden" @change="handleFileInput" />
+            </div>
+
+            <div class="mt-2 flex min-h-9 w-full items-center! justify-center!">
+                <NicknameEdit v-if="isEditing && isOwner" class="nickname-input pt-1" :value="editData.nickname" @nicknameChange="editData.nickname = $event"/>
+                <p v-else-if="user.nickname" class="nickname-display no-ellipsis-scroll pt-1 text-xl text-[var(--TextBrush)]">@{{ user.nickname }}</p>
+            </div>
+        </div>
+
+        <div class="info-card-col-main flex w-full min-w-0 flex-col items-center justify-center! space-y-4 border-t pt-5 md:self-stretch md:justify-center! md:border-t-0 lg:border-l lg:border-(--BorderBrush) lg:pl-6! lg:pt-0">
+            <div class="info-row">
+                <h6 class="info-label">{{ t('common.region') }}:</h6>
+                <RegionEdit v-if="isEditing && isOwner" class="info-input" :value="editData.region" @regionChange="editData.region = $event" />
+                <span v-else class="no-ellipsis-scroll font-medium text-[var(--TextBrush)]">{{ displayedRegion }}</span>
+            </div>
+
+            <div class="info-row">
+                <h6 class="info-label">{{ t('common.dateOfBirth') }}:</h6>
+                <DataOfBirthEdit v-if="isEditing && isOwner" class="info-input info-input-date" v-model="editData.date_of_birth" />
+                <span v-else class="value-date text-[var(--TextBrush)]">
+                    {{ user.date_of_birth && user.date_of_birth !== 'Unknown' ? user.date_of_birth : t('common.unknown') }}
+                </span>
+            </div>
+        </div>
+
+        <div class="info-card-col-main flex w-full min-w-0 flex-col items-center justify-center! space-y-4 border-t pt-5 md:self-stretch md:justify-center! md:border-t-0 lg:border-l lg:border-(--BorderBrush) lg:pl-6! lg:pt-0">
+            <div v-if="isEditing && isOwner" class="w-full space-y-4">
+                <div class="info-row">
+                    <h6 class="info-label">{{ t('common.firstName') }}:</h6>
+                    <FirstNameEdit class="info-input" :value="firstName" @firstNameChange="firstName = $event"/>
+                </div>
+                <div class="info-row">
+                    <h6 class="info-label">{{ t('common.lastName') }}:</h6>
+                    <LastNameEdit class="info-input" :value="lastName" @lastNameChange="lastName = $event"/>
+                </div>
+            </div>
+
+            <div v-else class="w-full space-y-4">
+                <div class="info-row">
+                    <h6 class="info-label">{{ t('profile.registeredAt') }}:</h6>
+                    <span class="no-ellipsis-scroll font-medium text-[var(--TextBrush)]">{{ formattedCreatedAt }}</span>
+                </div>
+                <div class="info-row">
+                    <h6 class="info-label">{{ t('profile.status') }}:</h6>
+                    <span class="no-ellipsis-scroll font-medium" :class="{
+                            '!text-[var(--StatusWinBrush)]': statusKey === 'online',
+                            '!text-[var(--StatusLossBrush)]': statusKey === 'offline',
+                            'text-[var(--StatusUnknownBrush)]': statusKey === 'unknown'}">
+                        {{ normalizedStatus }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
