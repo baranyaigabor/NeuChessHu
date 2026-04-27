@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref, computed } from 'vue'
 import {EmailSignInInput, PasswordSignInInput, SignUpNextStepButton} from '@components/ui/signup-card'
-import { useUserStore } from "@stores/UserStore.mjs";
+import { useUserStore } from "@stores/UserStore";
 import { useRouter } from "vue-router";
 import { useI18n } from '@utils/i18n'
 import { confirmPasswordMessage, emailMessage, passwordMessage } from '@utils/validation'
@@ -32,6 +32,35 @@ const validationErrors = computed(() => ({
 const isFormValid = computed(() =>
   Object.values(validationErrors.value).every((error) => error === '')
 )
+
+function syncCredentialsForStepper()
+{
+    userStore.setCredentials({
+        email: isFormValid.value ? email.value : '',
+        password: isFormValid.value ? password.value : ''
+    })
+}
+
+function handleEmailChange(value)
+{
+    email.value = value
+    touched.email = true
+    syncCredentialsForStepper()
+}
+
+function handlePasswordChange(value)
+{
+    password.value = value
+    touched.password = true
+    syncCredentialsForStepper()
+}
+
+function handleConfirmPasswordChange(value)
+{
+    confirmPassword.value = value
+    touched.confirmPassword = true
+    syncCredentialsForStepper()
+}
 
 const handleSignupNextStep = async () => 
 {
@@ -75,7 +104,7 @@ const handleSignupNextStep = async () =>
                     <h2 class="text-(--TextBrush)! -ml-[0.7rem]!">{{ t('auth.signUp') }}</h2>
 
                     <div class="row">
-                        <EmailSignInInput :value="email" @email-change="email = $event; touched.email = true" @email-blur="touched.email = true"/>
+                        <EmailSignInInput :value="email" @email-change="handleEmailChange" @email-blur="touched.email = true"/>
 
                         <p v-if="(touched.email || submitAttempted) && validationErrors.email" class="m-0 mx-1 mt-1 p-0 text-[11px] text-danger">
                             {{ validationErrors.email }}
@@ -86,8 +115,8 @@ const handleSignupNextStep = async () =>
                         <PasswordSignInInput :password="password" :confirmPassword="confirmPassword"
                             :passwordError="(touched.password || submitAttempted) ? validationErrors.password : ''"
                             :confirmPasswordError="(touched.confirmPassword || submitAttempted) ? validationErrors.confirmPassword : ''"
-                            @update:password="password = $event; touched.password = true"
-                            @update:confirmPassword="confirmPassword = $event; touched.confirmPassword = true"
+                            @update:password="handlePasswordChange"
+                            @update:confirmPassword="handleConfirmPasswordChange"
                             @password-blur="touched.password = true"
                             @confirm-password-blur="touched.confirmPassword = true"/>
                     </div>

@@ -9,7 +9,6 @@ import { useUserStore } from "@stores/UserStore";
 import { useI18n } from '@utils/i18n'
 
 const userStore = useUserStore();
-const rawData = userStore.registrationData
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
@@ -44,11 +43,11 @@ const stepperConfirmationStep = computed(() =>
 )
 
 const stepperPersonalInformationStepClick = computed(() =>
-    rawData.email !== '' && rawData.password !== ''
+    userStore.registrationData.email !== '' && userStore.registrationData.password !== ''
 )
 
 const stepperConfirmationStepClick = computed(() =>
-    rawData.nickname !== ''
+    userStore.registrationData.nickname !== ''
 )
 
 function toggleTheme() {
@@ -134,7 +133,7 @@ async function handleLogout() {
 
             <StepperItem :step="stepperSignUpStep" class="min-w-0 justify-center gap-1 sm:gap-2">
                 <StepperTrigger class="w-full min-w-0">
-                    <RouterLink class="stepperLink flex min-w-0 flex-col items-center gap-1 text-center" to="signup">
+                    <RouterLink class="stepperLink flex min-w-0 flex-col items-center gap-1 text-center" :to="{ name: 'signup' }">
                         <StepperIndicator>1</StepperIndicator>
                         <StepperTitle class="max-w-[4.5rem] whitespace-normal text-center text-[10px] leading-tight sm:max-w-none sm:text-xs md:text-sm">{{ t('auth.signUpStepper') }}</StepperTitle>
                     </RouterLink>
@@ -147,7 +146,7 @@ async function handleLogout() {
                     <component
                     
                         :is="stepperPersonalInformationStepClick ? 'RouterLink' : 'div'"
-                        :to="stepperPersonalInformationStepClick ? 'personalinformation' : null"
+                        :to="stepperPersonalInformationStepClick ? { name: 'personalinformation' } : null"
                         class="stepperLink flex min-w-0 flex-col items-center gap-1 text-center"
                         :class="!stepperPersonalInformationStepClick ? 'pointer-events-none opacity-50' : ''">
                         
@@ -162,7 +161,7 @@ async function handleLogout() {
                 <StepperTrigger class="w-full min-w-0">
                     <component
                         :is="stepperConfirmationStepClick ? 'RouterLink' : 'div'"
-                        :to="stepperConfirmationStepClick ? 'confirmation' : null"
+                        :to="stepperConfirmationStepClick ? { name: 'confirminformation' } : null"
                         class="stepperLink text-(--TextBrush) decoration-0 flex min-w-0 flex-col items-center gap-1 text-center"
                         :class="!stepperConfirmationStepClick ? 'pointer-events-none opacity-50' : ''">
 
