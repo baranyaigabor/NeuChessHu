@@ -269,7 +269,7 @@ function confirmDelete()
     <div class="relative grid h-auto min-h-0 w-full min-w-0 grid-cols-1 md:-gap-2 lg:gap-5 overflow-visible rounded-xl px-4 py-4 pr-12 text-left md:grid-cols-2 md:px-6 md:pr-14 lg:grid-cols-[minmax(160px,0.7fr)_minmax(0,1.15fr)_minmax(0,1.15fr)] lg:items-stretch"
         :class="isEditing && isOwner ? 'items-start' : 'items-center'">
         
-        <div class="absolute right-3.5 top-2.5 flex gap-2">
+        <div class="absolute right-5.5 top-4.5 flex gap-2">
             <template v-if="isEditing && isOwner">
                 <button class="text-green-600 transition hover:text-green-400" @click="saveEdit" :title="t('common.save')">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -287,8 +287,8 @@ function confirmDelete()
                     </svg>
                 </button>
             </template>
-            <button v-else-if="isOwner" class="pe-3 transition" @click="openSettings">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-1 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <button v-else-if="isOwner" class="pe-3 translate-y-[0.2rem] translate-x-[0.9rem] transition" @click="openSettings">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7Z"/>
                     <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .26 1.7 1.7 0 0 0-.85 1.47V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-.85-1.47 1.7 1.7 0 0 0-1-.26 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.26-1 1.7 1.7 0 0 0-1.47-.85H2.8a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.47-.85 1.7 1.7 0 0 0 .26-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.26 1.7 1.7 0 0 0 .85-1.47V2.8a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 .85 1.47 1.7 1.7 0 0 0 1 .26 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c0 .35.09.7.26 1 .3.5.84.81 1.43.85h.11a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.47.85c-.17.3-.24.65-.24 1z"/>
                 </svg>
