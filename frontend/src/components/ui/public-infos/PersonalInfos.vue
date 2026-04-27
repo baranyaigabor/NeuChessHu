@@ -349,3 +349,92 @@ function deleteAccount()
         </div>
     </div>
 </template>
+
+<style scoped>
+.no-ellipsis-scroll {
+    min-width: 0;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    text-overflow: clip;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.no-ellipsis-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.info-row {
+    display: grid;
+    grid-template-columns: clamp(7.5rem, 34%, 11rem) minmax(0, 1fr);
+    align-items: center;
+    gap: 0.9rem;
+    min-width: 0;
+    width: 100%;
+}
+
+.info-label {
+    color: var(--TextBrush);
+    min-width: 0;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.nickname-input,
+.nickname-display {
+    width: min(100%, 52rem);
+    min-width: 0;
+    margin-inline: auto;
+}
+
+.info-input,
+.info-input-date {
+    width: 100%;
+    min-width: 0;
+}
+
+.info-input :deep(input),
+.info-input :deep(select),
+.info-input :deep(button),
+.info-input-date :deep(input),
+.info-input-date :deep(select),
+.info-input-date :deep(button) {
+    width: 100%;
+    min-width: 0;
+}
+
+.info-input-date :deep(button) {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+@media (min-width: 768px) {
+    .info-row {
+        grid-template-columns: clamp(10rem, 34%, 13rem) minmax(0, 1fr);
+    }
+}
+
+@media (min-width: 300px) and (max-width: 863px) {
+    .info-card-col-main {
+        text-align: left;
+        align-items: center;
+    }
+
+    .info-row {
+        justify-items: stretch;
+    }
+}
+
+@media (min-width: 865px) {
+    .info-card-col-left {
+        min-width: 0;
+    }
+
+    .info-card-col-main {
+        min-width: 0;
+        overflow: visible;
+    }
+}
+</style>
