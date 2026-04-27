@@ -69,10 +69,7 @@ watch(date, (val) => {
         <Popover id="calendar" v-slot="{ close }">
 
             <PopoverTrigger as-child class="w-full! bg-(--ButtonBrush)! rounded-[5px]! border-(--BorderBrush)! shadow-[inset_0_2px_5px_var(--InsetShadowBrush)]">
-                <Button variant="outline"
-                    :class="cn('w-60 justify-start text-left font-normal text-(--FieldTextBrush) border-(--BorderBrush)!', !date && 'text-(--FieldTextBrush) opacity-60')"
-                    style="border-color: var(--BorderBrush);">
-
+                <Button variant="outline" :class="cn('w-60 justify-start text-left font-normal text-(--FieldTextBrush) border-(--BorderBrush)!', !date && 'text-(--FieldTextBrush) opacity-60')" style="border-color: var(--BorderBrush);">
                     <CalendarIcon />
                     {{ date ? dateFormatter.format(date.toDate(getLocalTimeZone())) : t('common.pickDate') }}
                 </Button>

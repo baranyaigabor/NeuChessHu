@@ -261,7 +261,7 @@ function cancelDelete()
 function confirmDelete()
 {
     showDeleteConfirm.value = false
-    emit('delete', props.user.id)
+    emit('delete', props.user.nickname)
 }
 </script>
 
@@ -288,27 +288,32 @@ function confirmDelete()
                 </button>
             </template>
             <button v-else-if="isOwner" class="pe-3 transition" @click="openSettings">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mt-1 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7Z"/>
                     <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .26 1.7 1.7 0 0 0-.85 1.47V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-.85-1.47 1.7 1.7 0 0 0-1-.26 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.26-1 1.7 1.7 0 0 0-1.47-.85H2.8a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.47-.85 1.7 1.7 0 0 0 .26-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.26 1.7 1.7 0 0 0 .85-1.47V2.8a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 .85 1.47 1.7 1.7 0 0 0 1 .26 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c0 .35.09.7.26 1 .3.5.84.81 1.43.85h.11a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.47.85c-.17.3-.24.65-.24 1z"/>
                 </svg>
             </button>
 
-            <div v-if="showDeleteConfirm" class="absolute right-0 top-8 z-20 w-64 rounded border border-black bg-(--SideBarBrush) p-3 text-sm text-(--TextBrush) shadow-lg">
-                <p class="mb-3 leading-snug">
-                    {{ t('profile.deleteAccountConfirm') }}
-                </p>
+            <Teleport to="body">
+                <div v-if="showDeleteConfirm" class="fixed inset-0 z-50 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="cancelDelete"></div>
+                    <div class="relative z-10 w-72 rounded-lg border border-(--BorderChangingBrush)! bg-(--SideBarBrush) p-3 text-sm text-(--TextBrush) shadow-2xl">
+                        <p class="mb-4 leading-snug text-lg text-center font-semibold">
+                            {{ t('profile.deleteAccountConfirm') }}
+                        </p>
 
-                <div class="flex justify-end gap-2">
-                    <button type="button" class="rounded border border-black px-3 py-1 text-xs transition hover:bg-black/10" @click="cancelDelete">
-                        {{ t('common.cancel') }}
-                    </button>
+                        <div class="grid grid-cols-2 justify-end gap-6 h-12 px-3">
+                            <button type="button" class="rounded bg-(--ButtonBrush) border border-(--BorderChangingBrush)! px-3 py-1 text-xs transition hover:bg-(--ButtonBrush)/70" @click="cancelDelete">
+                                {{ t('common.cancel') }}
+                            </button>
 
-                    <button type="button" class="rounded border border-red-700 bg-red-700 px-3 py-1 text-xs text-white transition hover:bg-red-600" @click="confirmDelete">
-                        {{ t('common.deleteAccount') }}
-                    </button>
+                            <button type="button" class="rounded border border-(--BorderChangingBrush)! bg-red-700 px-3 py-1 text-xs text-white transition hover:bg-red-800" @click="confirmDelete">
+                                {{ t('common.deleteAccount') }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </Teleport>
         </div>
 
         <div class="info-card-col-left flex min-w-0 flex-col items-center! justify-center! md:col-span-2 lg:col-span-1 lg:self-stretch lg:pr-6">
@@ -340,13 +345,12 @@ function confirmDelete()
                 <input v-if="isEditing && isOwner" ref="fileInput" type="file" accept="image/*" class="hidden" @change="handleFileInput" />
             </div>
 
-            <div class="mt-2 flex min-h-9 w-full items-center! justify-center!">
-                <NicknameEdit v-if="isEditing && isOwner" class="nickname-input pt-1" :value="editData.nickname" @nicknameChange="editData.nickname = $event"/>
-                <p v-else-if="user.nickname" class="nickname-display no-ellipsis-scroll pt-1 text-center text-xl text-[var(--TextBrush)]">@{{ user.nickname }}</p>
+            <div :class="['flex min-h-9 w-full items-center! justify-center!', isEditing && isOwner ? 'mt-3' : 'mt-[0.61rem]']">                <NicknameEdit v-if="isEditing && isOwner" class="nickname-input pt-1" :value="editData.nickname" @nicknameChange="editData.nickname = $event"/>
+                <p v-else-if="user.nickname" class="nickname-display no-ellipsis-scroll pt-1 text-center text-xl text-(--TextBrush)">@{{ user.nickname }}</p>
             </div>
         </div>
 
-        <div class="info-card-col-main flex w-full min-w-0 flex-col items-center justify-center! space-y-4 border-t pt-5 md:self-stretch md:justify-center! md:border-t-0 lg:border-l lg:border-(--BorderBrush) lg:pl-6! lg:pt-0">
+        <div class="info-card-col-main flex w-full min-w-0 flex-col items-center justify-center! space-y-4 border-t border-(--BorderChangingBrush) pt-4 mt-3 md:border-t-0 lg:border-l lg:pl-6! lg:pt-0">
             <div class="info-row">
                 <h6 class="info-label">{{ t('common.region') }}:</h6>
                 <RegionEdit v-if="isEditing && isOwner" class="info-input" :value="editData.region" @regionChange="editData.region = $event" />
@@ -362,7 +366,7 @@ function confirmDelete()
             </div>
         </div>
 
-        <div class="info-card-col-main flex w-full min-w-0 flex-col items-center justify-center! space-y-4 border-t pt-5 md:self-stretch md:justify-center! md:border-t-0 lg:border-l lg:border-(--BorderBrush) lg:pl-6! lg:pt-0">
+        <div class="info-card-col-main flex w-full min-w-0 flex-col items-center justify-center! space-y-4 border-t border-[var(--BorderChangingBrush)] pt-4 mt-3 md:border-t-0 lg:border-l lg:pl-6! lg:pt-0">
             <div v-if="isEditing && isOwner" class="w-full space-y-4">
                 <div class="info-row">
                     <h6 class="info-label">{{ t('common.firstName') }}:</h6>
@@ -382,9 +386,9 @@ function confirmDelete()
                 <div class="info-row">
                     <h6 class="info-label">{{ t('profile.status') }}:</h6>
                     <span class="no-ellipsis-scroll font-medium" :class="{
-                            '!text-[var(--StatusWinBrush)]': statusKey === 'online',
-                            '!text-[var(--StatusLossBrush)]': statusKey === 'offline',
-                            'text-[var(--StatusUnknownBrush)]': statusKey === 'unknown'}">
+                            'text-(--StatusWinBrush)!': statusKey === 'online',
+                            'text-(--StatusLossBrush)!': statusKey === 'offline',
+                            'text-(--StatusUnknownBrush)': statusKey === 'unknown'}">
                         {{ normalizedStatus }}
                     </span>
                 </div>
@@ -414,20 +418,26 @@ function confirmDelete()
     grid-template-columns: clamp(7.5rem, 34%, 11rem) minmax(0, 1fr);
     align-items: center;
     gap: 0.9rem;
+    min-height: 2.5rem;
     min-width: 0;
     width: 100%;
 }
 
 .info-label {
     color: var(--TextBrush);
+    display: flex;
+    align-items: center;
+    min-height: 2.5rem;
+    margin: 0;
     min-width: 0;
     text-align: left;
+    transform: translateY(0.12rem);
     white-space: nowrap;
 }
 
 .nickname-input,
 .nickname-display {
-    width: min(100%, 34rem);
+    width: min(100%, 14rem);
     min-width: 0;
     margin-inline: auto;
 }
@@ -438,6 +448,8 @@ function confirmDelete()
 
 .info-input,
 .info-input-date {
+    display: flex;
+    align-items: center;
     width: 100%;
     min-width: 0;
 }
@@ -458,6 +470,17 @@ function confirmDelete()
     gap: 0.6rem;
 }
 
+.info-value, 
+.info-row > span {
+    display: inline-block;
+    position: relative;
+    top: 0.13rem;
+}
+
+.info-card-col-main {
+    border-color: var(--BorderChangingBrush) !important; 
+}
+
 @media (min-width: 768px) {
     .info-row {
         grid-template-columns: clamp(10rem, 34%, 13rem) minmax(0, 1fr);
@@ -468,6 +491,13 @@ function confirmDelete()
     .info-row {
         grid-template-columns: clamp(8rem, 28%, 10rem) minmax(0, 1fr);
         gap: 0.55rem;
+        padding-right: 1rem;
+    }
+}
+
+@media (min-width: 865px) and (max-width: 1024px) {
+    .info-row {
+        padding-right: 1rem;
     }
 }
 
@@ -475,6 +505,20 @@ function confirmDelete()
     .info-row {
         grid-template-columns: clamp(8.5rem, 30%, 10.5rem) minmax(0, 1fr);
         gap: 0.55rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .info-row {
+        grid-template-columns: clamp(6.5rem, 24%, 8rem) minmax(0, 1fr);
+        gap: 0.45rem;
+        justify-items: stretch;
+    }
+}
+
+@media (min-width: 1024px){
+    .nickname-input :deep(input) {
+        text-align: left;
     }
 }
 

@@ -174,7 +174,7 @@ function handleMatchClick(match)
 </script>
 
 <template>
-    <div class="max-h-[22rem] overflow-y-auto md:max-h-[10rem]">
+    <div class="match-list max-h-[22rem] overflow-y-auto md:max-h-[10rem]">
         <div v-if="allMatches.length === 0" class="px-4 py-6 text-center text-[13px] text-(--TextBrush)">
             {{ t('match.noMatches') }}
         </div>
@@ -230,10 +230,40 @@ function handleMatchClick(match)
 </template>
 
 <style scoped>
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--ScrollThumbBrush); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--ScrollThumbHoverBrush); }
+.match-list {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    scrollbar-gutter: stable;
+    padding-right: 0.7rem;
+    margin-right: -0.2rem;
+}
+
+.match-list:hover,
+.match-list:focus-within {
+    scrollbar-color: var(--ScrollThumbBrush) transparent;
+}
+
+.match-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.match-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.match-list::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 99px;
+}
+
+.match-list:hover::-webkit-scrollbar-thumb,
+.match-list:focus-within::-webkit-scrollbar-thumb {
+    background: var(--ScrollThumbBrush);
+}
+
+.match-list::-webkit-scrollbar-thumb:hover {
+    background: var(--ScrollThumbHoverBrush);
+}
 
 @media (max-width: 526px) {
     .match-mobile {
@@ -249,10 +279,24 @@ function handleMatchClick(match)
         text-align: center;
     }
 
-    .match-mobile .match-avatar { grid-area: avatar; }
-    .match-mobile .match-main { grid-area: main; min-width: 0; text-align: left; }
-    .match-mobile .match-result { grid-area: result; justify-self: center; }
-    .match-mobile .match-mode { grid-area: mode; justify-self: center; }
-    .match-mobile .match-date { grid-area: date; justify-self: center; }
+    .match-mobile .match-avatar { 
+        grid-area: avatar; 
+    }
+
+    .match-mobile .match-main { 
+        grid-area: main; min-width: 0; text-align: left; 
+    }
+
+    .match-mobile .match-result { 
+        grid-area: result; justify-self: center; 
+    }
+
+    .match-mobile .match-mode {
+        grid-area: mode; justify-self: center; 
+    }
+
+    .match-mobile .match-date {
+        grid-area: date; justify-self: center; 
+    }
 }
 </style>
