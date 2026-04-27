@@ -12,9 +12,11 @@ const router = useRouter();
 const acceptedTerms = ref(false)
 const { locale, t } = useI18n()
 const submitAttempted = ref(false)
+const registerError = ref('')
 const termsHref = computed(() => termsUrl(locale.value))
 
-const validationErrors = computed(() => {
+const validationErrors = computed(() => 
+{
     const rawData = userStore.registrationData
 
     return {
@@ -32,6 +34,7 @@ const isFormValid = computed(() =>
 const handleNext = async () => 
 {
     submitAttempted.value = true
+    registerError.value = ''
 
     if (!isFormValid.value) 
     {
@@ -42,19 +45,28 @@ const handleNext = async () =>
 
     const userNickname = rawData.nickname
 
-    userStore.register({
-      "nickname": rawData.nickname,
-      "email": rawData.email,
-      "password": rawData.password,
-      "first_name": rawData.first_name === "" ? null : rawData.first_name,
-      "last_name": rawData.last_name === "" ? null : rawData.last_name,
-      "region": rawData.region === "" ? null : rawData.region,
-      "profile_picture": null,
-      "date_of_birth": rawData.date_of_birth === "" ? null : rawData.date_of_birth
-    })
+    try
+    {
+        await userStore.register({
+            "nickname": rawData.nickname,
+            "email": rawData.email,
+            "password": rawData.password,
+            "first_name": rawData.first_name === "" ? null : rawData.first_name,
+            "last_name": rawData.last_name === "" ? null : rawData.last_name,
+            "region": rawData.region === "" ? null : rawData.region,
+            "profile_picture": null,
+            "date_of_birth": rawData.date_of_birth === "" ? null : rawData.date_of_birth
+        })
 
-    userStore.resetRegistrationData()
-    router.push({ name: "user", params: { nickname:userNickname } })
+        userStore.resetRegistrationData()
+        router.push(`/user/${encodeURIComponent(userNickname)}`)
+    }
+
+    catch (error)
+    {
+        console.error('Registration failed:', error)
+        registerError.value = error.response?.data?.message ?? t('auth.networkError')
+    }
 }
 
 const handlePrevious = () => {
@@ -93,6 +105,10 @@ const handlePrevious = () => {
 
                             <p v-if="submitAttempted && (validationErrors.nickname || validationErrors.email || validationErrors.password)" class="m-0 mx-1 mt-1 p-0 text-center text-[11px] text-danger">
                                 {{ t('validation.fixRegistrationFields') }}
+                            </p>
+
+                            <p v-if="registerError" class="m-0 mx-1 mt-1 p-0 text-center text-[11px] text-danger">
+                                {{ registerError }}
                             </p>
 
                         </div>

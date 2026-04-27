@@ -27,7 +27,8 @@ const selectedCountryValue = computed(() =>
 
 function onRegionChange(event) 
 {
-    emit('regionChange', event.target.value)
+    const selectedCountry = localizedCountries.value.find((country) => country.value === event.target.value)
+    emit('regionChange', selectedCountry?.label ?? event.target.value)
 }
 </script>
 

@@ -15,8 +15,8 @@ const { locale, t } = useI18n()
 
 const localizedCountries = computed(() =>
     countryValues.map((value) => ({
-      value,
-      name: countryName(value, 'hu'),
+        value,
+        name: countryName(value, 'hu'),
       label: countryName(value, locale.value),
     }))
 )
@@ -40,7 +40,7 @@ function onRegionChange(event)
 
             <option value="" disabled>{{ t('common.chooseCountry') }}</option>
             <option v-for="c in localizedCountries" :key="c.value" :value="c.value">
-              {{ c.label }}
+                {{ c.label }}
             </option>
         </select>
     </div>
