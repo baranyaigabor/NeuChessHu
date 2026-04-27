@@ -95,6 +95,7 @@ export default
         emailInvalid: 'Please enter a valid email address.',
         passwordMin: 'Password must be at least {min} characters.',
         confirmPasswordRequired: 'Password confirmation is required.',
+        nicknameTaken: 'Nickname is already taken.',
         passwordLetterNumber: 'Password must contain at least one letter and one number.',
         passwordMismatch: 'Passwords do not match.',
         usernameMin: 'Username must be at least {min} characters.',

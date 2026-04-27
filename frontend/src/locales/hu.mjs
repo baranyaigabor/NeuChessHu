@@ -95,6 +95,7 @@ export default
         emailInvalid: 'Adj meg egy érvényes email címet.',
         passwordMin: 'A jelszónak legalább {min} karakter hosszúnak kell lennie.',
         confirmPasswordRequired: 'A(z) {field} kötelező.',
+        nicknameTaken: 'Ez a felhasználónév már foglalt.',
         passwordLetterNumber: 'A jelszónak tartalmaznia kell legalább egy betűt és egy számot.',
         passwordMismatch: 'A jelszavak nem egyeznek.',
         usernameMin: 'A felhasználónévnek legalább {min} karakter hosszúnak kell lennie.',

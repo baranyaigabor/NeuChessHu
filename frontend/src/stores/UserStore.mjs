@@ -309,11 +309,25 @@ export const useUserStore = defineStore("user", () =>
             return
         }
 
-        await api.delete(`users/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token.value}`
+        const identifier = isDeletingSelf
+            ? (currentUser?.nickname ?? id)
+            : id
+
+        try
+        {
+            await api.delete(`users/${identifier}`, {
+                headers: {
+                    Authorization: `Bearer ${token.value}`
+                }
+            })
+        }
+        catch (e)
+        {
+            if (e?.response?.status !== 404)
+            {
+                throw e
             }
-        })
+        }
 
         if (isDeletingSelf && !isAdmin)
         {
