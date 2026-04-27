@@ -274,3 +274,64 @@ const chartData = computed(() =>
     { side: "black", black: props.blackMatches.length, fill: "#1a1a1a" },
 ])
 </script>
+
+<template>
+    <div class="flex w-full flex-col px-2">
+
+        <div>
+            <p class="text-[10px] font-medium text-black/50 dark:text-white/50 uppercase tracking-widest mb-1">
+                {{ t('match.statistics') }}
+            </p>
+        </div>
+
+        <div>
+            <div class="relative h-36 w-full mb-1">
+                <ChartContainer :config="chartConfig" class="absolute inset-0 w-full h-full"
+                    :style="{
+                        '--vis-donut-central-label-font-size': 'var(--text-xl)',
+                        '--vis-donut-central-label-font-weight': 'var(--font-weight-bold)',
+                        '--vis-donut-central-label-text-color': 'var(--foreground)',
+                        '--vis-donut-central-sub-label-text-color': 'var(--muted-foreground)',
+                    }">
+
+                    <VisSingleContainer :data="chartData" :margin="{ top: 0, bottom: 0 }">
+                        <VisDonut
+                            :value="d => d.white ?? d.black"
+                            :color="d => d.fill"
+                            :arc-width="20"
+                            :central-label="totalMatches.toLocaleString()"
+                            :central-sub-label="t('match.matches')"/>
+
+                        <ChartTooltip :triggers="{ [Donut.selectors.segment]: componentToString(chartConfig, ChartTooltipContent, { hideLabel: true })}"/>
+                    </VisSingleContainer>
+                </ChartContainer>
+            </div>
+        </div>
+
+        <hr class="border-(--BorderChangingBrush)! my-2">
+        
+        <div>
+            <p class="text-[10px] font-medium text-black/50 dark:text-white/50 uppercase tracking-widest mb-1">
+                {{ t('match.winLossDraw') }}
+            </p>
+
+            <div class="relative h-52 w-full mb-[-2rem]!">
+                <canvas ref="radarRef" role="img" :aria-label="t('match.radarAria')"></canvas>
+            </div>
+        </div>
+
+        <hr class="border-(--BorderChangingBrush)! my-2">
+
+        <div>
+            <p class="text-[10px] font-medium text-black/50 dark:text-white/50 uppercase tracking-widest mb-1">
+                {{ t('match.timeline') }}
+            </p>
+            <div class="relative h-24 w-full">
+                <canvas ref="lineRef" role="img" :aria-label="t('match.timelineAria')">
+                    {{ t('match.monthlyData') }}
+                </canvas>
+            </div>
+        </div>
+
+    </div>
+</template>
