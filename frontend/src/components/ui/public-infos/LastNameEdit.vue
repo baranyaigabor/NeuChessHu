@@ -3,8 +3,8 @@ import { useI18n } from '@utils/i18n'
 
 const props = defineProps({
     value: {
-        type: String,
-        default: ""
+      type: String,
+      default: ""
     }
 })
 

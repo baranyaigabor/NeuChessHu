@@ -12,7 +12,8 @@ const router = useRouter();
 const acceptedTerms = ref(false)
 const { locale, t } = useI18n()
 const submitAttempted = ref(false)
-const registerError = ref('')
+const registerErrorKey = ref('')
+const registerError = computed(() => registerErrorKey.value ? t(registerErrorKey.value) : '')
 const termsHref = computed(() => termsUrl(locale.value))
 
 const validationErrors = computed(() => 
@@ -64,8 +65,21 @@ const handleNext = async () =>
 
     catch (error)
     {
-        console.error('Registration failed:', error)
-        registerError.value = error.response?.data?.message ?? t('auth.networkError')
+        const message = error.response?.data?.message ?? ''
+
+        if (message.includes('users_nickname_unique') || message.includes('Duplicate entry'))
+        {
+            registerErrorKey.value = 'validation.nicknameTaken'
+        }
+        else
+        {
+            registerErrorKey.value = message ? '' : 'auth.networkError'
+
+            if (message)
+            {
+                registerError
+            }
+        }
     }
 }
 
@@ -99,15 +113,15 @@ const handlePrevious = () => {
                                 </div>
                             </div>
 
-                            <p v-if="submitAttempted && validationErrors.terms" class="m-0 mx-1 mt-1 p-0 text-center text-[11px] text-danger">
+                            <p v-if="submitAttempted && validationErrors.terms" class="m-0 mx-[0.7rem]! mt-1 p-0  text-[11px] text-danger">
                                 {{ validationErrors.terms }}
                             </p>
 
-                            <p v-if="submitAttempted && (validationErrors.nickname || validationErrors.email || validationErrors.password)" class="m-0 mx-1 mt-1 p-0 text-center text-[11px] text-danger">
+                            <p v-if="submitAttempted && (validationErrors.nickname || validationErrors.email || validationErrors.password)" class="m-0 mx-[0.7rem]! mt-1 p-0  text-[11px] text-danger">
                                 {{ t('validation.fixRegistrationFields') }}
                             </p>
 
-                            <p v-if="registerError" class="m-0 mx-1 mt-1 p-0 text-center text-[11px] text-danger">
+                            <p v-if="registerError" class="m-0 mx-[0.7rem]! mt-1 p-0  text-[11px] text-danger">
                                 {{ registerError }}
                             </p>
 

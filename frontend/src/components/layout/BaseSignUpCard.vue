@@ -134,7 +134,7 @@ const handleSignupNextStep = async () =>
                     </div>
                 </div>
           
-                <hr class="loginSep_HR border-(--BorderChangingBrush)/24!">
+                <hr class="loginSep_HR border-(--BorderChangingBrush)!">
           
                 <RouterLink class="text-(--TextBrush)! no-underline hover:underline visited:text-(--TextBrush)" :to="{name: 'signin'}">
                     {{ t('auth.alreadyHaveAccount') }}

@@ -129,10 +129,8 @@ function isValidImageDataUrl(value)
     try 
     {
         const bytes = atob(match[2])
-        
         const isPng = bytes.charCodeAt(0) === 0x89 &&
                                     bytes.slice(1, 4) === 'PNG'
-
         const isJpeg = bytes.charCodeAt(0) === 0xff &&
                                      bytes.charCodeAt(1) === 0xd8 &&
                                      bytes.charCodeAt(2) === 0xff
@@ -153,7 +151,7 @@ function isValidImageDataUrl(value)
 
         <div class="mx-auto flex w-full max-w-[1600px] flex-1 flex-col gap-4 px-3 pb-6 sm:px-4 md:px-6 lg:px-8 lg:pb-8">
             <main class="mx-auto w-full min-w-0 max-w-[1500px] flex-1">
-                <div v-for="user in visibleUsers" :key="user.id" class="my-5 flex w-full min-w-0 flex-col items-stretch overflow-hidden rounded border border-black! bg-(--SideBarBrush) shadow">
+                <div v-for="user in visibleUsers" :key="user.id" class="my-5 flex w-full min-w-0 flex-col items-stretch rounded border border-black! bg-(--SideBarBrush) shadow">
                     <Infos class="admin-profile-info" :user="user" :userId="user.id" :isOwner="true" @save="(updatedUser) => handleSave(user, updatedUser)" @delete="handleDelete"/>
                 </div>
             </main>

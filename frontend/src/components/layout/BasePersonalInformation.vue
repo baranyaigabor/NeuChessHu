@@ -91,7 +91,7 @@ const handlePrevious = async () =>
                             </p>
                         </div>
 
-                        <hr class="loginSep_HR border-(--BorderChangingBrush)/24!">
+                        <hr class="loginSep_HR border-(--BorderChangingBrush)!">
 
                         <div class="row d-flex justify-content-center">
                             <UserName
@@ -111,13 +111,13 @@ const handlePrevious = async () =>
                             </p>
                         </div>
 
-                        <hr class="loginSep_HR border-(--BorderChangingBrush)/24!">
+                        <hr class="loginSep_HR border-(--BorderChangingBrush)!">
 
                         <div class="row">
                             <UserRegionInput :value="region" @regionChange="region = $event"/>
                         </div>
 
-                        <hr class="loginSep_HR border-(--BorderChangingBrush)/24!">
+                        <hr class="loginSep_HR border-(--BorderChangingBrush)!">
 
                         <div class="row">
                             <UserDateOfBirthInput :model-value="dob" @dateOfBirthChange="dob = $event; touched.dob = true"/>

@@ -102,7 +102,7 @@ async function TryToSignIn()
 </script>
 
 <template>
-    <div class="flex min-h-[70vh] items-center justify-center"> 
+    <div class="flex min-h-[70vh] mb-8 items-center justify-center"> 
         <div class="card w-[18rem] border! border-(--BorderBrush)! bg-(--SideBarBrush)! text-(--TextBrush)">
             <div id="card-body" class="card-body">
                 <form @submit.prevent="TryToSignIn">
@@ -129,7 +129,7 @@ async function TryToSignIn()
 
                     <SignInButton :disabled="!isFormValid" @submit="TryToSignIn"/>
 
-                    <hr class="loginSep_HR border-(--BorderChangingBrush)/24!">
+                    <hr class="loginSep_HR border-(--BorderChangingBrush)!">
 
                     <RouterLink :to="{ name: 'signup' }" class="text-(--TextBrush)! no-underline hover:underline visited:text-(--TextBrush)">
                         {{ t('auth.newToChess') }}
