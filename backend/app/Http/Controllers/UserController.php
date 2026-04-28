@@ -27,13 +27,21 @@ class UserController
 
     public function show(string $identifier)
     {
-        $user = User::where('role', 'user')->where(function ($query) use ($identifier) 
+        $user = User::where(function ($query) 
+        {
+            $query->where('role', 'user')->orWhere(function ($query) 
+            {
+                $query->where('role', 'bot')->where('nickname', 'Stockfish');
+            });
+
+        })->where(function ($query) use ($identifier) 
         {
             $query->where('nickname', $identifier);
 
             if (is_numeric($identifier)) {
                 $query->orWhere('id', (int) $identifier);
             }
+            
         })->firstOrFail();
     
         return new UserResource($user->load(["whiteMatches", "blackMatches"]));
