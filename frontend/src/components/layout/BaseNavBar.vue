@@ -16,7 +16,7 @@ const isDarkTheme = ref(document.documentElement.classList.contains('dark'))
 const isMobileMenuOpen = ref(false)
 
 const isAuthenticated = computed(() => !!userStore.token)
-const showLogout = computed(() => isAuthenticated.value || route.name === 'admin')
+const showLogout = computed(() => isAuthenticated.value && route.name === 'user')
 
 const showDownload = computed(() =>
     route.name === 'welcome' ||
