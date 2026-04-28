@@ -11,9 +11,10 @@ const route = useRoute();
 const { t } = useI18n()
 
 const profileUser = ref(null);
-const authenticatedUser = computed(() => userStore.user?.data ?? null);
-const authenticatedUserId = computed(() => authenticatedUser.value?.id ?? null);
+const authenticatedUser = computed(() => userStore.user?.data ?? userStore.user ?? null);
+const authenticatedUserId = computed(() => userStore.userId ?? authenticatedUser.value?.id ?? null);
 const authenticatedUserRole = computed(() => authenticatedUser.value?.role ?? null);
+const authenticatedUserNickname = computed(() => authenticatedUser.value?.nickname ?? null);
 
 async function loadProfile() 
 {
@@ -34,7 +35,17 @@ watch(() => route.params.nickname, loadProfile, { immediate: true });
 
 const isOwner = computed(() => 
 {
-    return !!userStore.token && authenticatedUserId.value !== null && String(authenticatedUserId.value) === String(profileUser.value?.id);
+    if (!userStore.token || !profileUser.value)
+    {
+        return false
+    }
+
+    if (authenticatedUserId.value !== null && profileUser.value.id !== undefined)
+    {
+        return String(authenticatedUserId.value) === String(profileUser.value.id)
+    }
+
+    return !!authenticatedUserNickname.value && authenticatedUserNickname.value === profileUser.value.nickname
 });
 
 async function handleSave(updatedUser) 
