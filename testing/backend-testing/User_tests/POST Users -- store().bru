@@ -1,0 +1,29 @@
+meta {
+  name: POST Users -> store()
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{BackendVM2}}api/users
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "nickname": "PostTeszt",
+    "email": "PostTeszt06@gmail.com",
+    "password": "postTeszt",
+    "first_name": "PLS",
+    "last_name": "Work",
+    "region": "Magyarország",
+    "profile_picture": null,
+    "date_of_birth": null
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

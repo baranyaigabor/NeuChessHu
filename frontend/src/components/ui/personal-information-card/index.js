@@ -1,0 +1,6 @@
+export { default as UserName } from './UserName.vue'
+export { default as UserNameInput } from './UserNameInput.vue'
+export { default as UserRegionInput } from './UserRegion.vue'
+export { default as UserDateOfBirthInput } from './UserDateOfBirth.vue'
+export { default as NextStepButton } from './NextStepButton.vue'
+export { default as PreviousStepButton } from './PreviousStepButton.vue'
