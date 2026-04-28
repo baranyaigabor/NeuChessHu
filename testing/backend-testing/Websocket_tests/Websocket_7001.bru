@@ -1,0 +1,27 @@
+meta {
+  name: WebSocket_7001
+  type: ws
+  seq: 1
+}
+
+ws {
+  url: {{BackendWebsocket}}:7001
+  body: ws
+  auth: none
+}
+
+body:ws {
+  name: message 1
+  type: json
+  content: '''
+    {
+      "type": "request-is-legal-move",
+      "requestID": "t1",
+      "payload": {
+        "channel": "private-123-456-20260427120000",
+        "from": [6, 4],
+        "to": [4, 4]
+      }
+    }
+  '''
+}
