@@ -68,7 +68,7 @@ const monthlyData = computed(() =>
         : order.slice(0, 6)
 
     return { 
-      labels, data: labels.map(x => counts[x]) 
+        labels, data: labels.map(x => counts[x]) 
     }
 })
 
