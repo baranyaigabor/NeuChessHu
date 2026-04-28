@@ -92,6 +92,7 @@
   --TextStrongBrush: #2C1A0A;
   --TextMutedBrush: #5A3A1A;
   --TextSubtleBrush: #333333;
+  --ProfileValueBrush: rgba(38, 31, 31, 0.795);
   --SurfaceLightBrush: #F0E6D2;
   --SurfaceDarkBrush: #2C1A0A;
   --StatusWinBrush: #377E22;
@@ -187,6 +188,7 @@
   --TextStrongBrush: #F5F5F5;
   --TextMutedBrush: #DDD6CA;
   --TextSubtleBrush: #D6D1C8;
+  --ProfileValueBrush: rgba(254, 252, 252, 0.818);
   --SurfaceLightBrush: #C0C0C0;
   --SurfaceDarkBrush: #21211F;
   --StatusWinBrush: #7FD05F;
