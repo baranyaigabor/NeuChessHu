@@ -26,10 +26,22 @@ public static class Patcher
 
         if (matchStateDTO.Notations is not null && matchStateDTO.Notations.Count > 0)
         {
-            SANNotationRow latest = matchStateDTO.Notations.Last();
+            List<SANNotationRow> incomingNotations = matchStateDTO.Notations.ToList();
             uiContext?.Post(_ =>
             {
-                if (matchState.Notations.Count > 0 && matchState.Notations.Last().Round == latest.Round)
+                if (matchState.Notations.Count is 0 || incomingNotations.Count > matchState.Notations.Count + 1)
+                {
+                    matchState.Notations.Clear();
+
+                    foreach (SANNotationRow notation in incomingNotations)
+                        matchState.Notations.Add(notation);
+
+                    return;
+                }
+
+                SANNotationRow latest = incomingNotations.Last();
+
+                if (matchState.Notations.Last().Round == latest.Round)
                     matchState.Notations[matchState.Notations.Count - 1] = latest;
                 else matchState.Notations.Add(latest);
             }, null);

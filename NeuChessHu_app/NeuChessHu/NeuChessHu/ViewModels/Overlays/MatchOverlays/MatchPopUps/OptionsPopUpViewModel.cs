@@ -40,10 +40,10 @@ public class OptionsPopUpViewModel : ObservableBase, IDisposable
         private set { optionsMenuHeight = value; RaisePropertyChanged(); }
     }
 
-    public Visibility OfferDrawButtonVisibility 
-    { 
-        get => offerDrawButtonVisibility; 
-        private set {  offerDrawButtonVisibility = value;  RaisePropertyChanged(); }
+    public Visibility OfferDrawButtonVisibility
+    {
+        get => offerDrawButtonVisibility;
+        private set { offerDrawButtonVisibility = value; RaisePropertyChanged(); }
     }
 
     public Action<string>? OnShowConfirmationPanel { get; set; }
@@ -68,10 +68,8 @@ public class OptionsPopUpViewModel : ObservableBase, IDisposable
         matchDataStore.MatchState.Notations.CollectionChanged += OnNotationsCollectionChanged;
         matchDataStore.MatchPoints.PropertyChanged += OnMatchPointsChanged;
 
-        AbortResignQuitButtonContent = AppResources.Get<string>("AbortText");
-        canAbort = true;
-
         OptionsMenuHeight = 158;
+        RefreshAbortResignQuitButton();
 
         AbortResignQuitCommand = new CommandExecuter<object?>(async x => await AbortResignQuitButtonAction());
         OffersDrawCommand = new CommandExecuter<object?>(async x => await OffersDraw());
@@ -92,29 +90,32 @@ public class OptionsPopUpViewModel : ObservableBase, IDisposable
             OfferDrawButtonVisibility = Visibility.Collapsed;
             OptionsMenuHeight = 118;
         }
+
+        RefreshAbortResignQuitButton();
     }
 
-    void OnNotationsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    void OnNotationsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e) => RefreshAbortResignQuitButton();
+
+    void RefreshAbortResignQuitButton()
     {
         ObservableCollection<SANNotationRow> notations = matchDataStore.MatchState.Notations;
 
-        if (!notations.Any())
-            return;
-
-        SANNotationRow latestRow = e.Action is NotifyCollectionChangedAction.Replace
-            ? (SANNotationRow)e.NewItems![0]!
-            : notations.Last();
-
-        if (notations.Count is 1 && latestRow.Black is null)
-            AbortResignQuitButtonContent = AppResources.Get<string>("AbortText");
-
-        else if(!matchDataStore.MatchPoints.MatchEnded)
+        if (matchDataStore.MatchPoints.MatchEnded)
         {
-            AbortResignQuitButtonContent = AppResources.Get<string>("ResignText");
+            AbortResignQuitButtonContent = AppResources.Get<string>("QuitToMenuButtonText");
             canAbort = false;
+            return;
         }
 
-        else AbortResignQuitButtonContent = AppResources.Get<string>("QuitToMenuButtonText");
+        if (!notations.Any() || notations.Count is 1 && notations.Last().Black is null)
+        {
+            AbortResignQuitButtonContent = AppResources.Get<string>("AbortText");
+            canAbort = true;
+            return;
+        }
+
+        AbortResignQuitButtonContent = AppResources.Get<string>("ResignText");
+        canAbort = false;
     }
 
     void DrawButtonVisibilityOnStockfish()
@@ -148,7 +149,7 @@ public class OptionsPopUpViewModel : ObservableBase, IDisposable
     {
         OnShowConfirmationPanel?.Invoke("Draw");
         OnCloseOverlay?.Invoke();
-        
+
         await requests.MatchPointRequestAsync(matchDataStore.MatchChannel!, (int)session.UserID!, "Draw");
     }
 
@@ -158,6 +159,6 @@ public class OptionsPopUpViewModel : ObservableBase, IDisposable
             matchDataStore.PlayerDatas[side].PropertyChanged -= OnPlayerDatasChanged;
 
         matchDataStore.MatchState.Notations.CollectionChanged -= OnNotationsCollectionChanged;
-        matchDataStore.MatchPoints.PropertyChanged += OnMatchPointsChanged;
+        matchDataStore.MatchPoints.PropertyChanged -= OnMatchPointsChanged;
     }
 }
