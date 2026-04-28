@@ -164,3 +164,57 @@
   A teszt azt ellenőrzi, hogy érvénytelen, véletlenszerű vezérirány tiltva – szabálytalan lépés elutasítása.. A várt kimenet: sikeres futás és helyes viselkedés.
 - **TC-078** (testRookCaptureNotation)
   A teszt azt ellenőrzi, hogy bástya ütés notáció → 'Rxe1'. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-079** (testValidMessagePasses)
+  A teszt azt ellenőrzi, hogy érvényes üzenet – nincs hiba: 'Hello, good game!'. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-080** (testSingleCharacterPasses)
+  A teszt azt ellenőrzi, hogy egy betűs üzenet érvényes: 'a'. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-081** (testNonStringFails)
+  A teszt azt ellenőrzi, hogy nem string érték → hibát dob (42). A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-082** (testEmptyStringFails)
+  A teszt azt ellenőrzi, hogy üres string → hibát dob. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-083** (testWhitespaceOnlyFails)
+  A teszt azt ellenőrzi, hogy csak szóközök → hibát dob (trim után üres). A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-084** (test101CharactersFails)
+  A teszt azt ellenőrzi, hogy 101 karakter → hibát dob (határérték). A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-085** (testEnglishBannedWordFails)
+  A teszt azt ellenőrzi, hogy angol tiltott szó 'fuck' → inappropriate hiba. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-086** (testHungarianBannedWordFails)
+  A teszt azt ellenőrzi, hogy magyar tiltott szó 'kurva' → inappropriate hiba. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-087** (testLeetSpeakBannedWordFails)
+  A teszt azt ellenőrzi, hogy leetspeak tiltott szó 'f4ggot' → hiba. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-088** (testPatternBasedBannedWordFails)
+  A teszt azt ellenőrzi, hogy regex-minta 'f*ck' → inappropriate hiba. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-089** (testExcessiveCapitalizationFails)
+  A teszt azt ellenőrzi, hogy túlzott nagybetűsítés >70% → capitalization hiba. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-090** (testNormalCapitalizationPasses)
+  A teszt azt ellenőrzi, hogy normális nagybetűsítés → nincs hiba. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-091** (testRepeatedCharactersFail)
+  A teszt azt ellenőrzi, hogy 7+ ismétlődő karakter → repeated hiba. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-092** (testSixRepeatedCharactersPasses)
+  A teszt azt ellenőrzi, hogy 6 ismétlődő karakter (határérték) → nincs hiba. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-093** (testNoLettersFails)
+  A teszt azt ellenőrzi, hogy csak számok/szimbólumok betű nélkül → readable hiba. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-094** (testMessageWithNumbersAndLetterPasses)
+  A teszt azt ellenőrzi, hogy szám + legalább egy betű → érvényes. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-095** (testValidBase64ButNotImageFails)
+  A teszt azt ellenőrzi, hogy érvényes base64, de nem kép tartalom → hiba. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-096** (testJpegPrefixIsAcceptedFormat)
+  A teszt azt ellenőrzi, hogy jPEG prefix elfogadott – JPEG or PNG hiba nem jelenik meg. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-097** (testValidMessageReturnsSuccessStatus)
+  A teszt azt ellenőrzi, hogy érvényes üzenet → Status='Success'. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-098** (testValidMessageReturnsNewMessageData)
+  A teszt azt ellenőrzi, hogy érvényes üzenet → NewMessage tartalmazza a UserID-t és üzenetet. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-099** (testValidMessageIsAppendedToChatMessages)
+  A teszt azt ellenőrzi, hogy két érvényes üzenet felhalmozódik (count=2, sorrend helyes). A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-100** (testValidMessageStoresCorrectUserId)
+  A teszt azt ellenőrzi, hogy helyes UserID tárolása a ChatMessages-ben. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-101** (testSingleCharacterMessageIsValid)
+  A teszt azt ellenőrzi, hogy 1 karakteres üzenet érvényes → Success. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-102** (testMessageExceeding100CharsReturnsViolation)
+  A teszt azt ellenőrzi, hogy 101 karakteres üzenet → Status='Violation'. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-103** (testBannedEnglishWordReturnsViolation)
+  A teszt azt ellenőrzi, hogy tiltott angol szó → Status='Violation'. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-104** (testBannedHungarianWordReturnsViolation)
+  A teszt azt ellenőrzi, hogy tiltott magyar szó → Status='Violation'. A várt kimenet: sikeres futás és helyes viselkedés.
+- **TC-105** (testMultipleValidMessagesAccumulate)
+  A teszt azt ellenőrzi, hogy 5 érvényes üzenet sorban → count=5. A várt kimenet: sikeres futás és helyes viselkedés.
