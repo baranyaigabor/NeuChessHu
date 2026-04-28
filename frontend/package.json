@@ -32,6 +32,9 @@
     "vue-router": "4.5.1"
   },
   "dependencies": {
-    "@internationalized/date": "^3.10.0"
+    "@internationalized/date": "^3.10.0",
+    "@unovis/ts": "^1.6.5",
+    "@unovis/vue": "^1.6.5",
+    "chart.js": "^4.5.1"
   }
 }
