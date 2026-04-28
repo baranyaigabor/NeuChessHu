@@ -13,8 +13,8 @@ using NeuChessHu.UserSettings;
 using NeuChessHu.ViewModels.NavBar;
 using NeuChessHu.ViewModels.Overlays.MenuOverlays.MenuWindows;
 using NeuChessHu.ViewModels.SideBars.MatchSideBar;
-using System.Diagnostics.Eventing.Reader;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace NeuChessHu.ViewModels.MainWindow;
 
@@ -256,11 +256,26 @@ public class MainWindowViewModel : ObservableBase
 
         lookingForMatchWindow.StartTimer();
 
-        lookingForMatchWindow.MatchDuration = settings.LastMatchStockfish 
+        lookingForMatchWindow.MatchDuration = settings.LastMatchStockfish
             ? AppResources.Get<string>("AgainstStockfishText")
             : settings.LastMatchDuration + $"{(settings.LastMatchDuration.Contains('|')
                 ? string.Empty
                 : " " + AppResources.Get<string>("MinuteText"))}";
+
+        CancellationTokenSource cancellationTokenSource = lookingForMatchService.CreateLookingForMatchCts();
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                await Task.Delay(TimeSpan.FromMinutes(5), cancellationTokenSource.Token);
+
+                Application.Current.Dispatcher.Invoke(CloseMainOverlay);
+
+                await lookingForMatchService.DisposeMatchAsync();
+            }
+            catch (OperationCanceledException) { }
+        });
 
         await lookingForMatchService.LookingForMatchAsync();
     }

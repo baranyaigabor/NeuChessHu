@@ -17,12 +17,11 @@ public record LookingForMatchService(IServiceProvider Provider, SessionDatas Ses
     BindableSettings Settings) : IAsyncDisposable
 {
     bool isLookingForMatch = false;
-
     IServiceScope? matchScope;
     Action? onConnectedHandler;
+    CancellationTokenSource? lookingForMatchCancellationTokenSource;
 
     internal IServiceScope? MatchScope => matchScope;
-
     public Action? OnSwitchToMatch { get; internal set; }
 
     public async Task LookingForMatchAsync()
@@ -36,13 +35,13 @@ public record LookingForMatchService(IServiceProvider Provider, SessionDatas Ses
         if (channelAssignmentDTO.PlayerID != Session.UserID.ToString())
             return;
 
+        lookingForMatchCancellationTokenSource?.Cancel();
+
         Pusher.Unbind("assign-channel");
         await HttpClients.HttpLeaveMatchmakingQueueAsync();
-
         isLookingForMatch = false;
 
         matchScope ??= Provider.CreateScope();
-
         matchScope!.ServiceProvider.GetRequiredService<MatchContext>();
 
         await Application.Current.Dispatcher.InvokeAsync(async () =>
@@ -65,8 +64,8 @@ public record LookingForMatchService(IServiceProvider Provider, SessionDatas Ses
                 await HttpClients.HttpJoinMatchmakingQueueAsync(Settings.LastMatchDuration,
                     Settings.LastMatchStockfish ? 12 : null);
         };
-        Pusher.OnConnected += onConnectedHandler;
 
+        Pusher.OnConnected += onConnectedHandler;
         await Pusher.InitializePusherClientAsync();
         await ChessEngineClient.InitializeChessEngineClientAsync();
     }
@@ -76,11 +75,17 @@ public record LookingForMatchService(IServiceProvider Provider, SessionDatas Ses
         matchScope!.ServiceProvider.GetRequiredService<MatchDataStore>().MatchChannel = $"private-{channel}";
 
         MatchController matchController = matchScope!.ServiceProvider.GetRequiredService<MatchController>();
-
         matchController.UIContext = SynchronizationContext.Current!;
-        await matchController.SubscribeMatchChannelsAsync(OnSwitchToMatch);
 
+        await matchController.SubscribeMatchChannelsAsync(OnSwitchToMatch);
         await Pusher.SubscribeMatchChannelAsync($"private-{channel}");
+    }
+
+    internal CancellationTokenSource CreateLookingForMatchCts()
+    {
+        lookingForMatchCancellationTokenSource?.Dispose();
+        lookingForMatchCancellationTokenSource = new CancellationTokenSource();
+        return lookingForMatchCancellationTokenSource;
     }
 
     internal async Task DisposeMatchAsync()
@@ -92,6 +97,10 @@ public record LookingForMatchService(IServiceProvider Provider, SessionDatas Ses
             Pusher.OnConnected -= onConnectedHandler;
             onConnectedHandler = null;
         }
+
+        lookingForMatchCancellationTokenSource?.Cancel();
+        lookingForMatchCancellationTokenSource?.Dispose();
+        lookingForMatchCancellationTokenSource = null;
 
         await Pusher.StopPusherAsync();
         await ChessEngineClient.DisconnectChessEngineAsync();
