@@ -1,290 +1,4 @@
-﻿<!--<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-	<NoWarn>WPF0001</NoWarn>
-	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ApplicationIcon>Resources\Images\Statics\Icons\NeuChess_Hu.ico</ApplicationIcon>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Resources\Images\Dynamics\Chat\ChatPic_dark.png" />
-    <None Remove="Resources\Images\Dynamics\Chat\ChatPic_light.png" />
-    <None Remove="Resources\Images\Dynamics\Cross\Cross_dark.png" />
-    <None Remove="Resources\Images\Dynamics\Cross\Cross_light.png" />
-    <None Remove="Resources\Images\Dynamics\DefaultProfilePictures\ProfilePic_dark.png" />
-    <None Remove="Resources\Images\Dynamics\DefaultProfilePictures\ProfilePic_light.png" />
-    <None Remove="Resources\Images\Dynamics\Flags\EnglishFlag.svg" />
-    <None Remove="Resources\Images\Dynamics\Flags\HungarianFlag.svg" />
-    <None Remove="Resources\Images\Dynamics\Logos\NeuChess_Hu_wide_dark.svg" />
-    <None Remove="Resources\Images\Dynamics\Logos\NeuChess_Hu_wide_light.svg" />
-    <None Remove="Resources\Images\Dynamics\MoreArrows\MoreDown_dark.png" />
-    <None Remove="Resources\Images\Dynamics\MoreArrows\MoreDown_light.png" />
-    <None Remove="Resources\Images\Dynamics\MoreArrows\MoreUp_dark.png" />
-    <None Remove="Resources\Images\Dynamics\MoreArrows\MoreUp_light.png" />
-    <None Remove="Resources\Images\Dynamics\Options\OptionsPic_dark.png" />
-    <None Remove="Resources\Images\Dynamics\Options\OptionsPic_light.png" />
-    <None Remove="Resources\Images\Dynamics\SendMessage\SendMessage_dark.png" />
-    <None Remove="Resources\Images\Dynamics\SendMessage\SendMessage_light.png" />
-    <None Remove="Resources\Images\Dynamics\Tick\Tick_dark.png" />
-    <None Remove="Resources\Images\Dynamics\Tick\Tick_light.png" />
-    <None Remove="Resources\Images\Statics\Icons\NeuChess_Hu.ico" />
-    <None Remove="Resources\Images\Statics\MatchDurations\BlitzIcon.png" />
-    <None Remove="Resources\Images\Statics\MatchDurations\BulletIcon.png" />
-    <None Remove="Resources\Images\Statics\MatchDurations\RapidIcon.png" />
-    <None Remove="Resources\Images\Statics\Misc\GoldenMedal.png" />
-    <None Remove="Resources\Images\Statics\Misc\HandMovesPiece.svg" />
-    <None Remove="Resources\Sounds\Capture.wav" />
-    <None Remove="Resources\Sounds\Castle.wav" />
-    <None Remove="Resources\Sounds\Check.wav" />
-    <None Remove="Resources\Sounds\IllegalMove.wav" />
-    <None Remove="Resources\Sounds\MatchEnd.wav" />
-    <None Remove="Resources\Sounds\MatchStart.wav" />
-    <None Remove="Resources\Sounds\Move.wav" />
-    <None Remove="Resources\Sounds\Promotion.wav" />
-    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\BishopBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\KingBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\KnightBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\PawnBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\QueenBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\Default\BlackPieces\RookBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\BishopWhite.png" />
-    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\KingWhite.png" />
-    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\KnightWhite.png" />
-    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\PawnWhite.png" />
-    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\QueenWhite.png" />
-    <None Remove="Resources\Themes\PieceThemes\Default\WhitePieces\RookWhite.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\BishopBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\KingBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\KnightBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\PawnBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\QueenBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\BlackPieces\RookBlack.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\BishopWhite.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\KingWhite.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\KnightWhite.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\PawnWhite.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\QueenWhite.png" />
-    <None Remove="Resources\Themes\PieceThemes\ThemeName\WhitePieces\RookWhite.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Resources\Images\Statics\Icons\NeuChess_Hu.ico" />
-    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\BishopBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\KingBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\KnightBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\PawnBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\QueenBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\Default\BlackPieces\RookBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\BishopWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\KingWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\KnightWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\PawnWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\QueenWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\Default\WhitePieces\RookWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\BishopBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\KingBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\KnightBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\PawnBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\QueenBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\BlackPieces\RookBlack.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\BishopWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\KingWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\KnightWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\PawnWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\QueenWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Themes\PieceThemes\ThemeName\WhitePieces\RookWhite.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.14" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.14" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.14" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.14" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.14" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.14" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
-    <PackageReference Include="PusherClient" Version="2.2.1" />
-    <PackageReference Include="SharpVectors" Version="1.8.5" />
-    <PackageReference Include="Websocket.Client" Version="5.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ChessMechanics\ChessMechanics.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Resources\Images\Dynamics\Chat\ChatPic_dark.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\Chat\ChatPic_light.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\Cross\Cross_dark.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\Cross\Cross_light.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\DefaultProfilePictures\ProfilePic_dark.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\DefaultProfilePictures\ProfilePic_light.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\Flags\EnglishFlag.svg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\Flags\HungarianFlag.svg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\Logos\NeuChess_Hu_wide_dark.svg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\Logos\NeuChess_Hu_wide_light.svg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\MoreArrows\MoreDown_dark.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\MoreArrows\MoreDown_light.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\MoreArrows\MoreUp_dark.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\MoreArrows\MoreUp_light.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\Options\OptionsPic_dark.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\Options\OptionsPic_light.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\SendMessage\SendMessage_dark.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\SendMessage\SendMessage_light.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\Tick\Tick_dark.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Dynamics\Tick\Tick_light.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Statics\MatchDurations\BlitzIcon.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Statics\MatchDurations\BulletIcon.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Statics\MatchDurations\RapidIcon.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Statics\Misc\GoldenMedal.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Images\Statics\Misc\HandMovesPiece.svg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Sounds\Capture.wav">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Sounds\Castle.wav">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Sounds\Check.wav">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Sounds\IllegalMove.wav">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Sounds\MatchEnd.wav">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Sounds\MatchStart.wav">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Sounds\Move.wav">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\Sounds\Promotion.wav">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-
-</Project>
--->
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
@@ -298,11 +12,15 @@
 		<ApplicationIcon>Resources\Images\Statics\Icons\NeuChess_Hu.ico</ApplicationIcon>
 	</PropertyGroup>
 
-	<Target Name="CopyAssets" AfterTargets="Build">
+	<Target Name="CopyAssets" AfterTargets="Build;Publish">
 		<ItemGroup>
-			<AssetFiles Include="Resources\**\*.*" />
+			<AssetFiles Include="Resources\Sounds\**\*.*" />
+			<AssetFiles Include="Resources\ConfigFiles\**\*.*" />
+			<AssetFiles Include="Resources\Themes\PieceThemes\**\*.*" />
 		</ItemGroup>
-		<Copy SourceFiles="@(AssetFiles)" DestinationFolder="$(OutDir)Resources\%(RecursiveDir)" />
+
+		<Copy SourceFiles="@(AssetFiles)" DestinationFolder="$(OutDir)%(RelativeDir)" />
+		<Copy SourceFiles="@(AssetFiles)" DestinationFolder="$(PublishDir)%(RelativeDir)" Condition="'$(PublishDir)' != ''" />
 	</Target>
 
 	<ItemGroup>
@@ -351,7 +69,6 @@
 		<Content Include="Resources\ConfigFiles\PusherConfig.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Include="Resources\Images\Statics\Icons\NeuChess_Hu.ico" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.14" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.14" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.14" />
@@ -423,9 +140,9 @@
 		<Resource Include="Resources\Images\Dynamics\Chat\ChatPic_light.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
-		<Content Include="Resources\Images\Dynamics\MoreArrows\MoreDown_light.png">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
+<Resource Include="Resources\Images\Dynamics\MoreArrows\MoreDown_light.png">
+	<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+</Resource>
 		<Resource Include="Resources\Images\Dynamics\MoreArrows\MoreDown_dark.png">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
@@ -488,30 +205,30 @@
 		<Resource Include="Resources\Images\Statics\Misc\HandMovesPiece.svg">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Resource>
-		<Resource Include="Resources\Sounds\Capture.wav">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Resource>
-		<Resource Include="Resources\Sounds\Castle.wav">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Resource>
-		<Resource Include="Resources\Sounds\Check.wav">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Resource>
-		<Resource Include="Resources\Sounds\MatchEnd.wav">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Resource>
-		<Resource Include="Resources\Sounds\MatchStart.wav">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Resource>
-		<Resource Include="Resources\Sounds\IllegalMove.wav">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Resource>
-		<Resource Include="Resources\Sounds\Move.wav">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Resource>
-		<Resource Include="Resources\Sounds\Promotion.wav">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Resource>
+		<Content Include="Resources\Sounds\Capture.wav">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\Sounds\Castle.wav">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\Sounds\Check.wav">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\Sounds\MatchEnd.wav">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\Sounds\MatchStart.wav">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\Sounds\IllegalMove.wav">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\Sounds\Move.wav">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Resources\Sounds\Promotion.wav">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -531,4 +248,3 @@
 	</ItemGroup>
 
 </Project>
-

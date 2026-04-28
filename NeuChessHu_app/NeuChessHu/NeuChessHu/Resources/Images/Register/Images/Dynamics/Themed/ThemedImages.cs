@@ -6,7 +6,7 @@ namespace NeuChessHu.Resources.Images.Register.Images.Dynamics.Themed;
 
 internal static class ThemedImages
 {
-    readonly static string basePath = "pack://application:,,,/NeuChessHu;component/resources/Images/Dynamics/";
+    readonly static string basePath = "pack://application:,,,/NeuChessHu;component/Resources/Images/Dynamics/";
 
     readonly static Dictionary<string, Uri> themedImages = new()
     {

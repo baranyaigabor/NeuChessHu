@@ -5,7 +5,7 @@ namespace NeuChessHu.Resources.Images.Register.Images.Statics;
 
 internal static class StaticImages
 {
-    readonly static string basePath = "pack://application:,,,/NeuChessHu;component/resources/Images/Statics/";
+    readonly static string basePath = "pack://application:,,,/NeuChessHu;component/Resources/Images/Statics/";
 
     readonly static Dictionary<string, Uri> staticImages = new()
     {

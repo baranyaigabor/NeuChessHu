@@ -10,9 +10,13 @@ internal static class Sounds
     internal static string[] SoundFiles { get; }
     internal static bool IsMuted { get; set; }
 
-    static Sounds() =>
-        SoundFiles = Directory.GetFiles(
-            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Sounds"), "*.wav");
+    static Sounds()
+    {
+        string soundsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Sounds");
+        SoundFiles = Directory.Exists(soundsPath)
+            ? Directory.GetFiles(soundsPath, "*.wav")
+            : [];
+    }
 
     internal static void LoadToMemory()
     {

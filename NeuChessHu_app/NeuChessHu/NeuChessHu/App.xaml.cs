@@ -39,11 +39,14 @@ public partial class App : Application
 
     protected override async void OnExit(ExitEventArgs e)
     {
-        if (AppHost?.Services.GetRequiredService<SessionDatas>()?.Token is not null)
-            await AppHost.Services.GetRequiredService<SessionManager>().LogoutAsync();
+        if (AppHost is not null)
+        {
+            if (AppHost.Services.GetRequiredService<SessionDatas>()?.Token is not null)
+                await AppHost.Services.GetRequiredService<SessionManager>().LogoutAsync();
 
-        await AppHost!.StopAsync();
-        AppHost.Dispose();
+            await AppHost.StopAsync();
+            AppHost.Dispose();
+        }
 
         SingleInstanceManager.Dispose();
 
