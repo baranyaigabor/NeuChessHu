@@ -2,7 +2,4 @@
   <Project Path="ChessMechanics.Test/ChessMechanics.Test.csproj" Id="a73021b4-872c-4e84-ab37-94a111615259" />
   <Project Path="ChessMechanics/ChessMechanics.csproj" />
   <Project Path="NeuChessHu/NeuChessHu.csproj" />
-  <Project Path="NeuChessHuInstaller/NeuChessHuInstaller.vdproj" Type="Installer">
-    <Build />
-  </Project>
 </Solution>
