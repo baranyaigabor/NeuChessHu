@@ -20,8 +20,8 @@ Important sections:
 
 ## User Documentation
 
-- [USER_DOCUMENTATION.md](./docs/content/en/user-guide.md.md)
-- [USER_DOCUMENTATION_HU.md](./docs/content/hu/user-guide.md)
+- [USER_DOCUMENTATION.md](./NeuChessHu_web/docs/content/en/user-guide.md.md)
+- [USER_DOCUMENTATION_HU.md](./NeuChessHu_web/docs/content/hu/user-guide.md)
 
 ## Quick Start for the Web Project
 
