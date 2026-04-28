@@ -15,15 +15,15 @@ class MatchPoints implements JsonSerializable
     public ?string $WinnerID = null;
     public ?string $WinnerTime = null;
 
+    public function getMatchPointsReason() : ?string
+    {
+        return $this->matchPointsReason;
+    }
+
     public function setMatchPointsReason(string $reason, bool $isForcedDraw) : void
     {
         $this->ForcedDraw = $isForcedDraw;
         $this->matchPointsReason = $reason;
-    }
-
-    public function getMatchPointsReason() : ?string
-    {
-        return $this->matchPointsReason;
     }
 
     public function shouldEndMatch() : bool
@@ -34,7 +34,8 @@ class MatchPoints implements JsonSerializable
 
         return $this->ForcedDraw
             || $this->matchPointsReason === 'Checkmate'
-            || $this->matchPointsReason === 'Timeout';
+            || $this->matchPointsReason === 'Timeout'
+            || $this->matchPointsReason === 'Mutual Agreement';
     }
 
     public function markMatchEnded() 

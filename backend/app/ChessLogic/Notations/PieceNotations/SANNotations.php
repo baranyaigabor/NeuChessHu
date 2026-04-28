@@ -108,15 +108,16 @@ class SANNotations
         return $specified;
     }
 
-    private static function columnDefiner(int $col): string
+    private static function columnDefiner(int $col) : string
     {
         $letters = ['a','b','c','d','e','f','g','h'];
 
         return $letters[$col];
     }
 
-    private static function rowDefiner(int $row): string
+    private static function rowDefiner(int $row) : string
     {
-        return (string)($row + 1);
+        //return (string)($row + 1);
+        return (string)(8 - $row);
     }
 }
