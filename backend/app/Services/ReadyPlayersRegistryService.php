@@ -17,11 +17,21 @@ class ReadyPlayersRegistryService
         $cacheKey = "ready_players:{$channel}";
         $shouldStart = false;
         $matchData = MatchService::getMatchFromCache($channel);
+
+        if (!$matchData) {
+            return;
+        }
+
+        if (!empty($matchData['match_started'])) {
+            MatchService::startMatch($channel);
+            return;
+        }
+
         $stockfishPlayerId = $matchData['stockfish']['player_id'] ?? null;
 
         try 
         {
-            Cache::lock("match_lock:{$channel}", 10)->block(5, function () 
+            Cache::lock("match_lock:{$channel}", 5)->block(1, function () 
                 use ($cacheKey, $channel, $playerId, $stockfishPlayerId, &$shouldStart)
             {
                 $players = Cache::get($cacheKey, []);

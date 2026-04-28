@@ -9,7 +9,24 @@ class PendingChannelController extends Controller
 {
     public function showPendingChannel(Request $request)
     {
-        $cacheKey = "pending_channel:{$request->user('sanctum')->id}";
-        return response()->json(['channel' => Cache::get($cacheKey)]);
+        $userID = $request->user('sanctum')->id;
+        $pendingCacheKey = "pending_channel:{$userID}";
+        $activeCacheKey = "active_channel:{$userID}";
+
+        $channel = Cache::get($pendingCacheKey) ?? Cache::get($activeCacheKey);
+
+        if (!$channel) {
+            return response()->json(['channel' => null]);
+        }
+
+        $gameKey = 'game:' . str_replace('private-', '', $channel);
+
+        if (!Cache::has($gameKey)) {
+            Cache::forget($pendingCacheKey);
+            Cache::forget($activeCacheKey);
+            return response()->json(['channel' => null]);
+        }
+
+        return response()->json(['channel' => $channel]);
     }
 }

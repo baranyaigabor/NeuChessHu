@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Cache;
 
 class MatchService 
 {
+    private const PENDING_CHANNEL_TTL_SECONDS = 30;
+    private const ACTIVE_CHANNEL_TTL_MINUTES = 30;
+
     public function tryStartMatch(string $match_duration) : ?string
     {
         $matchedPlayers = app(QueueController::class)->matchPlayersFromDB($match_duration);
@@ -59,6 +62,11 @@ class MatchService
 
         Cache::forget("pending_channel:{$data['white_id']}");
         Cache::forget("pending_channel:{$data['black_id']}");
+
+        $data['match_started'] = true;
+        Cache::put("game:{$cacheKey}", $data, now()->addMinutes(self::ACTIVE_CHANNEL_TTL_MINUTES));
+        Cache::put("active_channel:{$data['white_id']}", "private-{$cacheKey}", now()->addMinutes(self::ACTIVE_CHANNEL_TTL_MINUTES));
+        Cache::put("active_channel:{$data['black_id']}", "private-{$cacheKey}", now()->addMinutes(self::ACTIVE_CHANNEL_TTL_MINUTES));
     
         broadcast(new MatchStarted($cacheKey, [
             'WhiteID' => $data['white_id'],
@@ -111,11 +119,25 @@ class MatchService
     {
         $cacheKey = 'game:' . str_replace('private-', '', $channel);
         Cache::put($cacheKey, $data, now()->addMinutes(30));
+
+        if (!empty($data['match_started'])) {
+            Cache::put("active_channel:{$data['white_id']}", "private-" . str_replace('private-', '', $channel), now()->addMinutes(30));
+            Cache::put("active_channel:{$data['black_id']}", "private-" . str_replace('private-', '', $channel), now()->addMinutes(30));
+        }
     }
 
     public static function removeMatchFromCache(string $channel) : bool
     {
         $cacheKey = 'game:' . str_replace('private-', '', $channel);
+        $data = Cache::get($cacheKey);
+
+        if ($data) {
+            Cache::forget("active_channel:{$data['white_id']}");
+            Cache::forget("active_channel:{$data['black_id']}");
+            Cache::forget("pending_channel:{$data['white_id']}");
+            Cache::forget("pending_channel:{$data['black_id']}");
+        }
+
         return Cache::forget($cacheKey);
     }
 
@@ -186,7 +208,12 @@ class MatchService
 
         foreach ($players as $player) 
         {
-            Cache::put("pending_channel:{$player}", "private-{$channel}", now()->addMinutes(5));
+            Cache::put(
+                "pending_channel:{$player}",
+                "private-{$channel}",
+                now()->addSeconds(self::PENDING_CHANNEL_TTL_SECONDS)
+            );
+            
             broadcast(new ChannelAssignment($channel, $player));
         }
     }
