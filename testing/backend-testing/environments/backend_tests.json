@@ -1,7 +1,0 @@
-﻿{
-  "name": "backend_tests",
-  "type": "environment",
-  "variables": {
-    "backend_uri": "http://backend.vm2.test/"
-  }
-}
