@@ -346,27 +346,27 @@ function confirmDelete()
             </div>
 
             <div :class="['flex min-h-[2.6rem] w-full items-center! justify-center!', isEditing && isOwner ? 'mt-3' : 'mt-[0.61rem]']">                <NicknameEdit v-if="isEditing && isOwner" class="nickname-input pt-1" :value="editData.nickname" @nicknameChange="editData.nickname = $event"/>
-                <p v-else-if="user.nickname" class="nickname-display no-ellipsis-scroll pt-1 text-center text-xl text-(--TextBrush)">@{{ user.nickname }}</p>
+                <p v-else-if="user.nickname" class="profile-value nickname-display no-ellipsis-scroll pt-1 text-center text-xl">@{{ user.nickname }}</p>
             </div>
         </div>
 
-        <div class="info-card-col-main flex w-full min-w-0 flex-col items-center justify-center! space-y-4 border-t border-(--BorderChangingBrush) pt-4 mt-3 md:border-t-0 lg:border-l lg:pl-6! lg:pt-0">
+        <div class="info-card-col-main flex w-full min-w-0 flex-col items-center justify-center! space-y-4 border-t border-(--RuleBrush)! pt-4 mt-3 md:border-t-0 lg:border-l lg:pl-6! lg:pt-0" style="border-color: var(--RuleBrush) !important;">
             <div class="info-row">
                 <h6 class="info-label">{{ t('common.region') }}:</h6>
                 <RegionEdit v-if="isEditing && isOwner" class="info-input" :value="editData.region" @regionChange="editData.region = $event" />
-                <span v-else class="no-ellipsis-scroll font-medium text-[var(--TextBrush)]">{{ displayedRegion }}</span>
+                <span v-else class="profile-value no-ellipsis-scroll font-medium">{{ displayedRegion }}</span>
             </div>
 
             <div class="info-row">
                 <h6 class="info-label">{{ t('common.dateOfBirth') }}:</h6>
                 <DataOfBirthEdit v-if="isEditing && isOwner" class="info-input info-input-date" v-model="editData.date_of_birth" />
-                <span v-else class="value-date text-[var(--TextBrush)]">
+                <span v-else class="profile-value value-date">
                     {{ user.date_of_birth && user.date_of_birth !== 'Unknown' ? user.date_of_birth : t('common.unknown') }}
                 </span>
             </div>
         </div>
 
-        <div class="info-card-col-main flex w-full min-w-0 flex-col items-center justify-center! space-y-4 border-t border-[var(--BorderChangingBrush)] pt-4 mt-3 md:border-t-0 lg:border-l lg:pl-6! lg:pt-0">
+        <div class="info-card-col-main flex w-full min-w-0 flex-col items-center justify-center! space-y-4 border-t border-(--RuleBrush)! pt-4 mt-3 md:border-t-0 lg:border-l lg:pl-6! lg:pt-0" style="border-color: var(--RuleBrush) !important;">
             <div v-if="isEditing && isOwner" class="w-full space-y-4">
                 <div class="info-row">
                     <h6 class="info-label">{{ t('common.firstName') }}:</h6>
@@ -381,7 +381,7 @@ function confirmDelete()
             <div v-else class="w-full space-y-4">
                 <div class="info-row">
                     <h6 class="info-label">{{ t('profile.registeredAt') }}:</h6>
-                    <span class="no-ellipsis-scroll font-medium text-[var(--TextBrush)]">{{ formattedCreatedAt }}</span>
+                    <span class="profile-value no-ellipsis-scroll font-medium">{{ formattedCreatedAt }}</span>
                 </div>
                 <div class="info-row">
                     <h6 class="info-label">{{ t('profile.status') }}:</h6>
@@ -398,6 +398,10 @@ function confirmDelete()
 </template>
 
 <style lang="css">
+.profile-value {
+    color: var(--ProfileValueBrush) !important;
+}
+
 .no-ellipsis-scroll {
     min-width: 0;
     max-width: 100%;
@@ -478,7 +482,7 @@ function confirmDelete()
 }
 
 .info-card-col-main {
-    border-color: var(--BorderChangingBrush) !important; 
+    border-color: var(--RuleBrush) !important; 
 }
 
 @media (min-width: 768px) {
