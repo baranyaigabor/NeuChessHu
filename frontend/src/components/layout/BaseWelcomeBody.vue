@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import { useI18n } from '@utils/i18n'
 import webExampleLight from '@/assets/examples/web_example_light.png'
@@ -9,23 +9,36 @@ import appExampleDark from '@/assets/examples/app_example_dark.png'
 
 const { t } = useI18n()
 const activeExampleIndex = ref(0)
+let carouselTimer = null
 
 const exampleSlides = [
     {
         src: webExampleLight,
         alt: 'Web light example',
+        frameClass: 'w-full',
+        viewportClass: 'aspect-[1913/990]',
+        imageClass: 'h-full w-full object-contain object-center',
     },
     {
         src: webExampleDark,
         alt: 'Web dark example',
+        frameClass: 'w-full',
+        viewportClass: 'aspect-[1913/990]',
+        imageClass: 'h-full w-full scale-[1.01] object-contain object-center',
     },
     {
         src: appExampleLight,
         alt: 'App light example',
+        frameClass: 'mx-auto w-[86%]',
+        viewportClass: 'aspect-[3024/1754]',
+        imageClass: 'h-full w-full object-contain object-center',
     },
     {
         src: appExampleDark,
         alt: 'App dark example',
+        frameClass: 'mx-auto w-[86%]',
+        viewportClass: 'aspect-[3024/1754]',
+        imageClass: 'h-full w-full object-contain object-center',
     },
 ]
 
@@ -45,28 +58,54 @@ function showExample(index)
 {
     activeExampleIndex.value = index
 }
+
+onMounted(() =>
+{
+    carouselTimer = window.setInterval(showNextExample, 5000)
+})
+
+onUnmounted(() =>
+{
+    window.clearInterval(carouselTimer)
+})
 </script>
 
 <template>
-    <div class="mx-auto flex w-full max-w-6xl flex-col items-center gap-8 px-3 pb-6 sm:px-4 md:flex-row md:items-start md:gap-10">
-        <div class="flex w-full items-center justify-center md:w-1/2">
-            <div class="w-full max-w-[420px]">
-                <svg class="h-auto w-full stroke-current text-[var(--LogoBrush)]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
-                    <path d="m 1.8534906,72.640871 c -1.26609402,-3.22906 0.565983,-7.54283 4.364462,-10.27646 l 0.759319,-0.54646 -0.329287,-1.95223 c -1.289655,-7.64594 3.0401414,-15.27495 13.4352734,-23.67265 3.55865,-2.87485 3.52532,-2.67357 0.48043,-2.90186 -3.02125,-0.22651 -3.855489,0.07 -6.638386,2.35946 -5.0015344,4.11472 -9.3115534,3.06189 -12.7319754,-3.11009 -2.373937,-4.28366 -1.97056301,-4.98495 9.6892674,-16.84556 11.103804,-11.2949904 9.988874,-9.8242804 9.252154,-12.2046704 -0.71658,-2.31532 -0.51107,-3.02691003 0.9535,-3.30167003 2.61053,-0.48973999 6.19372,0.59127 8.41003,2.53722003 0.70365,0.61781 1.45867,0.91724 3.31091,1.31307 6.43696,1.37558 12.46512,6.4550404 15.528,13.0842504 3.79892,8.22226 3.27122,15.69396 -2.00088,28.33027 -3.55994,8.53259 -3.67769,9.98345 -1.0855,13.3758 1.03916,1.35994 1.09738,1.53003 1.03648,3.02837 -0.0505,1.24195 0.0541,1.76027 0.48025,2.38125 2.08044,3.03125 1.97517,2.69874 1.89336,5.98037 l -0.0752,3.01546 -23.22318,0.0676 -23.2231924,0.0676 z m 42.1006574,-4.03889 c -0.15652,-0.29245 -0.63696,-1.05386 -1.06765,-1.69202 -0.43069,-0.63816 -0.78307,-1.29186 -0.78307,-1.45265 0,-1.33694 0.0503,-1.33262 -15.68904,-1.34622 l -14.647829,-0.0127 -2.4925034,2.0206 c -2.427354,1.96778 -2.876964,2.40662 -2.885328,2.81623 -0.0022,0.10914 8.5131074,0.19844 18.9229704,0.19844 18.87536,0 18.92624,-0.001 18.64245,-0.53172 z m -4.59548,-9.33641 c 0.029,-0.0296 -0.23803,-0.88718 -0.59331,-1.90583 -1.05544,-3.02609 -0.62167,-5.65301 1.97296,-11.94844 0.72928,-1.76945 2.0677,-5.28179 2.97428,-7.80521 l 1.64833,-4.58802 0.12428,-4.11019 c 0.33483,-11.07252 -6.04987,-19.6352401 -15.86439,-21.2762404 -0.55614,-0.093 -1.34988,-0.51487 -1.85208,-0.98442 -2.31758,-2.16685 -3.29729,-2.58851 -3.04139,-1.30901 0.35382,1.76907 -0.14358,2.47439 -5.77563,8.1900404 -9.366391,9.50543 -13.3937864,13.65293 -13.7799254,14.19088 -0.799256,1.11348 -0.208977,3.84373 0.831012,3.84373 0.21003,0 0.381872,0.16014 0.381872,0.35587 0,1.69676 2.67681,1.85074 4.5575094,0.26218 4.582911,-3.87104 4.278565,-3.78404 12.243532,-3.49997 5.02583,0.17924 8.59896,-2.58942 8.59896,-6.66296 0,-0.9997 1.36187,-1.58401 2.39864,-1.02914 1.17661,0.6297 0.50388,5.21251 -1.23433,8.40857 -1.89292,3.48052 -3.03932,4.67493 -9.49869,9.89647 -7.025789,5.67942 -9.576891,8.74305 -11.166723,13.41015 -0.75458,2.21515 -1.018824,6.22072 -0.434282,6.58313 0.256377,0.15895 27.353315,0.13768 27.509375,-0.0216 z" fill="currentColor" transform="translate(250,5)"/>
-                </svg>
+    <div class="mx-auto flex w-full max-w-7xl -my-5 flex-col gap-8 px-3 pb-10 sm:px-4 lg:min-h-[calc(100vh-14rem)] lg:flex-row lg:items-center lg:gap-10 lg:pb-0">
+        <div class="w-full lg:w-[68%]">
+         <div class="relative aspect-[1913/990] w-full">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="relative overflow-hidden rounded border border-(--BorderBrush)! bg-(--SideBarBrush) shadow" :class="activeExample.frameClass">
+                        <div class="flex w-full items-center justify-center bg-(--WindowBrush)" :class="activeExample.viewportClass">
+                            <img :src="activeExample.src" :alt="activeExample.alt" :class="activeExample.imageClass" />
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded border border-(--BorderBrush)! bg-(--ButtonBrush)! text-(--TextBrush)! shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] transition hover:bg-(--ButtonHoverBrush)!" :aria-label="activeExample.alt" @click="showPreviousExample">
+                    <ChevronLeft class="h-5 w-5" />
+                </button>
+
+                <button type="button" class="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded border border-(--BorderBrush)! bg-(--ButtonBrush)! text-(--TextBrush)! shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] transition hover:bg-(--ButtonHoverBrush)!" :aria-label="activeExample.alt" @click="showNextExample">
+                    <ChevronRight class="h-5 w-5" />
+                </button>
+            </div>
+
+            <div class="mt-3 flex items-center justify-center gap-2">
+                <button v-for="(slide, index) in exampleSlides" :key="slide.alt" type="button" class="block h-3 appearance-none hover:shadow-[inset_0_0_0_1px_var(--BorderBrush)]! overflow-hidden rounded-[999px]! border border-(--BorderBrush)! p-0 leading-none transition" :class="activeExampleIndex === index ? 'w-8 bg-(--CarouselStepper)!' : 'w-3 bg-(--ButtonBrush)! hover:bg-(--ButtonHoverBrush)!'" :aria-label="slide.alt" @click="showExample(index)"></button>
             </div>
         </div>
 
-        <div class="flex w-full flex-col md:w-1/2">
-            <div class="flex justify-center md:justify-start">
+        <div class="flex w-full flex-col lg:w-[32%] lg:self-center">
+            <div class="flex justify-center lg:justify-start">
                 <h1>{{ t('welcome.title') }}</h1>
             </div>
 
-            <h2>{{ t('welcome.subtitle') }}</h2>
-            <h3>{{ t('welcome.community') }}</h3>
-            <h4>{{ t('welcome.fun') }}</h4>
+            <h2 class="text-center lg:text-left!">{{ t('welcome.subtitle') }}</h2>
+            <h3 class="text-center lg:text-left!">{{ t('welcome.community') }}</h3>
+            <h4 class="text-center lg:text-left!">{{ t('welcome.fun') }}</h4>
 
-            <div class="mt-6 flex w-full justify-center md:justify-start">
+            <div class="mt-6 flex w-full justify-center lg:justify-start">
                 <RouterLink
                     class="flex items-center w-fit rounded bg-[var(--ButtonBrush)] p-3.5 text-[var(--TextBrush)] border !border-[var(--BorderBrush)] !no-underline"
                     :to="{ name: 'signin' }">
@@ -77,25 +116,6 @@ function showExample(index)
                     <span class="ml-2 text-(--TextBrush) text-sm font-medium">{{ t('welcome.getStarted') }}</span>
                 </RouterLink>
             </div>
-        </div>
-    </div>
-    <div class="mx-auto w-full max-w-6xl px-3 pb-10 sm:px-4">
-        <div class="relative overflow-hidden rounded border border-(--BorderBrush)! bg-(--SideBarBrush) shadow">
-            <div class="aspect-[1913/990] w-full bg-(--WindowBrush)">
-                <img :src="activeExample.src" :alt="activeExample.alt" class="h-full w-full object-contain object-center" />
-            </div>
-
-            <button type="button" class="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded border border-(--BorderBrush)! bg-(--ButtonBrush)! text-(--TextBrush)! shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] transition hover:bg-(--ButtonHoverBrush)!" :aria-label="activeExample.alt" @click="showPreviousExample">
-                <ChevronLeft class="h-5 w-5" />
-            </button>
-
-            <button type="button" class="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded border border-(--BorderBrush)! bg-(--ButtonBrush)! text-(--TextBrush)! shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] transition hover:bg-(--ButtonHoverBrush)!" :aria-label="activeExample.alt" @click="showNextExample">
-                <ChevronRight class="h-5 w-5" />
-            </button>
-        </div>
-
-        <div class="mt-3 flex items-center justify-center gap-2">
-            <button v-for="(slide, index) in exampleSlides" :key="slide.alt" type="button" class="h-2.5 rounded-full border border-(--BorderBrush)! transition" :class="activeExampleIndex === index ? 'w-8 bg-(--ActionBlueBrush)!' : 'w-2.5 bg-(--ButtonBrush)! hover:bg-(--ButtonHoverBrush)!'" :aria-label="slide.alt" @click="showExample(index)"></button>
         </div>
     </div>
 </template>

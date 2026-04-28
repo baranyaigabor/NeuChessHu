@@ -127,6 +127,7 @@
   --CalendarSelectedBrush: #a38165;
   --CalendarTodayBrush: #000000;
   --CalendarHoverBrush: #FFECC8;
+  --CarouselStepper: #F0D0A0;
   --FieldTextBrush: #000000;
   --LogoBrush: #000000;
   --ChartBorderColor: #1a1a1a;
@@ -223,6 +224,7 @@
   --CalendarSelectedBrush: #7c7269;
   --CalendarTodayBrush: #000000;
   --CalendarHoverBrush: #4C4A4A;
+  --CarouselStepper: #3c3636;
   --FieldTextBrush: #FFFFFF;
   --LogoBrush: #FFFFFF;
   --ChartBorderColor: #e5e5e5;
