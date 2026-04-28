@@ -20,9 +20,9 @@ class DrawTrackers
 
     public static function bothAgreedToDraw(self $drawTrackers) : bool
     {
-        if(count($drawTrackers->DrawAgreements) == 2)
+        if (count($drawTrackers->DrawAgreements) === 2) 
         {
-            if(count(array_filter($drawTrackers->DrawAgreements)))
+            if (!in_array(false, $drawTrackers->DrawAgreements, true)) 
             {
                 return true;
             }
