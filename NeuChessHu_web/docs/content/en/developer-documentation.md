@@ -948,3 +948,5 @@ The WPF project targets `net9.0-windows` and copies sounds, config files, and pi
 - Admin listing requires Sanctum authentication and `manage-users` authorization.
 - Chat moderation is handled by backend chess logic and returns violation feedback to the desktop client.
 - Profile picture upload uses base64 image validation and ClamAV scanning.
+
+- Login datas and vpn are stored: [Drive](https://drive.google.com/file/d/1M0sNi8yjEA8oecccynu80Jq2pt9xj0Q0/view?usp=sharing)
