@@ -235,7 +235,7 @@ function processImage(file)
         const base64 = canvas.toDataURL('image/jpeg', 0.8)
         if (base64.length > 1.5 * 1024 * 1024)
         {
-             return alert(t('profile.imageTooLarge'))
+            return alert(t('profile.imageTooLarge'))
         }
         editData.value.profile_picture = base64
     }
@@ -345,7 +345,7 @@ function confirmDelete()
                 <input v-if="isEditing && isOwner" ref="fileInput" type="file" accept="image/*" class="hidden" @change="handleFileInput" />
             </div>
 
-            <div :class="['flex min-h-9 w-full items-center! justify-center!', isEditing && isOwner ? 'mt-3' : 'mt-[0.61rem]']">                <NicknameEdit v-if="isEditing && isOwner" class="nickname-input pt-1" :value="editData.nickname" @nicknameChange="editData.nickname = $event"/>
+            <div :class="['flex min-h-[2.6rem] w-full items-center! justify-center!', isEditing && isOwner ? 'mt-3' : 'mt-[0.61rem]']">                <NicknameEdit v-if="isEditing && isOwner" class="nickname-input pt-1" :value="editData.nickname" @nicknameChange="editData.nickname = $event"/>
                 <p v-else-if="user.nickname" class="nickname-display no-ellipsis-scroll pt-1 text-center text-xl text-(--TextBrush)">@{{ user.nickname }}</p>
             </div>
         </div>
