@@ -62,6 +62,15 @@ async function handleLogout() {
     router.push({ name: 'signin' })
 }
 
+async function handleLogoClick() {
+    if (isAuthenticated.value) {
+        await userStore.logout()
+    }
+
+    isMobileMenuOpen.value = false
+    router.push({ name: 'welcome' })
+}
+
 </script>
 
 <template>
@@ -74,8 +83,10 @@ async function handleLogout() {
                     <LanguageButton />
                 </div>
 
-                <div class="pointer-events-none absolute left-1/2 top-1/2 flex min-w-0 -translate-x-1/2 -translate-y-1/2 justify-center">
-                    <NavbarLogo />
+                <div class="absolute left-1/2 top-1/2 flex min-w-0 -translate-x-1/2 -translate-y-1/2 justify-center">
+                    <button type="button" class="appearance-none border-0 bg-transparent p-0 text-(--LogoBrush) transition hover:opacity-80" aria-label="NeuChess.hu" @click="handleLogoClick">
+                        <NavbarLogo />
+                    </button>
                 </div>
 
                 <div class="relative z-10 hidden shrink-0 items-center justify-end gap-2 md:flex xl:gap-3">
