@@ -15,7 +15,7 @@ const props = defineProps({
 <template>
         <div class="container-fluid d-flex justify-content-center">
                 <a @click.prevent="!props.disabled && emit('submit')" id="login_BTN" :aria-disabled="props.disabled"
-                        :class="['btn bg-(--ButtonBrush)! hover:bg-(--ButtonHoverBrush)! text-(--TextBrush)! border border-(--BorderBrush)!', props.disabled ? 'disabled opacity-50 cursor-not-allowed' : '']">
+                        :class="['btn border border-(--BorderBrush)! bg-(--ButtonBrush)! text-(--TextBrush)! shadow-[inset_0_0_0_0_var(--BorderBrush)] transition hover:shadow-[inset_0_0_0_1px_var(--BorderBrush)]', props.disabled ? 'disabled opacity-50 cursor-not-allowed' : '']">
                      {{ t('auth.signIn') }}
                 </a>
         </div>
