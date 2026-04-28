@@ -1,0 +1,16 @@
+meta {
+  name: GET Users -> show( PostTeszt )
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BackendVM2}}api/users/PostTeszt
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
