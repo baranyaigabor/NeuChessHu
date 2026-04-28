@@ -1,37 +1,53 @@
 <script setup>
-import { PersonalInfos, MatchInfos, PersonalStat, ChessStat } from "@components/ui/public-infos";
-import { useUserStore } from "@stores/UserStore";
-import { useRouter, useRoute } from "vue-router";
-import { computed, ref, watch } from "vue";
+import { PersonalInfos, MatchInfos, PersonalStat, ChessStat } from "@components/ui/public-infos"
+import { useUserStore } from "@stores/UserStore"
+import { useRouter, useRoute } from "vue-router"
+import { computed, ref, watch } from "vue"
 import { useI18n } from '@utils/i18n'
 
-const userStore = useUserStore();
-const router = useRouter();
-const route = useRoute();
+const userStore = useUserStore()
+const router = useRouter()
+const route = useRoute()
 const { t } = useI18n()
 
-const profileUser = ref(null);
-const authenticatedUser = computed(() => userStore.user?.data ?? userStore.user ?? null);
-const authenticatedUserId = computed(() => userStore.userId ?? authenticatedUser.value?.id ?? null);
-const authenticatedUserRole = computed(() => authenticatedUser.value?.role ?? null);
-const authenticatedUserNickname = computed(() => authenticatedUser.value?.nickname ?? null);
+const profileUser = ref(null)
+const authenticatedUser = computed(() => userStore.user?.data ?? userStore.user ?? null)
+const authenticatedUserId = computed(() => userStore.userId ?? authenticatedUser.value?.id ?? null)
+const authenticatedUserRole = computed(() => authenticatedUser.value?.role ?? null)
+const authenticatedUserNickname = computed(() => authenticatedUser.value?.nickname ?? null)
+const profileUserId = computed(() => 
+{
+    const user = profileUser.value
+
+    if (!user)
+    {
+        return null
+    }
+
+    return user.id
+        ?? user.user_id
+        ?? user.users_id
+        ?? user.white_matches?.[0]?.white_id
+        ?? user.black_matches?.[0]?.black_id
+        ?? (authenticatedUserNickname.value === user.nickname ? authenticatedUserId.value : null)
+})
 
 async function loadProfile() 
 {
     try 
     {
-        profileUser.value = null;
-        profileUser.value = await userStore.fetchUser(route.params.nickname);
-        document.title = profileUser.value?.nickname || 'NeuChess';
+        profileUser.value = null
+        profileUser.value = await userStore.fetchUser(route.params.nickname)
+        document.title = profileUser.value?.nickname || 'NeuChess'
     } 
 
     catch (e) 
     {
-        console.error(t('profile.loadFailed'), e);
+        console.error(t('profile.loadFailed'), e)
     }
 }
 
-watch(() => route.params.nickname, loadProfile, { immediate: true });
+watch(() => route.params.nickname, loadProfile, { immediate: true })
 
 const isOwner = computed(() => 
 {
@@ -40,21 +56,21 @@ const isOwner = computed(() =>
         return false
     }
 
-    if (authenticatedUserId.value !== null && profileUser.value.id !== undefined)
+    if (authenticatedUserId.value !== null && profileUserId.value !== null)
     {
-        return String(authenticatedUserId.value) === String(profileUser.value.id)
+        return String(authenticatedUserId.value) === String(profileUserId.value)
     }
 
     return !!authenticatedUserNickname.value && authenticatedUserNickname.value === profileUser.value.nickname
-});
+})
 
 async function handleSave(updatedUser) 
 {
     try
     {
-        await userStore.updateUser(updatedUser);
-        profileUser.value = await userStore.fetchUser(route.params.nickname);
-        router.push({ name: "user", params: { nickname: authenticatedUser.value.nickname } });
+        await userStore.updateUser(updatedUser)
+        profileUser.value = await userStore.fetchUser(route.params.nickname)
+        router.push({ name: "user", params: { nickname: authenticatedUser.value.nickname } })
     }
 
     catch (error)
@@ -73,11 +89,11 @@ async function handleDelete(userId)
 {
     try
     {
-        await userStore.deleteUser(userId ?? profileUser.value?.id);
+        await userStore.deleteUser(userId ?? profileUser.value?.id)
 
         if (authenticatedUserRole.value !== 'admin')
         {
-            router.push({ name: "signin" });
+            router.push({ name: "signin" })
         }
     }
 
@@ -98,21 +114,21 @@ async function handleDelete(userId)
     <div v-if="profileUser" class="mx-auto flex w-full max-w-[1680px] flex-col gap-4 px-3 sm:px-4 md:gap-6 2xl:flex-row 2xl:items-stretch">
         <div class="contents 2xl:flex 2xl:w-[34%]">
             <div class="order-3 bg-(--SideBarBrush) border border-black! w-full p-4 rounded shadow flex items-center justify-center 2xl:order-none 2xl:h-full">
-                <PersonalStat :white-matches="profileUser.white_matches" :black-matches="profileUser.black_matches" :myId="profileUser.id" />
+                <PersonalStat :white-matches="profileUser.white_matches" :black-matches="profileUser.black_matches" :myId="profileUserId" />
             </div>
         </div>
 
         <div class="contents 2xl:flex 2xl:w-[66%] 2xl:flex-col 2xl:gap-4 2xl:self-stretch">
             <div class="order-1 bg-(--SideBarBrush) border border-black! rounded shadow flex flex-col items-center gap-2 2xl:order-none 2xl:shrink-0">
-                <PersonalInfos :user="profileUser" :user-id="authenticatedUserId" :is-owner="isOwner" @save="handleSave" @delete="handleDelete" />
+                <PersonalInfos :user="profileUser" :user-id="profileUserId" :is-owner="isOwner" @save="handleSave" @delete="handleDelete" />
             </div>
 
             <div class="order-2 bg-(--SideBarBrush) border border-black! p-4 rounded shadow flex flex-col gap-2 2xl:order-none 2xl:min-h-0 2xl:flex-1 2xl:justify-center">
-                <MatchInfos :white-matches="profileUser.white_matches" :black-matches="profileUser.black_matches" :my-id="profileUser.id" />
+                <MatchInfos :white-matches="profileUser.white_matches" :black-matches="profileUser.black_matches" :my-id="profileUserId" />
             </div>
 
             <div class="order-4 bg-(--SideBarBrush) border border-black! p-4 rounded shadow flex flex-col gap-2 2xl:order-none 2xl:shrink-0">
-                <ChessStat :white-matches="profileUser.white_matches" :black-matches="profileUser.black_matches" :my-id="profileUser.id" />
+                <ChessStat :white-matches="profileUser.white_matches" :black-matches="profileUser.black_matches" :my-id="profileUserId" />
             </div>
         </div>
     </div>

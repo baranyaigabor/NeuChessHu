@@ -78,12 +78,12 @@ const won = computed(() => {
 
 const lost = computed(() =>
     allMatches.value.filter(x =>
-        x.winner_id !== 'Unknown' && String(x.winner_id) !== String(props.myId)
+        x.winner_id && x.winner_id !== 'Unknown' && String(x.winner_id) !== String(props.myId)
     ).length
 )
 
 const draw = computed(() =>
-    allMatches.value.filter(x => x.winner_id === 'Unknown').length
+    allMatches.value.filter(x => !x.winner_id || x.winner_id === 'Unknown').length
 )
 
 const getChartBorderColor = () => 

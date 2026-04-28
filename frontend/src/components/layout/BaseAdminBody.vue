@@ -104,7 +104,11 @@ function normalizeUserPayload(data)
         payload.date_of_birth = data.date_of_birth === 'Unknown' || data.date_of_birth === '' ? null : data.date_of_birth
     }
 
-    if (isValidImageDataUrl(data.profile_picture)) 
+    if (data.profile_picture === null || data.profile_picture === 'Unknown' || data.profile_picture === '') 
+    {
+        payload.profile_picture = null
+    }
+    else if (isValidImageDataUrl(data.profile_picture)) 
     {
         payload.profile_picture = data.profile_picture
     }

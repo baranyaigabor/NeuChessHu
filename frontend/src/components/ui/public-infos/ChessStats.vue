@@ -5,7 +5,7 @@ import { useI18n } from '@utils/i18n'
 const props = defineProps({
     whiteMatches: { type: Array, default: () => [] },
     blackMatches: { type: Array, default: () => [] },
-    myId: { type: Number, required: true },
+    myId: { type: [Number, String], required: true },
 })
 
 const { t } = useI18n()
@@ -73,7 +73,7 @@ const favouriteFirstMove = computed(() =>
                 return null
             }
 
-            const isWhite = x.white_id === props.myId
+            const isWhite = String(x.white_id) === String(props.myId)
 
             return isWhite ? moves[0]?.white : moves[0]?.black
         } 
@@ -90,7 +90,7 @@ const favouriteFirstMove = computed(() =>
 const avgWinningTime = computed(() => 
 {
     const winTimes = allMatches.value
-        .filter((x) => Number(x.winner_id) === props.myId && x.winner_time)
+        .filter((x) => String(x.winner_id) === String(props.myId) && x.winner_time)
         .map((x) => timeToSeconds(x.winner_time))
         .filter((x) => x !== null)
 

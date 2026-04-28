@@ -1,8 +1,10 @@
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { api } from '@utils/http.mjs'
 import { useI18n } from '@utils/i18n'
 import { X } from 'lucide-vue-next'
+import defaultProfilePicDark from '@/assets/profile_pictures/ProfilePic_dark.png'
+import defaultProfilePicLight from '@/assets/profile_pictures/ProfilePic_light.png'
 
 const props = defineProps({
     whiteMatches: {
@@ -21,7 +23,15 @@ const props = defineProps({
 
 const nicknameCache = ref({})
 const avatarCache = ref({})
+const isDarkTheme = ref(document.documentElement.classList.contains('dark'))
 const { t, locale } = useI18n()
+let themeObserver = null
+
+const defaultProfilePicture = computed(() =>
+    isDarkTheme.value
+        ? defaultProfilePicDark
+        : defaultProfilePicLight
+)
 
 const allMatches = computed(() => 
 {
@@ -32,6 +42,17 @@ const allMatches = computed(() =>
 
 onMounted(async () => 
 {
+    themeObserver = new MutationObserver(() => 
+    {
+        isDarkTheme.value = document.documentElement.classList.contains('dark')
+    })
+
+    themeObserver.observe(document.documentElement, 
+    {
+        attributes: true,
+        attributeFilter: ['class'],
+    })
+
     const opponentIds = [...new Set(allMatches.value.map(x => getOpponentId(x)))]
     
     await Promise.all(
@@ -48,10 +69,7 @@ onMounted(async () =>
                 nicknameCache.value[id] = response.data?.data?.nickname ?? `#${id}`
                 
                 const pic = response.data?.data?.profile_picture
-                avatarCache.value[id] = pic === 'Unknown' 
-                    ? null 
-                    : pic 
-                    ?? null
+                avatarCache.value[id] = normalizeProfilePicture(pic)
             } 
 
             catch 
@@ -63,10 +81,36 @@ onMounted(async () =>
     )
 })
 
+onUnmounted(() => 
+{
+    themeObserver?.disconnect()
+})
+
+function normalizeProfilePicture(pic)
+{
+    if (!pic || pic === 'Unknown')
+    {
+        return null
+    }
+
+    if (typeof pic === 'string' && pic.includes('data:image')) 
+    {
+        const match = pic.match(/(data:image\/[^;]+;base64,.+)/)
+        return match ? match[1] : null
+    }
+
+    return pic
+}
+
 function getOpponentAvatar(match) 
 {
     const id = getOpponentId(match)
-    return avatarCache.value[id] ?? null
+    return avatarCache.value[id] ?? defaultProfilePicture.value
+}
+
+function isDefaultOpponentAvatar(match)
+{
+    return getOpponentAvatar(match) === defaultProfilePicture.value
 }
 
 function getOpponentId(match) 
@@ -187,10 +231,7 @@ function handleMatchClick(match)
                         '!border-3 !border-[var(--ChartPointLoseBackgroundColor)]': getResult(match) === 'loss',
                         '!border-3 !border-[var(--ChartPointDrawBackgroundColor)]': getResult(match) === 'unknown',
                     }" >
-                    <img v-if="getOpponentAvatar(match)" :src="getOpponentAvatar(match)" :alt="getOpponentName(match)" class="w-full h-full object-cover"/>
-                    <div v-else class="w-full h-full flex items-center justify-center text-xs font-bold" :class="match?.myColor === 'white' ? 'bg-[#F0E6D2] text-[#2C1A0A]' : 'bg-[#2C1A0A] text-[#F0E6D2]'">
-                        {{ match?.myColor === 'white' ? 'W' : 'B' }}
-                    </div>
+                    <img :src="getOpponentAvatar(match)" :alt="getOpponentName(match)" class="w-full h-full" :class="isDefaultOpponentAvatar(match) ? 'scale-[1.5] object-contain' : 'object-cover'"/>
                 </div>
 
                 <div class="match-main flex-1 min-w-[150px]">
