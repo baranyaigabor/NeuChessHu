@@ -1,6 +1,5 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import { useI18n } from '@utils/i18n'
 import webExampleLight from '@/assets/examples/web_example_light.png'
 import webExampleDark from '@/assets/examples/web_example_dark.png'
@@ -44,11 +43,6 @@ const exampleSlides = [
 
 const activeExample = computed(() => exampleSlides[activeExampleIndex.value])
 
-function showPreviousExample()
-{
-    activeExampleIndex.value = (activeExampleIndex.value - 1 + exampleSlides.length) % exampleSlides.length
-}
-
 function showNextExample()
 {
     activeExampleIndex.value = (activeExampleIndex.value + 1) % exampleSlides.length
@@ -81,14 +75,6 @@ onUnmounted(() =>
                         </div>
                     </div>
                 </div>
-
-                <button type="button" class="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded border border-(--BorderBrush)! bg-(--ButtonBrush)! text-(--TextBrush)! shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] transition hover:bg-(--ButtonHoverBrush)!" :aria-label="activeExample.alt" @click="showPreviousExample">
-                    <ChevronLeft class="h-5 w-5" />
-                </button>
-
-                <button type="button" class="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded border border-(--BorderBrush)! bg-(--ButtonBrush)! text-(--TextBrush)! shadow-[inset_0_2px_5px_var(--InsetShadowBrush)] transition hover:bg-(--ButtonHoverBrush)!" :aria-label="activeExample.alt" @click="showNextExample">
-                    <ChevronRight class="h-5 w-5" />
-                </button>
             </div>
 
             <div class="mt-3 flex items-center justify-center gap-2">
