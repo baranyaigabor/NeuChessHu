@@ -82,16 +82,6 @@ public class PusherClientService : IAsyncDisposable
 
             else if (activeMatchChannel is not null)
                 await AuthenticateAndSubscribeAsync(activeMatchChannel);
-
-            else
-            {
-                string? result = await apiHandlers.HttpGetPendingChannelAsync();
-
-                string? missed = JObject.Parse(result)["channel"]?.ToString();
-
-                if (missed is not null)
-                    await SubscribeMatchChannelAsync(missed);
-            }
         },
         ["pusher_internal:subscription_succeeded"] = async x =>
         {
@@ -126,7 +116,8 @@ public class PusherClientService : IAsyncDisposable
         {
             JsonSerializerSettings settings = new()
             {
-                Converters = {
+                Converters = 
+                {
                     new ChessPieceConverter(),
                     new ChessPieceMatrixConverter(),
                     new TupleConverter(),

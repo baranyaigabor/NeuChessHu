@@ -60,7 +60,9 @@ public class MatchController(PusherClientService Pusher, MatchDataStore MatchDat
         Pusher.Bind<object>("match-start-failed", async _ =>
         {
             Pusher.ResetMatchChannel();
-            await OnPlayAgain!.Invoke();
+
+            if (OnPlayAgain is not null)
+                await OnPlayAgain.Invoke();
         });
     }
 }

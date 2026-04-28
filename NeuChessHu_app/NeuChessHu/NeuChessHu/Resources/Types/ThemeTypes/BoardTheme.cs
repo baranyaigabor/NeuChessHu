@@ -6,7 +6,6 @@ public readonly struct BoardTheme(string value) : IEquatable<BoardTheme>
 {
     public string Value { get; } = value ?? throw new ArgumentNullException(nameof(Value));
 
-    public static BoardTheme PastelGreen { get; } = new("Pastel Green");
     public static BoardTheme Modern { get; } = new("Modern");
     public static BoardTheme Wooden { get; } = new("Wooden");
     public static BoardTheme Royal { get; } = new("Royal");

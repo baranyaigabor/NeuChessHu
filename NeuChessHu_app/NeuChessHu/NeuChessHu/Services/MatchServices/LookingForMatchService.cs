@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NeuChessHu.Collections.Contexts;
 using NeuChessHu.Controllers;
 using NeuChessHu.UserSettings;
+using Newtonsoft.Json.Linq;
 using System.Windows;
 
 namespace NeuChessHu.Services.MatchServices;
@@ -48,6 +49,17 @@ public record LookingForMatchService(IServiceProvider Provider, SessionDatas Ses
             await SubscribeMatchChannelAsync(channelAssignmentDTO.Channel));
     }
 
+    async Task HandlePendingMatchChannelAsync(string channel)
+    {
+        lookingForMatchCancellationTokenSource?.Cancel();
+
+        Pusher.Unbind("assign-channel");
+        isLookingForMatch = false;
+
+        await Application.Current.Dispatcher.InvokeAsync(async () =>
+            await SubscribeMatchChannelAsync(channel));
+    }
+
     async Task StartWebsocketsAsync()
     {
         if (onConnectedHandler is not null)
@@ -60,9 +72,27 @@ public record LookingForMatchService(IServiceProvider Provider, SessionDatas Ses
 
         onConnectedHandler = async () =>
         {
-            if (isLookingForMatch)
+            try
+            {
+                if (!isLookingForMatch)
+                    return;
+
+                string? pendingResult = await HttpClients.HttpGetPendingChannelAsync();
+                string? pendingChannel = ExtractPendingChannel(pendingResult);
+
+                if (pendingChannel is not null)
+                {
+                    await HandlePendingMatchChannelAsync(pendingChannel);
+                    return;
+                }
+
                 await HttpClients.HttpJoinMatchmakingQueueAsync(Settings.LastMatchDuration,
                     Settings.LastMatchStockfish ? 12 : null);
+            }
+            catch
+            {
+                isLookingForMatch = false;
+            }
         };
 
         Pusher.OnConnected += onConnectedHandler;
@@ -70,15 +100,36 @@ public record LookingForMatchService(IServiceProvider Provider, SessionDatas Ses
         await ChessEngineClient.InitializeChessEngineClientAsync();
     }
 
+    static string? ExtractPendingChannel(string? pendingResult)
+    {
+        if (string.IsNullOrWhiteSpace(pendingResult))
+            return null;
+
+        JToken? channelToken = JObject.Parse(pendingResult)["channel"];
+
+        if (channelToken is null || channelToken.Type is JTokenType.Null)
+            return null;
+
+        string? channel = channelToken.ToString();
+
+        return string.IsNullOrWhiteSpace(channel) ? null : channel;
+    }
+
     async Task SubscribeMatchChannelAsync(string channel)
     {
-        matchScope!.ServiceProvider.GetRequiredService<MatchDataStore>().MatchChannel = $"private-{channel}";
+        string privateChannel = channel.StartsWith("private-")
+            ? channel
+            : $"private-{channel}";
+
+        matchScope ??= Provider.CreateScope();
+        matchScope!.ServiceProvider.GetRequiredService<MatchContext>();
+        matchScope!.ServiceProvider.GetRequiredService<MatchDataStore>().MatchChannel = privateChannel;
 
         MatchController matchController = matchScope!.ServiceProvider.GetRequiredService<MatchController>();
         matchController.UIContext = SynchronizationContext.Current!;
 
         await matchController.SubscribeMatchChannelsAsync(OnSwitchToMatch);
-        await Pusher.SubscribeMatchChannelAsync($"private-{channel}");
+        await Pusher.SubscribeMatchChannelAsync(privateChannel);
     }
 
     internal CancellationTokenSource CreateLookingForMatchCts()

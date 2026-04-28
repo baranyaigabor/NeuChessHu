@@ -9,10 +9,6 @@ internal static class BoardThemeManager
     static readonly Dictionary<BoardTheme, Action> ThemeActions = new()
     {
         {
-            BoardTheme.PastelGreen,
-            PastelGreenBoard.Set
-        },
-        {
             BoardTheme.Modern,
             ModernBoard.Set
         },

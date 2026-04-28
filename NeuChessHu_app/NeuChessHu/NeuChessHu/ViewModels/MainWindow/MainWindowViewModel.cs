@@ -248,8 +248,6 @@ public class MainWindowViewModel : ObservableBase
 
     async Task StartLookingForMatchAsync()
     {
-        await pusher.InitializePusherClientAsync();
-
         LookingForMatchWindowViewModel lookingForMatchWindow = menu.MenuWindows.LookingForMatchWindow;
 
         MainOverlay = lookingForMatchWindow;

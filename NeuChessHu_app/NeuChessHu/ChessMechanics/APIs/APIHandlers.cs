@@ -63,7 +63,7 @@ public class APIHandlers : IDisposable
         await (await HttpClient.PostAsJsonAsync($"{baseUrl}match/ready",
             new { channel_name = channel })).Content.ReadAsStringAsync();
 
-    internal async Task<string?> HttpGetPendingChannelAsync() =>
+    public async Task<string?> HttpGetPendingChannelAsync() =>
         await HttpClient.GetStringAsync($"{baseUrl}match/pendingchannel");
 
     public void Dispose()

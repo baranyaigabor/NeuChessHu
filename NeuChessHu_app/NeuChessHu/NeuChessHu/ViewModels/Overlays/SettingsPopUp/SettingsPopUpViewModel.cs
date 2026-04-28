@@ -84,7 +84,7 @@ public class SettingsPopUpViewModel : ObservableBase, IDisposable
     void LoadSettingOptions()
     {
         UpdateOrBuild(boardThemeOptions, typeof(BoardTheme), x => (BoardTheme)x.GetValue(null)!,
-            x => x == BoardTheme.PastelGreen ? 0 : 1, x => GetResourceValue(x.Value, "BoardTheme"));
+            x => x == BoardTheme.Wooden ? 0 : 1, x => GetResourceValue(x.Value, "BoardTheme"));
 
         UpdateOrBuild(pieceThemeOptions, typeof(PieceTheme), x => (PieceTheme)x.GetValue(null)!,
             x => x == PieceTheme.Default ? 0 : 1, GetPieceThemeDirectoryName);
