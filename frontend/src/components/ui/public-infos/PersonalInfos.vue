@@ -347,15 +347,19 @@ function confirmDelete()
         </div>
 
         <div class="info-card-col-left flex min-w-0 flex-col items-center! justify-center! md:col-span-2 lg:col-span-1 lg:self-stretch lg:pr-6">
-            <div class="mt-3 flex h-28 w-28 shrink-0 items-center! justify-center! overflow-hidden text-2xl font-semibold"
+            <div class="mt-3 flex h-28 w-28 shrink-0 items-center! justify-center! overflow-visible text-2xl font-semibold"
                 :class="isEditing && isOwner ? 'relative cursor-pointer rounded-full border-2 border-dashed border-gray-400 bg-gray-100 transition' : 'rounded-full'"
                 @dragover.prevent="isEditing && isOwner && (isDragging = true)" @dragleave="isEditing && isOwner && (isDragging = false)"
                 @drop.prevent="isEditing && isOwner && handleDrop($event)" @click="isEditing && isOwner && $refs.fileInput.click()">
                 
-                <img v-if="!isEditing || !isOwner" :src="cleanProfilePicture" :alt="user.nickname || user.full_name" class="h-full w-full rounded-full object-cover object-center" :class="isDefaultProfilePicture ? 'scale-[1.44]' : ''" />
+                <div v-if="!isEditing || !isOwner" class="h-full w-full overflow-hidden rounded-full">
+                    <img :src="cleanProfilePicture" :alt="user.nickname || user.full_name" class="h-full w-full object-cover object-center" :class="isDefaultProfilePicture ? 'scale-[1.44]' : ''" />
+                </div>
                 <template v-else>
-                    <div class="relative h-full w-full rounded-full">
-                        <img v-if="editData.profile_picture && editData.profile_picture !== 'Unknown'" :src="cleanProfilePicture" :alt="user.nickname || user.full_name" class="h-full w-full rounded-full object-cover object-center" :class="isDefaultProfilePicture ? 'scale-[1.5]' : ''" />
+                    <div class="relative h-full w-full overflow-visible rounded-full">
+                        <div v-if="editData.profile_picture && editData.profile_picture !== 'Unknown'" class="h-full w-full overflow-hidden rounded-full">
+                            <img :src="cleanProfilePicture" :alt="user.nickname || user.full_name" class="h-full w-full object-cover object-center" :class="isDefaultProfilePicture ? 'scale-[1.44]' : ''" />
+                        </div>
                         
                         <div v-else class="flex h-full w-full flex-col items-center! justify-center! px-1 text-center text-xs leading-tight text-slate-900">
                             <div class="text-lg">📁</div>
@@ -363,7 +367,7 @@ function confirmDelete()
                             <div class="m-2 text-slate-700">{{ t('profile.max2Mb') }}</div>
                         </div>
 
-                        <button class="absolute right-0 top-0 text-red-600 transition hover:text-red-400" @click.stop="clearProfilePicture" :title="t('common.cancel')">
+                        <button class="absolute -right-1 -top-1.5 z-10 text-red-600 transition hover:text-red-400" @click.stop="clearProfilePicture" :title="t('common.cancel')">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                                 <path d="M18 6 6 18M6 6l12 12"/>
                             </svg>
