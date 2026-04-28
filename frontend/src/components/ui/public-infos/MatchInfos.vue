@@ -254,9 +254,9 @@ function handleMatchClick(match)
 
                 <span v-if="match?.gamemode" class="match-mode text-[11px] font-semibold px-3 py-0.5 rounded-full shrink-0 min-w-[65px] text-center"
                     :class="{
-                        'bg-[#F0D0A0] text-[#7A4A00]': match.gamemode === 'Bullet',
-                        'bg-[#D0E0F0] text-[#1A4A70]': match.gamemode === 'Blitz',
-                        'bg-[#D0EDD0] text-[#1A5A1A]': match.gamemode === 'Rapid',
+                        'bg-(--ModeBulletBrush) text-(--ModeBulletTextBrush) border! border-(--ModeBulletTextBrush)!': match.gamemode === 'Bullet',
+                        'bg-(--ModeBlitzBrush) text-(--ModeBlitzTextBrush) border! border-(--ModeBlitzTextBrush)!': match.gamemode === 'Blitz',
+                        'bg-(--ModeRapidBrush) text-(--ModeRapidTextBrush) border! border-(--ModeRapidTextBrush)!': match.gamemode === 'Rapid',
                     }">
                     {{ match.gamemode }}
                 </span>

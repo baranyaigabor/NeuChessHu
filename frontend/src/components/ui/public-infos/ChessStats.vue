@@ -120,9 +120,9 @@ const stats = computed(() =>
                 </span>
 
                 <span class="text-sm font-bold px-3 my-2 py-0.5 rounded-full text-center" :class="stat.key === 'favouriteType' ? {
-                        '!bg-[#F0D0A0] text-[#7A4A00]': stat.value === 'Bullet',
-                        '!bg-[#D0E0F0] text-[#1A4A70]': stat.value === 'Blitz',
-                        '!bg-[#D0EDD0] text-[#1A5A1A]': stat.value === 'Rapid',
+                        'border! bg-(--ModeBulletBrush)! text-(--ModeBulletTextBrush) border-(--ModeBulletTextBrush)!': stat.value === 'Bullet',
+                        'border! bg-(--ModeBlitzBrush)! text-(--ModeBlitzTextBrush) border-(--ModeBlitzTextBrush)!': stat.value === 'Blitz',
+                        'border! bg-(--ModeRapidBrush)! text-(--ModeRapidTextBrush) border-(--ModeRapidTextBrush)!': stat.value === 'Rapid',
                     } : 'bg-(--ButtonBrush) text-(--TextBrush)'">
                     {{ stat.value }}
                 </span>
