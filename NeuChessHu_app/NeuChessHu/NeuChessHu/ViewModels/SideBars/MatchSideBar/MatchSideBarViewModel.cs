@@ -55,6 +55,7 @@ public class MatchSideBarViewModel : ObservableBase
     Visibility inputRowVisibility;
     Visibility chatImageVisibility;
     Thickness chatButtonThickness;
+    ICommand? openCloseChatCommand;
 
     string resignDrawConfirmationText;
 
@@ -250,9 +251,9 @@ public class MatchSideBarViewModel : ObservableBase
         }
     }
 
-    public Visibility ChatImageVisibility 
-    { 
-        get => chatImageVisibility; 
+    public Visibility ChatImageVisibility
+    {
+        get => chatImageVisibility;
         private set
         {
             chatImageVisibility = value;
@@ -284,7 +285,16 @@ public class MatchSideBarViewModel : ObservableBase
 
     public Action? OnOpenOptions { get; internal set; }
 
-    public ICommand? OpenCloseChatCommand { get; private set; }
+    public ICommand? OpenCloseChatCommand
+    {
+        get => openCloseChatCommand;
+        private set
+        {
+            openCloseChatCommand = value;
+            RaisePropertyChanged();
+        }
+    }
+
     public ICommand SendChatMessageCommand { get; }
     public ICommand ConfirmOrCancelCommand { get; }
     public ICommand OpenOptionsCommand { get; }
@@ -363,8 +373,7 @@ public class MatchSideBarViewModel : ObservableBase
 
         if (e.PropertyName is nameof(PlayerDataStore.UserData))
         {
-            ChatImageVisibilityOnStockfish();
-            OpenCloseChatCommand = null;
+            UpdateChatAvailability();
             return;
         }
 
@@ -559,7 +568,7 @@ public class MatchSideBarViewModel : ObservableBase
         });
     }
 
-    void ChatImageVisibilityOnStockfish()
+    void UpdateChatAvailability()
     {
         string?[] nicknames = [
             matchDataStore.PlayerDatas[Side.White].UserData?.Nickname,
@@ -567,7 +576,22 @@ public class MatchSideBarViewModel : ObservableBase
         ];
 
         if (nicknames.Any(x => x is "Stockfish"))
+        {
             ChatImageVisibility = Visibility.Collapsed;
+            OpenCloseChatCommand = null;
+
+            if (ChatVisibility is Visibility.Visible)
+            {
+                ChatVisibility = Visibility.Collapsed;
+                NotationsVisibility = Visibility.Visible;
+                ChatButtonThickness = new Thickness(0.5, 0.5, 0.5, 1);
+            }
+
+            return;
+        }
+
+        ChatImageVisibility = Visibility.Visible;
+        OpenCloseChatCommand ??= new CommandExecuter<object?>(_ => SwapNotationsChatPanel());
     }
 
     async Task OnConfirmOrCancel(bool isConfirmed)
